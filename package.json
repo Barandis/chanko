@@ -1,0 +1,107 @@
+{
+  "name": "chanko",
+  "version": "0.1.0",
+  "description": "CSP channels for JavaScript",
+  "main": "dist/chanko.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "clean:docs": "rimraf docs/api",
+    "build": "npm run clean && npm run bundle",
+    "bundle": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.config.js",
+    "commit": "npx git-cz",
+    "docs": "npm run clean:docs && jsdoc -c ./jsdoc.json",
+    "lint": "eslint ./src ./test",
+    "test": "cross-env NODE_PATH=./src NODE_ENV=test mocha ./test --require @babel/register --recursive",
+    "cover": "cross-env NODE_PATH=./src NODE_ENV=test nyc mocha ./test --require @babel/register --recursive",
+    "check": "cross-env NODE_PATH=./src NODE_ENV=test nyc --check-coverage --lines 80 --branches 80 --functions 80 --statements 80 mocha ./test --require @babel/register --recursive",
+    "upload": "npm run cover -s && cat ./coverage/lcov.info | coveralls"
+  },
+  "keywords": [
+    "csp",
+    "channel",
+    "async",
+    "concurrent",
+    "go",
+    "chan",
+    "process"
+  ],
+  "author": "Thomas Otterson <tjotterson@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Barandis/chanko.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Barandis/chanko/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-async-generator-functions": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.2.0",
+    "commitizen": "^4.0.3",
+    "coveralls": "^3.0.9",
+    "cross-env": "^7.0.0",
+    "cz-conventional-changelog": "^3.1.0",
+    "docdash": "^1.2.0",
+    "eslint": "^6.8.0",
+    "husky": "^4.2.3",
+    "jsdoc": "^3.6.3",
+    "lint-staged": "^10.0.7",
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "sinon": "^8.1.1",
+    "sinon-chai": "^3.4.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "xduce": "^2.0.2"
+  },
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run test",
+      "pre-push": "lint-staged && npm run check"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-babel",
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not ie_mob 11",
+    "maintained node versions"
+  ]
+}
