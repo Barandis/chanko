@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_buffers.html">chanko/buffers</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_buffers.html">chanko/buffers</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></li></ul>
 </nav>
 
 <div id="main">
@@ -50,10 +50,14 @@
  */
 
 /**
+ * Provides several types of buffers usable in buffered channels. These are all
+ * built on a small, efficient queue (also provided) which is in turn backed by
+ * a JavaScript array.
+ * 
  * @module chanko/buffers
  */
 
-export const EMPTY = Symbol("EMPTY");
+const EMPTY = Symbol("EMPTY");
 
 /**
  * A general purpose, highly efficient queue. It's backed by a regular array,
@@ -76,7 +80,7 @@ export const EMPTY = Symbol("EMPTY");
  * @returns {module:chanko/buffers~Queue} a new, empty queue.
  * @private
  */
-export function queue() {
+function queue() {
   let store = [];
   let pointer = 0;
 
@@ -229,13 +233,13 @@ export function queue() {
  * @return {module:chanko/buffers~FixedBuffer} a new fixed buffer of the
  * specified capacity.
  */
-export function fixed(size) {
+function fixed(size) {
   const q = queue();
 
   return Object.freeze({
     /**
      * The queue that backs this buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @type {module:chanko/buffers~Queue}
@@ -245,10 +249,10 @@ export function fixed(size) {
 
     /**
      * The size of the buffer.
-     * 
+     *
      * This is *not* the number of elements in the buffer. It is the number of
      * elements that can be stored before the buffer is considered full.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @type {number}
@@ -259,7 +263,7 @@ export function fixed(size) {
     /**
      * Indicates whether the buffer as as many or more items stored as its
      * {@link module:chanko/buffers~FixedBuffer#size|size}.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @type {boolean}
@@ -271,7 +275,7 @@ export function fixed(size) {
 
     /**
      * The number of items currently being stored by the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @type {number}
@@ -284,7 +288,7 @@ export function fixed(size) {
     /**
      * Adds one or more items to tbe buffer. These items will be added even if
      * the buffer is full.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @param {...*} items the items to be added to the buffer.
@@ -297,7 +301,7 @@ export function fixed(size) {
 
     /**
      * Removes and returns the oldest item in the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~FixedBuffer
      * @instance
      * @return {*} the oldest item in the buffer.
@@ -336,13 +340,13 @@ export function fixed(size) {
  * @return {module:chanko/buffers~DroppingBuffer} a new dropping buffer of the
  * specified capacity.
  */
-export function dropping(size) {
+function dropping(size) {
   const q = queue();
 
   return Object.freeze({
     /**
      * The queue that backs this buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @type {module:chanko/buffers~Queue}
@@ -352,10 +356,10 @@ export function dropping(size) {
 
     /**
      * The size of the buffer.
-     * 
+     *
      * This is *not* the number of elements in the buffer. It is the number of
      * elements that can be stored before the buffer is considered full.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @type {number}
@@ -366,7 +370,7 @@ export function dropping(size) {
     /**
      * Indicates whether the buffer is full. As this type of buffer is never
      * considered full, this will always be `false`.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @type {boolean}
@@ -376,7 +380,7 @@ export function dropping(size) {
 
     /**
      * The number of items currently being stored by the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @type {number}
@@ -389,7 +393,7 @@ export function dropping(size) {
     /**
      * Adds one or more items to tbe buffer. If the buffer is already at
      * capacity, the item will be silently dropped instead.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @param {...*} items the items to be added to the buffer.
@@ -404,7 +408,7 @@ export function dropping(size) {
 
     /**
      * Removes and returns the oldest item in the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~DroppingBuffer
      * @instance
      * @return {*} the oldest item in the buffer.
@@ -423,7 +427,7 @@ export function dropping(size) {
  * is added. That means this buffer is never 'full' because it can always be
  * added to without exceeding the size, even if that 'adding' also involves
  * removing another item.
- * 
+ *
  * @namespace SlidingBuffer
  */
 
@@ -443,13 +447,13 @@ export function dropping(size) {
  * @return {module:chanko/buffers~SlidingBuffer} a new sliding buffer of the
  * specified capacity.
  */
-export function sliding(size) {
+function sliding(size) {
   const q = queue();
 
   return Object.freeze({
     /**
      * The queue that backs this buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @type {module:chanko/buffers~Queue}
@@ -459,10 +463,10 @@ export function sliding(size) {
 
     /**
      * The size of the buffer.
-     * 
+     *
      * This is *not* the number of elements in the buffer. It is the number of
      * elements that can be stored before the buffer is considered full.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @type {number}
@@ -473,7 +477,7 @@ export function sliding(size) {
     /**
      * Indicates whether the buffer is full. As this type of buffer is never
      * considered full, this will always be `false`.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @type {boolean}
@@ -483,7 +487,7 @@ export function sliding(size) {
 
     /**
      * The number of items currently being stored by the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @type {number}
@@ -496,7 +500,7 @@ export function sliding(size) {
     /**
      * Adds one or more items to tbe buffer. If the buffer is already at
      * capacity, the oldest item will be removed before the new one is added.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @param {...*} items the items to be added to the buffer.
@@ -512,7 +516,7 @@ export function sliding(size) {
 
     /**
      * Removes and returns the oldest item in the buffer.
-     * 
+     *
      * @memberof module:chanko/buffers~SlidingBuffer
      * @instance
      * @return {*} the oldest item in the buffer.
@@ -522,6 +526,8 @@ export function sliding(size) {
     }
   });
 }
+
+export { EMPTY, queue, fixed, dropping, sliding };
 </code></pre>
         </article>
     </section>

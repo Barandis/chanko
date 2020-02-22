@@ -9,6 +9,11 @@
 // MessageChannel object (from worker_threads, global so that dispatcher.js can
 // actually see it, not just this test file) is causing test coverage to hang.
 // I'll eventually find a solution.
+//
+// That being said, all of the examples in the docs directory end up using
+// MessageChannel since setImmediate isn't available in browsers, so there is
+// reason to be confident in the implementation. Nevertheless I will prefer to
+// have unit tests for them.
 
 import { expect } from "test/helper";
 import sinon from "sinon";

@@ -6,6 +6,10 @@
  */
 
 /**
+ * Provides several types of buffers usable in buffered channels. These are all
+ * built on a small, efficient queue (also provided) which is in turn backed by
+ * a JavaScript array.
+ *
  * @module chanko/buffers
  */
 

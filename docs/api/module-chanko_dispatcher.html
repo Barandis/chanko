@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>chanko/buffers - Documentation</title>
+    <title>chanko/dispatcher - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">chanko/buffers</h1>
+    <h1 class="page-title">chanko/dispatcher</h1>
     
 
     
@@ -55,9 +55,33 @@
         <div class="container-overview">
         
             
-                <div class="description usertext"><p>Provides several types of buffers usable in buffered channels. These are all
-built on a small, efficient queue (also provided) which is in turn backed by
-a JavaScript array.</p></div>
+                <div class="description usertext"><p>This is the place where the new JS tasks are actually created. A queue is
+maintained for them, and as each batch of tasks are completed, the next ones
+run. As each channel call on an async function runs, it adds tasks to be run
+to the queue, which are each run in their own JS task.</p>
+<p>The function that spawns the new JS task depends on environment. The
+<code>setImmediate</code> function is preferred as it's the fastest, not waiting for
+event queues to empty before spawning the new process. However, it is not JS
+standard and currently only works in IE and node.js (and little else works in
+IE, so mostly this is Node-only). If <code>setImmediate</code> isn't available, an
+attempt is made to use <code>MessageChannel</code>'s <code>onmessage</code> is tried next. If that
+is also not available, then <code>setTimeout</code> with <code>0</code> delay is used, which is
+available everywhere but which is the least performant of all of the
+solutions.</p>
+<p>There are other possibilities for creating processes, but they were rejected
+as obsolete (<code>process.nextTick</code> and <code>onreadystatechange</code>) or unnecessary
+(<code>window.postMessage</code>, which works like <code>MessageChannel</code> but doesn't work in
+Web Workers).</p>
+<p>It is notable and important that we act as good citizens here. This
+dispatcher is capable of taking control of the JavaScript engine until
+thousands, millions, or more tasks are handled. But that could cause the
+system event loop to have to wait an unacceptable amount of time. So we limit
+ourselves to a batch of tasks at a time, and if there are still more to be
+run, we let the event loop run before that next batch is processed.</p>
+<p>The dispatcher is <strong>global</strong>. There is a single instance that runs for all
+channels and processes. The export is for the dispatcher object itself, not a
+factory function. This is the only element of the system that works like
+this.</p></div>
             
 
             
@@ -71,7 +95,7 @@ a JavaScript array.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="buffers.js.html">buffers.js</a>, <a href="buffers.js.html#line8">line 8</a>
+        <a href="dispatcher.js.html">dispatcher.js</a>, <a href="dispatcher.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -156,20 +180,89 @@ a JavaScript array.</p></div>
         <h3 class="subsection-title">Namespaces</h3>
 
         <dl>
-            <dt><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-chanko_buffers-Queue.html">Queue</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a></dt>
+            <dt><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></dt>
             <dd></dd>
         </dl>
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~dispatcher"><span class="type-signature">(inner, constant) </span>dispatcher<span class="type-signature"> :<a href="module-chanko_dispatcher-Dispatcher.html">module:chanko/dispatcher~Dispatcher</a></span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dispatcher.js.html">dispatcher.js</a>, <a href="dispatcher.js.html#line109">line 109</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>The object responsible for queueing tasks to be run asynchronously by the
+JavaScript engine.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="module-chanko_dispatcher-Dispatcher.html">module:chanko/dispatcher~Dispatcher</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
     
 
     
