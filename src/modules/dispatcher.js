@@ -246,7 +246,7 @@ const dispatcher = (function() {
      *
      * @memberof module:chanko/dispatcher~Dispatcher
      * @instance
-     * @type {number}
+     * @type {Symbol}
      */
     get dispatchMethod() {
       return dispatchMethod;
