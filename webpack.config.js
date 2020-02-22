@@ -11,7 +11,7 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "chanko.js",
     library: "chanko",
-    libraryTarget: "umd",
+    libraryTarget: "umd"
   },
   plugins: [new webpack.BannerPlugin({ banner, entryOnly: true })],
   module: {
@@ -20,14 +20,15 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
-        },
-      },
-    ],
+          loader: "babel-loader"
+        }
+      }
+    ]
   },
   resolve: {
     alias: {
       modules: path.resolve(__dirname, "src/modules/"),
-    },
-  },
+      test: path.resolve(__dirname, "test")
+    }
+  }
 };
