@@ -9,7 +9,7 @@
  * @module chanko/buffers
  */
 
-export const EMPTY = Symbol("EMPTY");
+const EMPTY = Symbol("EMPTY");
 
 /**
  * A general purpose, highly efficient queue. It's backed by a regular array,
@@ -32,7 +32,7 @@ export const EMPTY = Symbol("EMPTY");
  * @returns {module:chanko/buffers~Queue} a new, empty queue.
  * @private
  */
-export function queue() {
+function queue() {
   let store = [];
   let pointer = 0;
 
@@ -185,7 +185,7 @@ export function queue() {
  * @return {module:chanko/buffers~FixedBuffer} a new fixed buffer of the
  * specified capacity.
  */
-export function fixed(size) {
+function fixed(size) {
   const q = queue();
 
   return Object.freeze({
@@ -292,7 +292,7 @@ export function fixed(size) {
  * @return {module:chanko/buffers~DroppingBuffer} a new dropping buffer of the
  * specified capacity.
  */
-export function dropping(size) {
+function dropping(size) {
   const q = queue();
 
   return Object.freeze({
@@ -399,7 +399,7 @@ export function dropping(size) {
  * @return {module:chanko/buffers~SlidingBuffer} a new sliding buffer of the
  * specified capacity.
  */
-export function sliding(size) {
+function sliding(size) {
   const q = queue();
 
   return Object.freeze({
@@ -478,3 +478,5 @@ export function sliding(size) {
     }
   });
 }
+
+export { EMPTY, queue, fixed, dropping, sliding };
