@@ -13,6 +13,26 @@
  * @module chanko/buffers
  */
 
+/**
+ * General-purpose buffers that can be used to create buffered channels.
+ *
+ * These are all accessed through the `chanko.buffers` object; e.g.
+ * `{@link module:chanko/buffers~Buffers.fixed|fixed}` can be called like this:
+ *
+ * ```
+ * const buffer = chanko.buffers.fixed(3);
+ * ```
+ *
+ * @namespace Buffers
+ * @memberof module:chanko~Chanko
+ */
+
+/**
+ * A value returned by a buffer when it is empty.
+ *
+ * @memberof module:chanko~Chanko
+ * @type {Symbol}
+ */
 const EMPTY = Symbol("EMPTY");
 
 /**
@@ -183,7 +203,7 @@ function queue() {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items that the buffer can hold before it's
  * full.
  * @return {module:chanko/buffers~FixedBuffer} a new fixed buffer of the
@@ -290,7 +310,7 @@ function fixed(size) {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items the buffer can hold before new items
  * are dropped on add.
  * @return {module:chanko/buffers~DroppingBuffer} a new dropping buffer of the
@@ -397,7 +417,7 @@ function dropping(size) {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items that the buffer can hold before the
  * oldest items are dropped on add.
  * @return {module:chanko/buffers~SlidingBuffer} a new sliding buffer of the

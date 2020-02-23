@@ -97,6 +97,9 @@ const SET_TIMEOUT = Symbol("SET_TIMEOUT");
  * let other waiting tasks run first. In this way the dispatcher doesn't
  * monopolize the JavaScript engine if millions of tasks are queued.
  *
+ * These two options can be set using the
+ * {@link module:chanko~Chanko.configDispatcher|configDispatcher} function.
+ *
  * @namespace Dispatcher
  */
 
@@ -223,6 +226,7 @@ const dispatcher = (function() {
      * @memberof module:chanko/dispatcher~Dispatcher
      * @instance
      * @type {number}
+     * @private
      */
     get batchSize() {
       return batchSize;
@@ -247,6 +251,7 @@ const dispatcher = (function() {
      * @memberof module:chanko/dispatcher~Dispatcher
      * @instance
      * @type {Symbol}
+     * @private
      */
     get dispatchMethod() {
       return dispatchMethod;

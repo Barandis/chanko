@@ -25,6 +25,8 @@ import {
   SET_TIMEOUT
 } from "modules/dispatcher";
 
+import { configDispatcher } from "index";
+
 describe("dispatcher", () => {
   let dispatchMethod;
   let batchSize;
@@ -111,6 +113,43 @@ describe("dispatcher", () => {
     /* eslint-enable no-global-assign */
   });
 
+  context("dispatch method with configDispatcher", () => {
+    it("sets the right method with SET_IMMEDIATE", () => {
+      const expected =
+        typeof setImmediate !== "undefined"
+          ? SET_IMMEDIATE
+          : typeof MessageChannel !== "undefined"
+          ? MESSAGE_CHANNEL
+          : SET_TIMEOUT;
+      configDispatcher({ dispatchMethod: SET_IMMEDIATE });
+      expect(dispatcher.dispatchMethod).to.equal(expected);
+    });
+
+    it("sets the right method with MESSAGE_CHANNEL", () => {
+      const expected =
+        typeof MessageChannel !== "undefined" ? MESSAGE_CHANNEL : SET_TIMEOUT;
+      configDispatcher({ dispatchMethod: MESSAGE_CHANNEL });
+      expect(dispatcher.dispatchMethod).to.equal(expected);
+    });
+
+    it("sets the right method with SET_TIMEOUT", () => {
+      configDispatcher({ dispatchMethod: SET_TIMEOUT });
+      expect(dispatcher.dispatchMethod).to.equal(SET_TIMEOUT);
+    });
+
+    it("throws if some other value is passed as a dispatch method", () => {
+      expect(() =>
+        configDispatcher({ dispatchMethod: Symbol("SET_IMMEDIATE") })
+      ).to.throw();
+    });
+
+    it("changes nothing if no value is passed to configDispatcher", () => {
+      configDispatcher();
+      expect(dispatcher.batchSize).to.equal(1024);
+      expect(dispatcher.dispatchMethod).to.equal(SET_IMMEDIATE);
+    });
+  });
+
   context("dispatch", () => {
     it("queues a task to be executed", () => {
       const spy = sinon.spy();
@@ -131,7 +170,7 @@ describe("dispatcher", () => {
       }, 0);
     });
 
-    it("queues a task to be executed with setTimeout", () => {
+    it("queues a task to be executed with setTimeout", async () => {
       const spy = sinon.spy();
       dispatcher.dispatchMethod = SET_TIMEOUT;
 
@@ -141,7 +180,7 @@ describe("dispatcher", () => {
       }, 0);
     });
 
-    it("runs multiple tasks in batches", () => {
+    it("runs multiple tasks in batches", async () => {
       dispatcher.batchSize = 4;
       const spies = [];
       for (let i = 0; i < 8; i++) {
@@ -154,7 +193,23 @@ describe("dispatcher", () => {
         for (const spy of spies) {
           expect(spy).to.be.calledOnce;
         }
-      });
+      }, 0);
+    });
+
+    it("runs tasks in batches with configDispatcher", async () => {
+      configDispatcher({ batchSize: 4 });
+      const spies = [];
+      for (let i = 0; i < 8; i++) {
+        const spy = sinon.spy();
+        spies.push(spy);
+        dispatcher.dispatch(spy);
+      }
+
+      setTimeout(() => {
+        for (const spy of spies) {
+          expect(spy).to.be.calledOnce;
+        }
+      }, 0);
     });
   });
 });

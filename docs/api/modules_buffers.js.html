@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>buffers.js - Documentation</title>
+    <title>modules/buffers.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -27,12 +27,12 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_buffers.html">chanko/buffers</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffers.html">chanko/buffers</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li><li><a href="module-chanko-Chanko.Buffers.html">Buffers</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">buffers.js</h1>
+    <h1 class="page-title">modules/buffers.js</h1>
     
 
     
@@ -53,10 +53,30 @@
  * Provides several types of buffers usable in buffered channels. These are all
  * built on a small, efficient queue (also provided) which is in turn backed by
  * a JavaScript array.
- * 
+ *
  * @module chanko/buffers
  */
 
+/**
+ * General-purpose buffers that can be used to create buffered channels.
+ * 
+ * These are all accessed through the `chanko.buffers` object; e.g.
+ * `{@link module:chanko/buffers~Buffers.fixed|fixed}` can be called like this:
+ * 
+ * ```
+ * const buffer = chanko.buffers.fixed(3);
+ * ```
+ * 
+ * @namespace Buffers
+ * @memberof module:chanko~Chanko
+ */
+
+/**
+ * A value returned by a buffer when it is empty.
+ * 
+ * @memberof module:chanko~Chanko
+ * @type {Symbol}
+ */
 const EMPTY = Symbol("EMPTY");
 
 /**
@@ -227,7 +247,7 @@ function queue() {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items that the buffer can hold before it's
  * full.
  * @return {module:chanko/buffers~FixedBuffer} a new fixed buffer of the
@@ -334,7 +354,7 @@ function fixed(size) {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items the buffer can hold before new items
  * are dropped on add.
  * @return {module:chanko/buffers~DroppingBuffer} a new dropping buffer of the
@@ -441,7 +461,7 @@ function dropping(size) {
  * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
  * create a buffered channel.
  *
- * @memberof module:chanko/buffers~Buffers
+ * @memberof module:chanko~Chanko.Buffers
  * @param {number} size the number of items that the buffer can hold before the
  * oldest items are dropped on add.
  * @return {module:chanko/buffers~SlidingBuffer} a new sliding buffer of the

@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_buffers.html">chanko/buffers</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffers.html">chanko/buffers</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffers-DroppingBuffer.html">DroppingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-DroppingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-FixedBuffer.html">FixedBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-FixedBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_buffers-Queue.html">Queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-Queue.html#dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#filter">filter</a></li><li data-type='method'><a href="module-chanko_buffers-Queue.html#peek">peek</a></li></ul></li><li><a href="module-chanko_buffers-SlidingBuffer.html">SlidingBuffer</a><ul class='methods'><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#add">add</a></li><li data-type='method'><a href="module-chanko_buffers-SlidingBuffer.html#remove">remove</a></li></ul></li><li><a href="module-chanko_dispatcher-Dispatcher.html">Dispatcher</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li><li><a href="module-chanko-Chanko.Buffers.html">Buffers</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -64,7 +64,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="dispatcher.js.html">dispatcher.js</a>, <a href="dispatcher.js.html#line83">line 83</a>
+        <a href="modules_dispatcher.js.html">modules/dispatcher.js</a>, <a href="modules_dispatcher.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -106,16 +106,18 @@
                 <div class="description usertext"><p>An object responsible for managing the running of asynchronous tasks.</p>
 <p>The dispatcher object determines which method to use to dispatch tasks by
 what is available in the environment and the value of
-<code><a href="module-chanko_dispatcher-Dispatcher.html#dispatchMethod">dispatchMethod</a></code>.
+<code>dispatchMethod</code>.
 If a setting is made that is not available in the environment, the next
 available method will be chosen. At worst, <code>setTimeout</code> (which is available
 in every environment) will be used.</p>
 <p>The dispatcher processes tasks in batches. The default batch size is 1024,
 and this can be set by assigning a new value to
-<code><a href="module-chanko_dispatcher-Dispatcher.html#batchSize">batchSize</a></code>. Once a
+<code>batchSize</code>. Once a
 full batch has been run, the dispatcher will queue the next batch but will
 let other waiting tasks run first. In this way the dispatcher doesn't
-monopolize the JavaScript engine if millions of tasks are queued.</p></div>
+monopolize the JavaScript engine if millions of tasks are queued.</p>
+<p>These two options can be set using the
+<a href="module-chanko-Chanko.html#.configDispatcher">configDispatcher</a> function.</p></div>
             
 
             
@@ -135,168 +137,6 @@ monopolize the JavaScript engine if millions of tasks are queued.</p></div>
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="batchSize"><span class="type-signature"></span>batchSize<span class="type-signature"> :number</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="dispatcher.js.html">dispatcher.js</a>, <a href="dispatcher.js.html#line227">line 227</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>The number of tasks that will be run before the dispatcher cedes control
-back to the engine.</p>
-<p>The dispatcher will immediately queue the next set of tasks, but they
-will run after normal system tasks have their chance.</p>
-<p>The default batch size is 1024.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="dispatchMethod"><span class="type-signature"></span>dispatchMethod<span class="type-signature"> :number</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="dispatcher.js.html">dispatcher.js</a>, <a href="dispatcher.js.html#line251">line 251</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>The method used to dispatch tasks.</p>
-<p>This can have one of three values:
-SET_IMMEDIATE,
-MESSAGE_CHANNEL, or
-SET_TIMEOUT, in that order. If
-the chosen method isn't available, the next one in order that <em>is</em>
-available will be the method actually used.</p>
-<p>The default method is
-SET_IMMEDIATE.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
     
 
     
