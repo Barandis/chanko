@@ -189,6 +189,9 @@ describe("dispatcher", () => {
         dispatcher.dispatch(spy);
       }
 
+      // Two calls are required because sometimes not all spies get called in
+      // a single batch, and a second context switch is needed.
+      setTimeout(() => {}, 0);
       setTimeout(() => {
         for (const spy of spies) {
           expect(spy).to.be.calledOnce;
@@ -205,6 +208,9 @@ describe("dispatcher", () => {
         dispatcher.dispatch(spy);
       }
 
+      // Two calls are required because sometimes not all spies get called in
+      // a single batch, and a second context switch is needed.
+      setTimeout(() => {}, 0);
       setTimeout(() => {
         for (const spy of spies) {
           expect(spy).to.be.calledOnce;
