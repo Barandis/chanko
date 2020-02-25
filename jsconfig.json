@@ -2,7 +2,6 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
-    "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
       "modules/*": ["./src/modules/*"],

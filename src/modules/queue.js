@@ -1,0 +1,195 @@
+/**
+ * Copyright (c) 2020 Thomas J. Otterson
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Provides an efficient general-purpose queue.
+ *
+ * @module chanko/queue
+ */
+
+/**
+ * A general purpose, highly efficient JavaScript queue. It is backed by a
+ * JavaScript array, but it does not use `unshift` to take elements off the
+ * array because unshift causes elements to be copied every time it's used.
+ * Instead, a pointer is maintained that keeps track of the location of the next
+ * element to be dequeued, and when that dequeue happens, the pointer simply
+ * moves. When the empty space at the head of the array gets large enough, it's
+ * removed by a single slice operation.
+ *
+ * Putting elements into the queue is just done with a basic `push`, which *is*
+ * highly efficient.
+ *
+ * This type of queue is possible in JavaScript because JS arrays are resizable.
+ * In languages with fixed-size arrays, a resizing operation would have to be
+ * run each time the queue fills.
+ *
+ * @namespace Queue
+ */
+
+/**
+ * The value returned when a queue is read when it's empty.
+ *
+ * This special value is used because `null` and `undefined` are possible
+ * legitimate values that can be stored in a queue. Another option is to use
+ * some kind of `Maybe` or `Option` type, but that requires more effort on the
+ * part of the end user to interface with.
+ *
+ * @type {Symbol}
+ * @private
+ */
+const EMPTY = Symbol("empty");
+
+/**
+ * A marker property name to indicate that an object is in fact a queue.
+ *
+ * A queue has a property with this name whose readonly value is set to `true`.
+ * This is not meant to be read except by the
+ * `{@link module:chanko/queue~Queue.isQueue|isQueue}` function.
+ *
+ * @type {Symbol}
+ * @private
+ */
+const QUEUE = Symbol("queue");
+
+/**
+ * Determines whether an object is a queue.
+ *
+ * @param {*} obj The object to be tested.
+ * @return {boolean} Either `true` if the object is a queue or `false` if it is
+ * not.
+ */
+function isQueue(obj) {
+  return !!obj?.[QUEUE];
+}
+
+/**
+ * Creates a new queue. This queue is created empty, with a backing array of
+ * length 0.
+ *
+ * @returns {module:chanko/queue~Queue} A new, empty queue.
+ * @private
+ */
+function queue() {
+  return Object.create(null, {
+    store: {
+      value: [],
+      writable: true
+    },
+
+    pointer: {
+      value: 0,
+      writable: true
+    },
+
+    [QUEUE]: {
+      value: true
+    }
+  });
+}
+
+/**
+ * Returns the number of elements stored in a queue. This may or may not equal
+ * the length of the backing store, as there is often empty space at the head of
+ * the backing store.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue whose items are being
+ * counted.
+ * @return {number} The number of items in the queue.
+ */
+function count(queue) {
+  return queue.store.length - queue.pointer;
+}
+
+/**
+ * Determines whether a queue is empty.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue being checked for
+ * emptiness.
+ * @return {boolean} Either `true` if the queue is empty or `false` if it is
+ * not.
+ */
+function isEmpty(queue) {
+  return queue.store.length === 0;
+}
+
+/**
+ * Adds an item to a queue.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue which is having an item
+ * added to it.
+ * @param {*} item The item being added to the queue.
+ */
+function enqueue(queue, item) {
+  queue.store.push(item);
+}
+
+/**
+ * Removes an item from a queue and returns that item. If the removal causes the
+ * amount of empty space at the head of the backing store to exceed a threshold,
+ * that empty space is removed.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue whose oldest item is to be
+ * removed.
+ * @return {*} The oldest stored item in the queue.
+ */
+function dequeue(queue) {
+  if (queue.store.length === 0) {
+    return EMPTY;
+  }
+
+  const item = queue.store[queue.pointer];
+  // Removes the items in the backing store before the current pointer, if there
+  // is enough "empty" space before the pointer to justify it (i.e., the unused
+  // portion is at least half as large as the used portion)
+  if (++queue.pointer * 2 >= queue.store.length) {
+    queue.store = queue.store.slice(queue.pointer);
+    queue.pointer = 0;
+  }
+  return item;
+}
+
+/**
+ * Returns the next item in a queue without removing it.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue whose oldest item is to be
+ * peeked at.
+ * @return {*} The oldest item stored in the queue.
+ */
+function peek(queue) {
+  return queue.store.length === 0 ? EMPTY : queue.store[queue.pointer];
+}
+
+/**
+ * Filters out any item in a queue that does not cause the supplied predicate
+ * function to return `true` when passed that item. This is not exactly a
+ * general purpose queue operation, but we need it with channels that will
+ * occasionally want to get rid of inactive handlers.
+ *
+ * @param {module:chanko/queue~Queue} queue The queue being filtered.
+ * @param {function} fn The predicate function that determines whether an
+ * element remains in the queue.
+ */
+function filter(queue, predicate) {
+  for (let i = 0, end = count(queue); i < end; i++) {
+    const item = dequeue(queue);
+    if (predicate(item)) {
+      enqueue(queue, item);
+    }
+  }
+}
+
+export {
+  EMPTY,
+  queue,
+  isQueue,
+  count,
+  isEmpty,
+  enqueue,
+  dequeue,
+  peek,
+  filter
+};
