@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "rimraf dist",
     "clean:docs": "rimraf docs/api",
-    "build": "npm run clean && npm run bundle",
-    "bundle": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.config.js",
+    "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",
+    "bundle:dev": "cross-env NODE_ENV=development webpack --progress --colors --config webpack.dev.js",
+    "bundle:prod": "cross-env NODE_ENV=production webpack --progress --colors --config webpack.prod.js",
     "commit": "npx git-cz",
     "docs": "npm run clean:docs && jsdoc -c ./jsdoc.json",
     "lint": "eslint ./src ./test",
@@ -70,7 +71,10 @@
     "webpack-cli": "^3.3.11",
     "xduce": "^2.0.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "D": "^1.0.0",
+    "webpack-merge": "^4.2.2"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run test",
