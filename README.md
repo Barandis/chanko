@@ -12,15 +12,11 @@ In JavaScript, CSP became feasible with the release of generators in ES2015, but
 // A simple pong example using Chanko
 // Adaptation of Go code at https://talks.golang.org/2013/advconc.slide#6
 
-import { go, sleep, timedChan, send, recv, CLOSED } from "chanko";
+import { go, sleep, timedChan, send } from "chanko";
 const table = timedChan(10000);
 
 async function player(name) {
-  for (;;) {
-    const ball = await recv(table);
-    if (ball === CLOSED) {
-      break;
-    }
+  for await (const ball of table) {
     ball.hits++;
     console.log(`${name}: ${ball.hits}`);
     await sleep(500);
@@ -46,6 +42,7 @@ go(player, "pong");
 - Channels are not tied to any process, so any process can send to/receive from any channel
 - Option to have channel automatically close after some amount of time
 - Values sent to a channel can be modifed by transducers so that receivers only see the transformed values (see [Xduce][3])
+- Channels are async iterators and can be easily used with the new `for await...of` loops
 - Comes with a full set of channel operations for merging, splitting, tapping, throtting, selecting, and more
 - Functional style that plays well with tree-shaking
 

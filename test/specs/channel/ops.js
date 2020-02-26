@@ -153,4 +153,25 @@ describe("Channel operations", () => {
       });
     });
   });
+
+  context("async iterator", () => {
+    it("yields values one at a time as they are sent", async () => {
+      const ch = chan();
+
+      go(async () => {
+        for (const i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+          await send(ch, i);
+        }
+        close(ch);
+      });
+
+      return go(async () => {
+        let i = 1;
+        for await (const value of ch) {
+          expect(value).to.equal(i++);
+        }
+        expect(i).to.equal(11);
+      });
+    });
+  });
 });

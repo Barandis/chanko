@@ -127,7 +127,7 @@ function chan(buffer, options) {
     setTimeout(() => closeImpl(impl), timeout);
   }
 
-  return Object.create(null, {
+  const ch = Object.create(null, {
     impl: {
       value: impl
     },
@@ -138,6 +138,20 @@ function chan(buffer, options) {
       value: isTimed
     }
   });
+
+  async function* iterator() {
+    for (;;) {
+      const value = await recv(ch);
+      if (value === CLOSED) {
+        break;
+      }
+      yield value;
+    }
+  }
+
+  ch[Symbol.asyncIterator] = iterator;
+
+  return ch;
 }
 
 function timedChan(delay = 0) {
