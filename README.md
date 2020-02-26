@@ -12,26 +12,29 @@ In JavaScript, CSP became feasible with the release of generators in ES2015, but
 // A simple pong example using Chanko
 // Adaptation of Go code at https://talks.golang.org/2013/advconc.slide#6
 
-import { go, chan, sleep } from "chanko";
-const table = chan({ timeout: 10000 });
+import { go, sleep, timedChan, send, recv, CLOSED } from "chanko";
+const table = timedChan(10000);
 
 async function player(name) {
-  for await (const ball of table) {
+  for (;;) {
+    const ball = await recv(table);
+    if (ball === CLOSED) {
+      break;
+    }
     ball.hits++;
     console.log(`${name}: ${ball.hits}`);
     await sleep(500);
-    await table.send(ball);
+    await send(table, ball);
   }
   console.log(`${name} finished.`);
 }
 
 go(async () => {
-  const ball = { hits: 0 };
-  go(player, "ping");
-  go(player, "pong");
-
-  await table.send(ball);
+  await send(table, { hits: 0 });
 });
+
+go(player, "ping");
+go(player, "pong");
 ```
 
 ## Features
@@ -42,9 +45,9 @@ go(async () => {
 - Channels accept any value (except for the provided special value `CLOSED`), including `null` and `undefined`
 - Channels are not tied to any process, so any process can send to/receive from any channel
 - Option to have channel automatically close after some amount of time
-- Values sent to a channel can be modifed by transducers so that receivers only see the transformed values ([Xduce][3] is provided)
-- Channels are async iterators, and values can be received from them in a `for await` loop
+- Values sent to a channel can be modifed by transducers so that receivers only see the transformed values (see [Xduce][3])
 - Comes with a full set of channel operations for merging, splitting, tapping, throtting, selecting, and more
+- Functional style that plays well with tree-shaking
 
 ### Processes
 - JavaScript async functions are used as processes
