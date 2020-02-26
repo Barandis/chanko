@@ -58,7 +58,7 @@ describe("dispatcher", () => {
 
     afterEach(() => sandbox.restore());
 
-    it("queues a task to be executed", async () => {
+    it("queues a task to be executed", () => {
       const spy = sandbox.spy();
 
       dispatch(spy);
@@ -71,7 +71,7 @@ describe("dispatcher", () => {
       }
     });
 
-    it("queues a task to be exected with MessageChannel", async () => {
+    it("queues a task to be exected with MessageChannel", () => {
       config({ dispatchMethod: MESSAGE_CHANNEL });
       const spy = sandbox.spy();
 
@@ -85,7 +85,7 @@ describe("dispatcher", () => {
       }
     });
 
-    it("queues a task to be executed with setTimeout", async () => {
+    it("queues a task to be executed with setTimeout", () => {
       config({ dispatchMethod: SET_TIMEOUT });
       const spy = sandbox.spy();
 
@@ -99,7 +99,7 @@ describe("dispatcher", () => {
       }
     });
 
-    it("runs multiple tasks in batches", async () => {
+    it("runs multiple tasks in batches", () => {
       config({ batchSize: 2 });
       const spies = [];
       for (let i = 0; i < 5; i++) {

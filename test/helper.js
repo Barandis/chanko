@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import chai from "chai";
+import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 
 chai.use(sinonChai);
 
-export const expect = chai.expect;
+export { expect };

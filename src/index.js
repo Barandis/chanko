@@ -5,9 +5,27 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { EMPTY } from "modules/queue";
-import { fixed, dropping, sliding } from "modules/buffer";
-
-const buffers = { fixed, dropping, sliding };
-
-export { EMPTY, buffers };
+export { fixed, dropping, sliding } from "modules/buffer";
+export {
+  CLOSED,
+  chan,
+  timedChan,
+  transChan,
+  send,
+  recv,
+  sendAsync,
+  recvAsync,
+  recvOrThrow,
+  close,
+  isClosed,
+  isBuffered,
+  isTimed
+} from "modules/channel";
+export {
+  config,
+  SET_IMMEDIATE,
+  MESSAGE_CHANNEL,
+  SET_TIMEOUT
+} from "modules/dispatcher";
+export { go, sleep } from "modules/process";
+export { EMPTY } from "modules/queue";
