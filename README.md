@@ -8,14 +8,22 @@ In JavaScript, CSP became feasible with the release of generators in ES2015, but
 
 ## Example
 
+This is an adaptation of a Pong example written in Go and available in a presentation on [Advanced Go Concurrency Patterns][5]. It's a slightly more advanced example as it doesn't use the basic `chan` and `recv` functions in favor of `timedChan` and the `for await...of` loop.
+
 ```javascript
-// A simple pong example using Chanko
-// Adaptation of Go code at https://talks.golang.org/2013/advconc.slide#6
+import { go, sleep, send, timedChan } from "chanko";
 
-import { go, sleep, timedChan, send } from "chanko";
-const table = timedChan(10000);
+async function main() {
+  const table = timedChan(10000);
 
-async function player(name) {
+  go(player, "ping", table);
+  go(player, "pong", table);
+
+  const ball = { hits: 0 };
+  await send(table, ball);
+}
+
+async function player(name, table) {
   for await (const ball of table) {
     ball.hits++;
     console.log(`${name}: ${ball.hits}`);
@@ -25,12 +33,7 @@ async function player(name) {
   console.log(`${name} finished.`);
 }
 
-go(async () => {
-  await send(table, { hits: 0 });
-});
-
-go(player, "ping");
-go(player, "pong");
+go(main);
 ```
 
 ## Features
@@ -64,3 +67,4 @@ This project was begun on 21 Feb 2020 and this is currently just a placeholder p
 [2]: http://clojure.github.io/core.async
 [3]: https://barandis.github.io/xduce
 [4]: https://raw.githubusercontent.com/Barandis/chanko/master/LICENSE
+[5]: https://talks.golang.org/2013/advconc.slide#6
