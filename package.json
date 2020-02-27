@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "commit": "npx git-cz",
+    "cover": "lerna run cover --stream",
     "test": "lerna run test"
   },
   "devDependencies": {
@@ -36,9 +38,27 @@
     "sinon-chai": "^3.4.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2",
     "xduce": "^2.0.2"
   },
   "dependencies": {
     "@chanko/channels": "file:packages/channels"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && lerna run test",
+      "pre-push": "lint-staged && lerna run check"
+    }
+  },
+  "lint-staged": {
+    "packages/*/{src,test}/**/*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
