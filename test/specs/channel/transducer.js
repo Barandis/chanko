@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect } from "test/helper";
+import { expect, join } from "test/helper";
 
 import { transChan, send, recv, CLOSED, chan, close } from "modules/channel";
 import { go } from "modules/process";
@@ -23,44 +23,50 @@ describe("Transducer channels", () => {
   it("modifies values on the channel before they're received", async () => {
     const ch = transChan(t.map(x => x + 1));
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch, 1);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       expect(await recv(ch)).to.equal(2);
     });
+
+    return join(p1, p2);
   });
 
   it("accepts transducers removing values", async () => {
     const ch = transChan(t.filter(even));
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch, 1);
       await send(ch, 2);
       close(ch);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       expect(await recv(ch)).to.equal(2);
       expect(await recv(ch)).to.equal(CLOSED);
     });
+
+    return join(p1, p2);
   });
 
   it("closes the channel if the transducer reduces early", async () => {
     const ch = chan(3, { transducer: t.take(2) });
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch, 1);
       await send(ch, 2);
       await send(ch, 3);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       expect(await recv(ch)).to.equal(1);
       expect(await recv(ch)).to.equal(2);
       expect(await recv(ch)).to.equal(CLOSED);
     });
+
+    return join(p1, p2);
   });
 
   it("handles composed transducers", async () => {
@@ -71,28 +77,30 @@ describe("Transducer channels", () => {
     );
     const ch = chan(10, { transducer: xform });
 
-    go(async () => {
+    const p1 = go(async () => {
       for (const i of [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]) {
         await send(ch, i);
       }
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       expect(await recv(ch)).to.equal(0);
       expect(await recv(ch)).to.equal(6);
       expect(await recv(ch)).to.equal(24);
       expect(await recv(ch)).to.equal(CLOSED);
     });
+
+    return join(p1, p2);
   });
 
-  it("closes the channel even if another receiver is active", () => {
+  it("closes the channel even if another receiver is active", async () => {
     const ch = chan(10, { transducer: compose(t.flatten(), t.take(3)) });
     const out = chan();
     const ctrl = chan();
 
     const xor = (a, b) => (a ? !b : b);
 
-    go(async () => {
+    const p1 = go(async () => {
       for (const i of [0, 1, 2, 3, 4]) {
         await send(ch, [i, i]);
       }
@@ -100,25 +108,27 @@ describe("Transducer channels", () => {
       await send(ctrl);
     });
 
-    go(async () => {
+    const p2 = go(async () => {
       await recv(ctrl);
       await recv(ch);
       const value = await recv(ch);
       await send(out, value === CLOSED ? "closed" : value);
     });
 
-    go(async () => {
+    const p3 = go(async () => {
       await recv(ctrl);
       await recv(ch);
       const value = await recv(ch);
       await send(out, value === CLOSED ? "closed" : value);
     });
 
-    return go(async () => {
+    const p4 = go(async () => {
       const value1 = await recv(out);
       const value2 = await recv(out);
       expect(xor(value1 === CLOSED, value2 === "closed")).to.be.true;
     });
+
+    return join(p1, p2, p3, p4);
   });
 });
 
@@ -189,50 +199,56 @@ describe("Transducer error handlers", () => {
 
     const ch = transChan(resultErrorTransducer, exh);
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch, 1);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       await recv(ch);
       // The result function doesn't run until the channel is closed
       close(ch);
     });
+
+    return join(p1, p2);
   });
 
   it("defaults to a handler that makes nothing available", async () => {
     const ch = transChan(oneTimeStepErrorTransducer);
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch, 1);
       await send(ch, 1729);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       // The transducer throws an error when called for the first time.
       // The default handler means nothing is sent to the channel for that
       // call. The second call succeeds, and that value gets sent.
       expect(await recv(ch)).to.equal(1729);
     });
+
+    return join(p1, p2);
   });
 
   it("replaces the original sent value with its own", async () => {
     const exh = () => 2317;
     const ch = transChan(mustBe1729Transducer, exh);
 
-    go(async () => {
+    const p1 = go(async () => {
       await send(ch);
       await send(ch, 1729);
       await send(ch, 42);
       await send(ch, 27);
     });
 
-    return go(async () => {
+    const p2 = go(async () => {
       // Only the 1729 succeeds, the error handler sends 2317 for the others
       expect(await recv(ch)).to.equal(2317);
       expect(await recv(ch)).to.equal(1729);
       expect(await recv(ch)).to.equal(2317);
       expect(await recv(ch)).to.equal(2317);
     });
+
+    return join(p1, p2);
   });
 });

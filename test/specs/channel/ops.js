@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect } from "test/helper";
+import { expect, join } from "test/helper";
 import sinon from "sinon";
 
 import { chan, send, recv, close, CLOSED, isClosed } from "modules/channel";
@@ -22,64 +22,67 @@ describe("Channel operations", () => {
       expect(isClosed(ch)).to.be.true;
     });
 
-    it("causes any pending and future sends to return false", done => {
+    it("causes any pending and future sends to return false", async () => {
       const ch = chan();
 
-      go(async () => {
+      const p1 = go(async () => {
         // pending
         expect(await send(ch, 1)).to.be.false;
         // future
         expect(await send(ch, 1)).to.be.false;
-        done();
       });
 
-      go(async () => {
+      const p2 = go(async () => {
         await sleep();
         close(ch);
       });
+
+      return join(p1, p2);
     });
 
-    it("accepts sends until the buffer is full", done => {
+    it("accepts sends until the buffer is full", async () => {
       const ch = chan(1);
 
-      go(async () => {
+      const p1 = go(async () => {
         // buffered
         expect(await send(ch, 1)).to.be.true;
         // pending
         expect(await send(ch, 1)).to.be.false;
         // future
         expect(await send(ch, 1)).to.be.false;
-        done();
       });
 
-      go(async () => {
+      const p2 = go(async () => {
         await sleep();
         close(ch);
       });
+
+      join(p1, p2);
     });
 
-    it("causes any pending and future receives to return CLOSED", done => {
+    it("causes any pending and future receives to return CLOSED", async () => {
       const ch = chan();
 
-      go(async () => {
+      const p1 = go(async () => {
         // pending
         expect(await recv(ch)).to.equal(CLOSED);
         // future
         expect(await recv(ch)).to.equal(CLOSED);
-        done();
       });
 
-      go(async () => {
+      const p2 = go(async () => {
         await sleep();
         close(ch);
       });
+
+      join(p1, p2);
     });
 
-    it("allows receives until the buffer is empty", done => {
+    it("allows receives until the buffer is empty", async () => {
       const ch = chan(1);
       const ctrl = chan();
 
-      go(async () => {
+      const p1 = go(async () => {
         // channel has a value sent to it and is closed before the ctrl
         // channel fires
         await recv(ctrl);
@@ -87,14 +90,15 @@ describe("Channel operations", () => {
         expect(await recv(ch)).to.equal(1729);
         // future
         expect(await recv(ch)).to.equal(CLOSED);
-        done();
       });
 
-      go(async () => {
+      const p2 = go(async () => {
         await send(ch, 1729);
         close(ch);
         await send(ctrl);
       });
+
+      return join(p1, p2);
     });
   });
 
@@ -102,20 +106,22 @@ describe("Channel operations", () => {
     it("yields values one at a time as they are sent", async () => {
       const ch = chan();
 
-      go(async () => {
+      const p1 = go(async () => {
         for (const i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
           await send(ch, i);
         }
         close(ch);
       });
 
-      return go(async () => {
+      const p2 = go(async () => {
         let i = 1;
         for await (const value of ch) {
           expect(value).to.equal(i++);
         }
         expect(i).to.equal(11);
       });
+
+      return join(p1, p2);
     });
   });
 

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect } from "test/helper";
+import { expect, join } from "test/helper";
 import sinon from "sinon";
 
 import {
@@ -67,9 +67,7 @@ describe("Channel creation", () => {
       const ch = chan();
 
       for (let i = 0; i < 1024; i++) {
-        go(async () => {
-          await send(ch, i);
-        });
+        send(ch, i);
       }
 
       return go(async () => {
@@ -88,9 +86,7 @@ describe("Channel creation", () => {
       const ch = chan();
 
       for (let i = 0; i < 1024; i++) {
-        go(async () => {
-          await recv(ch);
-        });
+        recv(ch);
       }
 
       return go(async () => {
@@ -109,9 +105,7 @@ describe("Channel creation", () => {
       const ch = chan({ maxQueued: 2 });
 
       for (let i = 0; i < 2; i++) {
-        go(async () => {
-          await recv(ch);
-        });
+        recv(ch);
       }
 
       return go(async () => {
@@ -141,45 +135,49 @@ describe("Channel creation", () => {
         const ch = chan(0);
         expect(isBuffered(ch)).to.be.false;
 
-        go(async () => {
+        const p1 = go(async () => {
           await send(ch, 1);
           await send(ch, 2);
           await send(ch, 3);
           await send(ch, 4);
         });
 
-        return go(async () => {
+        const p2 = go(async () => {
           expect(await recv(ch)).to.equal(1);
           expect(await recv(ch)).to.equal(2);
           expect(await recv(ch)).to.equal(3);
           expect(await recv(ch)).to.equal(4);
         });
+
+        return join(p1, p2);
       });
 
       it("accepts fixed buffers", async () => {
         const ch = chan(fixed(3));
         expect(isBuffered(ch)).to.be.true;
 
-        go(async () => {
+        const p1 = go(async () => {
           await send(ch, 1);
           await send(ch, 2);
           await send(ch, 3);
           await send(ch, 4);
         });
 
-        return go(async () => {
+        const p2 = go(async () => {
           expect(await recv(ch)).to.equal(1);
           expect(await recv(ch)).to.equal(2);
           expect(await recv(ch)).to.equal(3);
           expect(await recv(ch)).to.equal(4);
         });
+
+        return join(p1, p2);
       });
 
       it("accepts dropping buffers", async () => {
         const ch = chan(dropping(3));
         expect(isBuffered(ch)).to.be.true;
 
-        go(async () => {
+        const p1 = go(async () => {
           await send(ch, 1);
           await send(ch, 2);
           await send(ch, 3);
@@ -187,7 +185,7 @@ describe("Channel creation", () => {
           close(ch);
         });
 
-        return go(async () => {
+        const p2 = go(async () => {
           // The first send yields to this process because the buffer was empty
           // going into it; this sleep will send it back to the sending process
           // and let it finish filling the buffer
@@ -197,13 +195,15 @@ describe("Channel creation", () => {
           expect(await recv(ch)).to.equal(3);
           expect(await recv(ch)).to.equal(CLOSED);
         });
+
+        return join(p1, p2);
       });
 
       it("accepts sliding buffers", async () => {
         const ch = chan(sliding(3));
         expect(isBuffered(ch)).to.be.true;
 
-        go(async () => {
+        const p1 = go(async () => {
           await send(ch, 1);
           await send(ch, 2);
           await send(ch, 3);
@@ -211,7 +211,7 @@ describe("Channel creation", () => {
           close(ch);
         });
 
-        return go(async () => {
+        const p2 = go(async () => {
           // The first send yields to this process because the buffer was empty
           // going into it; this sleep will send it back to the sending process
           // and let it finish filling the buffer
@@ -221,6 +221,8 @@ describe("Channel creation", () => {
           expect(await recv(ch)).to.equal(4);
           expect(await recv(ch)).to.equal(CLOSED);
         });
+
+        return join(p1, p2);
       });
     });
   });
