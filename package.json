@@ -2,10 +2,18 @@
   "name": "chanko",
   "private": true,
   "scripts": {
-    "build": "lerna run build",
+    "build": "node scripts/command.js build",
+    "bundle:dev": "node scripts/command.js bundle:dev",
+    "bundle:prod": "node scripts/command.js bundle:prod",
+    "check": "node scripts/command.js check",
+    "clean": "node scripts/command.js clean",
+    "clean:docs": "node scripts/command.js clean:docs",
     "commit": "npx git-cz",
-    "cover": "lerna run cover --stream",
-    "test": "lerna run test"
+    "cover": "node scripts/command.js cover",
+    "docs": "node scripts/command.js docs",
+    "lint": "node scripts/command.js lint",
+    "test": "node scripts/command.js test",
+    "upload": "node scripts/command.js upload"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
