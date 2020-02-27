@@ -12,6 +12,7 @@ import {
   MAX_DIRTY,
   MAX_QUEUED
 } from "./handler";
+import { DEFAULT, select, selectAsync, value, channel } from "./select";
 import { add, fixed, isBuffer } from "modules/buffer";
 import { protocols as p } from "modules/protocol";
 
@@ -218,6 +219,7 @@ function close(channel) {
 
 export {
   CLOSED,
+  DEFAULT,
   chan,
   timedChan,
   transChan,
@@ -226,8 +228,12 @@ export {
   isTimed,
   sendAsync,
   recvAsync,
+  selectAsync,
   send,
   recv,
   recvOrThrow,
-  close
+  select,
+  close,
+  value,
+  channel
 };

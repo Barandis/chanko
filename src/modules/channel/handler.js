@@ -20,9 +20,13 @@ import { dispatch } from "modules/dispatcher";
 const MAX_DIRTY = 64;
 const MAX_QUEUED = 1024;
 
+const CLOSED = Symbol("closed");
+
 const BOX = Symbol("box");
 
-const CLOSED = Symbol("closed");
+function isBox(obj) {
+  return !!obj?.[BOX];
+}
 
 function isReduced(value) {
   return !!value?.[p.reduced];
@@ -332,5 +336,7 @@ export {
   channel,
   handleSend,
   handleRecv,
-  close
+  close,
+  box,
+  isBox
 };

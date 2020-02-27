@@ -6,10 +6,11 @@
  */
 
 import { expect } from "test/helper";
+import sinon from "sinon";
 
 import { chan, send, recv, close, CLOSED, isClosed } from "modules/channel";
 import { sleep, go } from "modules/process";
-import { recvOrThrow } from "modules/channel/index";
+import { config, SET_TIMEOUT, SET_IMMEDIATE } from "modules/dispatcher";
 
 describe("Channel operations", () => {
   context("close", () => {
@@ -21,7 +22,7 @@ describe("Channel operations", () => {
       expect(isClosed(ch)).to.be.true;
     });
 
-    it("causees any pending and future sends to return false", done => {
+    it("causes any pending and future sends to return false", done => {
       const ch = chan();
 
       go(async () => {
@@ -97,63 +98,6 @@ describe("Channel operations", () => {
     });
   });
 
-  context("sending unusual objects", () => {
-    it("passes error objects along like any other value", async () => {
-      const ch = chan();
-
-      go(async () => {
-        await send(ch, Error("test message"));
-      });
-
-      return go(async () => {
-        const value = await recv(ch);
-        expect(value.message).to.equal("test message");
-      });
-    });
-
-    it("throws an error object with recvOrThrow", () => {
-      const ch = chan();
-
-      go(async () => {
-        await send(ch, Error("test message"));
-      });
-
-      return go(async () => {
-        try {
-          await recvOrThrow(ch);
-          expect.fail();
-        } catch (ex) {
-          expect(ex.message).to.equal("test message");
-        }
-      });
-    });
-
-    it("works normally with recvOrThrow if value is not an error", async () => {
-      const ch = chan();
-
-      go(async () => {
-        await send(ch, 1729);
-      });
-
-      return go(async () => {
-        expect(await recvOrThrow(ch)).to.equal(1729);
-      });
-    });
-
-    it("cannot send CLOSED", async () => {
-      const ch = chan();
-
-      return go(async () => {
-        try {
-          await send(ch, CLOSED);
-          expect.fail();
-        } catch (ex) {
-          expect(ex.message).to.equal("Cannot send CLOSED to a channel");
-        }
-      });
-    });
-  });
-
   context("async iterator", () => {
     it("yields values one at a time as they are sent", async () => {
       const ch = chan();
@@ -172,6 +116,41 @@ describe("Channel operations", () => {
         }
         expect(i).to.equal(11);
       });
+    });
+  });
+
+  context("sleep", () => {
+    // Normally we'd use sleep to make a process yield to others, but that
+    // would sort of defeat the point of testing sleep
+    async function cycle() {
+      return Promise.resolve();
+    }
+
+    let sandbox;
+    let clock;
+
+    before(() => config({ dispatchMethod: SET_TIMEOUT }));
+    beforeEach(() => {
+      sandbox = sinon.createSandbox();
+      clock = sandbox.useFakeTimers();
+    });
+    afterEach(() => sandbox.restore());
+    after(() => config({ dispatchMethod: SET_IMMEDIATE }));
+
+    it("blocks a process for an amount of time", async () => {
+      const spy = sandbox.spy();
+
+      sleep(500).then(() => spy());
+
+      expect(spy).not.to.be.called;
+
+      clock.tick(250);
+      await cycle();
+      expect(spy).not.to.be.called;
+
+      clock.tick(300);
+      await cycle();
+      expect(spy).to.be.calledOnce;
     });
   });
 });

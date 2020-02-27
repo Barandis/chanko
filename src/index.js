@@ -19,7 +19,11 @@ export {
   close,
   isClosed,
   isBuffered,
-  isTimed
+  isTimed,
+  select,
+  selectAsync,
+  value,
+  channel
 } from "modules/channel";
 export {
   config,

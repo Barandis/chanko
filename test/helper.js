@@ -10,4 +10,8 @@ import sinonChai from "sinon-chai";
 
 chai.use(sinonChai);
 
-export { expect };
+function join(...promises) {
+  return Promise.all(promises);
+}
+
+export { expect, join };
