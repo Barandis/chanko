@@ -14,15 +14,15 @@ function selectHandler(active, fn) {
     active: {
       get() {
         return active.value;
-      }
+      },
     },
 
     commit: {
       value: () => {
         active.value = false;
         return fn;
-      }
-    }
+      },
+    },
   });
 }
 
@@ -40,6 +40,10 @@ function randomArray(upper) {
   return array;
 }
 
+function selectResult(value, channel) {
+  return Object.assign(Object.create(null), { value, channel });
+}
+
 function selectAsync(ops, callback = () => {}, options = {}) {
   const count = ops.length;
   if (count === 0) {
@@ -53,7 +57,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
 
   function createSelectHandler(channel) {
     return selectHandler(active, value => {
-      callback({ value, channel });
+      callback(selectResult(value, channel));
     });
   }
 
@@ -79,10 +83,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
     // value). If this happens, we execute the callback immediately with that
     // value and channel and stop queueing other operations.
     if (isBox(result)) {
-      callback({
-        value: result.value,
-        channel
-      });
+      callback(selectResult(result.value, channel));
       break;
     }
   }
@@ -97,10 +98,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
   ) {
     if (active.value) {
       active.value = false;
-      callback({
-        value: options.default,
-        channel: DEFAULT
-      });
+      callback(selectResult(options.default, DEFAULT));
     }
   }
 }
