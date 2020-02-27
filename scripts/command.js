@@ -1,4 +1,4 @@
-const { spawn } = require("child_process");
+const { spawnSync } = require("child_process");
 const { readdirSync } = require("fs");
 const { join } = require("path");
 
@@ -42,5 +42,8 @@ const { cmd, pkg } = parseArgs(process.argv);
 const runDirs = getRunDirs(pkg);
 
 for (const dir of runDirs) {
-  spawn("npm", ["run", cmd], { cwd: dir, stdio: "inherit" });
+  const result = spawnSync("npm", ["run", cmd], { cwd: dir, stdio: "inherit" });
+  if (result.status !== 0) {
+    process.exit(1);
+  }
 }
