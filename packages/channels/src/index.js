@@ -85,15 +85,8 @@ export { EMPTY } from "modules/queue";
  * return value from this callback is ignored.
  *
  * @callback selectCallback
- * @param {object} data The value returned from the select operation.
- * @param {*} data.value The value of the completed operation. If the operation
- *     was a receive, this is the value that was received from the channel (or
- *     `{@link module:chanko~Chanko.CLOSED|CLOSED}` if the channel was closed
- *     without a value being taken). If the operation was a send, this is `true`
- *     if the send was successful and `false` if the channel was closed before
- *     that value was sent.
- * @param {module:chanko/channel~Channel} data.channel The channel on which the
- *     operation that generated this callback acted.
+ * @param {module:chanko/channel.SelectResult} data The value returned from the
+ *     select operation.
  */
 
 /**

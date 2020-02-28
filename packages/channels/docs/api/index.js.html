@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffer-DroppingBuffer.html">DroppingBuffer</a></li><li><a href="module-chanko_buffer-FixedBuffer.html">FixedBuffer</a></li><li><a href="module-chanko_buffer-SlidingBuffer.html">SlidingBuffer</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -129,15 +129,8 @@ export { EMPTY } from "modules/queue";
  * return value from this callback is ignored.
  *
  * @callback selectCallback
- * @param {object} data The value returned from the select operation.
- * @param {*} data.value The value of the completed operation. If the operation
- *     was a receive, this is the value that was received from the channel (or
- *     `{@link module:chanko~Chanko.CLOSED|CLOSED}` if the channel was closed
- *     without a value being taken). If the operation was a send, this is `true`
- *     if the send was successful and `false` if the channel was closed before
- *     that value was sent.
- * @param {module:chanko/channel~Channel} data.channel The channel on which the
- *     operation that generated this callback acted.
+ * @param {module:chanko/channel~SelectResult} data The value returned from the
+ *     select operation.
  */
 
 /**

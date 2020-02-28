@@ -16,6 +16,19 @@
 import { queue as q, count as qCount, enqueue, dequeue } from "modules/queue";
 
 /**
+ * A buffer that stores values sent to a buffered channel until a process
+ * receives them.
+ *
+ * Different buffer differ only in the way that they determine whether they are
+ * full and in what happens when a new value is added to a full buffer.
+ *
+ * @memberof module:chanko/buffer
+ * @typedef {(module:chanko/buffer~FixedBuffer |
+ *     module:chanko/buffer~DroppingBuffer |
+ *     module:chanko/buffer~SlidingBuffer)} Buffer
+ */
+
+/**
  * The name of a property that exists on buffer objects for the purpose of
  * itentifying them as buffer objects.
  *
@@ -74,7 +87,7 @@ function isBuffer(obj) {
  * {@link module:chanko~Chanko.remove|remove} on a full buffer and have it still
  * be full.
  *
- * @namespace FixedBuffer
+ * @typedef FixedBuffer
  */
 
 /**
@@ -139,7 +152,7 @@ function fixed(size) {
  * to without exceeding the size, even if that 'adding' doesn't result in a new
  * item actually appearing in the buffer.
  *
- * @namespace DroppingBuffer
+ * @typedef DroppingBuffer
  */
 
 /**
@@ -201,13 +214,13 @@ function dropping(size) {
  * full buffer.
  *
  * This is very similar to
- * {@link module:cispy/buffers~DroppingBuffer|DroppingBuffer}; the only
+ * {@link module:chanko/buffer.DroppingBuffer|DroppingBuffer}; the only
  * difference is in what happens when an item is added. In this buffer, the new
  * item is indeed added to the buffer, but in order to keep the count of the
  * buffer at or below its size, the oldest item in the buffer is silently
  * dropped.
  *
- * @namespace SlidingBuffer
+ * @typedef SlidingBuffer
  */
 
 /**
@@ -267,9 +280,8 @@ function sliding(size) {
 /**
  * Returns the queue that backs a buffer.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer whose queue is returned by this function.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer whose queue is
+ *     returned by this function.
  * @return {module:chanko/queue~Queue} The queue that backs the supplied buffer.
  * @private
  */
@@ -280,9 +292,8 @@ function queue(buffer) {
 /**
  * Returns the number of items a buffer can hold before it's full.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer whose size is returned by this function.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer whose size is returned
+ *     by this function.
  * @return {number} The size of the supplied buffer.
  * @private
  */
@@ -293,9 +304,8 @@ function size(buffer) {
 /**
  * Returns the number of items a buffer is currently holding.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer whose current count is returned by this function.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer whose current count is
+ *     returned by this function.
  * @return {number} The number of items that the supplied buffer is holding.
  * @private
  */
@@ -306,9 +316,8 @@ function count(buffer) {
 /**
  * Determines whether a buffer is at capacity.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer who's being checked to see if it's at capacity.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer who's being checked to
+ *     see if it's at capacity.
  * @return {number} Either `true` if the supplied buffer is full or `false` if
  *     it isn't.
  * @private
@@ -320,9 +329,8 @@ function isFull(buffer) {
 /**
  * Adds one or more items to a buffer.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer where the supplied items will be added.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer where the supplied
+ *     items will be added.
  * @param {...*} items The values being added to the supplied buffer.
  * @private
  */
@@ -359,9 +367,8 @@ function add(buffer, ...items) {
 /**
  * Removes the next item from a queue and returns it.
  *
- * @param {module:chanko/buffer~FixedBuffer |
- *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
- *     buffer The buffer from which an item is being removed.
+ * @param {module:chanko/buffer~Buffer} buffer The buffer from which an item is
+ *     being removed.
  * @return {*} The item that was removed from the supplied buffer.
  * @private
  */

@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffer-DroppingBuffer.html">DroppingBuffer</a></li><li><a href="module-chanko_buffer-FixedBuffer.html">FixedBuffer</a></li><li><a href="module-chanko_buffer-SlidingBuffer.html">SlidingBuffer</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -580,7 +580,7 @@ return value from this callback is ignored.</p>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">module:chanko/channel~SelectResult</span>
 
 
             
@@ -590,85 +590,8 @@ return value from this callback is ignored.</p>
 
             
 
-            <td class="description last"><p>The value returned from the select operation.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The value of the completed operation. If the operation
-was a receive, this is the value that was received from the channel (or
-<code>CLOSED</code> if the channel was closed
-without a value being taken). If the operation was a send, this is <code>true</code>
-if the send was successful and <code>false</code> if the channel was closed before
-that value was sent.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">module:chanko/channel~Channel</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The channel on which the
-operation that generated this callback acted.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last"><p>The value returned from the
+select operation.</p></td>
         </tr>
 
     
@@ -710,7 +633,7 @@ operation that generated this callback acted.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line99">line 99</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line92">line 92</a>
     </li></ul></dd>
     
 

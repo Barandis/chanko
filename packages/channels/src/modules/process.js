@@ -9,7 +9,7 @@
  * Provides small utility functions to make it easier to interact with async
  * functions as processes.
  *
- * @module cispy/process
+ * @module chanko/process
  * @private
  */
 

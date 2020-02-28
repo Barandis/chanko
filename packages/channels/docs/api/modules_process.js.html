@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffer-DroppingBuffer.html">DroppingBuffer</a></li><li><a href="module-chanko_buffer-FixedBuffer.html">FixedBuffer</a></li><li><a href="module-chanko_buffer-SlidingBuffer.html">SlidingBuffer</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -52,8 +52,8 @@
 /**
  * Provides small utility functions to make it easier to interact with async
  * functions as processes.
- * 
- * @module cispy/process
+ *
+ * @module chanko/process
  * @private
  */
 
@@ -100,10 +100,10 @@ function sleep(delay = 0) {
  * aesthetically pleasing. It does no more than invoke the passed function, but
  * that at least releases us from the need to put the empty parentheses after
  * the function definition.
- * 
+ *
  * A named async function can simply be invoked (without being an IIFE) and
  * doesn't benefit from this convenience.
- * 
+ *
  * Anonymous process without `go`:
  * ```
  * (async () => {

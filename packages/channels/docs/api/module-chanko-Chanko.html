@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffer-DroppingBuffer.html">DroppingBuffer</a></li><li><a href="module-chanko_buffer-FixedBuffer.html">FixedBuffer</a></li><li><a href="module-chanko_buffer-SlidingBuffer.html">SlidingBuffer</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -127,6 +127,164 @@ object that is required, imported, or accessed as a global object.</p></div>
 
     
         <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".CLOSED"><span class="type-signature">(static, constant) </span>CLOSED<span class="type-signature"> :Symbol</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_handler.js.html">modules/channel/handler.js</a>, <a href="modules_channel_handler.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>*he value returned from a receive on a channel when that channel is closed
+and has no more values available.</p>
+<p>This is a special value that is returned under a certain circumstance, namely
+when a receive is performed on a closed channel. Because of that, it cannot
+be returned from a receive on an open channel. For that reason, <code>CLOSED</code> is
+the only value that cannot be sent onto a channel — it would be
+impossible to distinguish between a legitimate value of <code>CLOSED</code> and an
+actual closed channel.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Symbol</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".DEFAULT"><span class="type-signature">(static, constant) </span>DEFAULT<span class="type-signature"> :Symbol</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>The name of the channel returned from <code>await <a href="module-chanko-Chanko.html#.select">select</a></code> or sent to the callback in
+<code><a href="module-chanko-Chanko.html#.selectAsync">selectAsync</a></code> when the default is
+returned as its value.</p>
+<p>This only happens when an <code><a href="module-chanko-Chanko.html#.select">select</a> / <a href="module-chanko-Chanko.html#.selectAsync">selectAsync</a></code> call is performed, all
+operations are initially blocking, and a <code>default</code> option is sent. The
+immediate response in that situation is <code>{ value: options.default, channel: DEFAULT }</code>.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Symbol</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
 
         
             
@@ -466,6 +624,833 @@ other method, so it should be used as a last resort.</p>
 
     
 
+    <h4 class="name" id=".chan"><span class="type-signature">(static) </span>chan<span class="signature">(buffer<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line307">line 307</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates and returns a new channel.</p>
+<p>By default this channel will be a simple unbuffered, untransformed channel,
+but that can be changed through options. A channel does not have any
+externally useful functions. It exists largely to be passed into
+<code><a href="module-chanko-Chanko.html#.send">send</a></code>,
+<code><a href="module-chanko-Chanko.html#.recv">recv</a></code>, and
+<code><a href="module-chanko-Chanko.html#.select">select</a></code> invocations, along with their
+non-blocking variations (<code><a href="module-chanko-Chanko.html#.sendAsync">sendAsync</a></code>,
+<code><a href="module-chanko-Chanko.html#.recvAsync">recvAsync</a></code>, and
+<code><a href="module-chanko-Chanko.html#.selectAsync">selectAsync</a></code>).</p>
+<p>If a buffer value is provided, it defines what buffer should back the
+channel. If this is <code>null</code> or <code>0</code>, the channel will be unbuffered. If it's a
+positive number, the channel will be buffered by a
+<code><a href="module-chanko_buffer.html#~FixedBuffer">FixedBuffer</a></code>of that size. If it's a
+<code>Buffer</code> object, that object will be used
+as the channel's buffer. If it's missing altogether, the channel will be
+unbuffered unless a <code>transducer</code> option is provided (see below), in which
+case it will be a <code><a href="module-chanko_buffer.html#~FixedBuffer">FixedBuffer</a></code> of
+size 1.</p>
+<p><code>chan</code> supports transducers by allowing a transducer function to be
+associated with it. This is passed as the <code>transducer</code> option and can only be
+used if the channel is buffered (otherwise an error is thrown). This
+transducer function must take another transducer as a parameter (allowing
+transformers to be chained), and it must return an object conforming to the
+transducer protocol.</p>
+<p>Errors in the transformation process can be handled by passing an error
+handler. This is a function that expects to receive an error object as a
+parameter and can return a value that is then put onto the channel. If this
+value is <code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>, then no value will be
+put onto the channel upon handler completion.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer.html#.Buffer">module:chanko/buffer.Buffer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The buffer object
+that should back this channel. If this is a positive number, a fixed
+buffer of that size will be created to back the channel. If it is <code>0</code> or
+<code>null</code>, the new channel will be unbuffered. If it's not present, the new
+channel will be unbuffered unless there is a <code>transducer</code> option, in in
+which case it will be buffered with a size 1
+<code><a href="module-chanko_buffer.html#~FixedBuffer">FixedBuffer</a></code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A set of options for configuring the channel's
+queue.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The number of milliseconds after channel
+creation that the new channel will automatically close.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transducer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~transducer">module:chanko~transducer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>A transducer to run
+each value through before putting it onto the channel. This function
+should expect one parameter (another transducer that it's chained to) and
+return an object that conforms to the transducer protocol. If a
+transducer is provided on an unbuffered channel, an error will be thrown.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~exceptionHandler">module:chanko~exceptionHandler</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>An error handler
+that is run whenever an error occurs inside a transducer function. If
+that happens, this function is called with one parameter, which is the
+error object. The value that the handler returns (if it is not
+<code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>) will be put onto the
+channel when the handler finishes running.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxDirty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>64</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The maximum number of dirty operations
+that can be in the queue before those operations are subject to being
+purged. Dirty operations are those that may not be valid anymore because
+they were in the list of operations passed to
+<code><a href="module-chanko-Chanko.html#.select">select</a></code> or
+<code><a href="module-chanko-Chanko.html#.selectAsync">selectAsync</a></code> but were not
+chosen to run. This provides a chance for a very minor performance tweak
+and is best left alone.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxQueued</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>1024</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The maximum number of operations
+that can be queued up at the same time. This prevents infinite loops from
+accidentally eating up all of the available memory.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>If this value is present, the channel will
+be a timeout channel that closes automatically after this number of
+milliseconds.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new channel.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".channel"><span class="type-signature">(static) </span>channel<span class="signature">(result)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line306">line 306</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>A convenience function to read the channel out of a select result. This
+function is not necessary - after all, it's absolutely as correct to simply
+use <code>result.channel</code> instead of <code>channel(result)</code>, but it's provided for
+consistency with the rest of the function-centric API.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_channel.html#.SelectResult">module:chanko/channel.SelectResult</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The result coming from a
+select operation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The channel upon which the select operation completed.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".close"><span class="type-signature">(static) </span>close<span class="signature">(channel)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line619">line 619</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Closes the channel, if it isn't already closed. This immediately returns any
+buffered values to pending receives. If there are no buffered values (or if
+they've already been taken by other receives), then all of the rest of the
+receives are completed with the value of
+<a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a>. Any pending sends are completed
+with the value of <code>false</code>.</p>
+<p>Note that the buffer is not emptied if there are still values remaining after
+all of the pending receives have been handled. The channel will still provide
+those values to any future receives, though no new values may be added to the
+channel. Once the buffer is depleted, any future receives will return
+<a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The channel to be closed.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".config"><span class="type-signature">(static) </span>config<span class="signature">(opts)</span><span class="type-signature"> &rarr; {<a href="module-chanko_dispatcher.html#~DispatcherConfig">module:chanko/dispatcher~DispatcherConfig</a>}</span></h4>
 
     
@@ -738,7 +1723,7 @@ settings for the dispatcher after any new values have been set.</p>
 
     
 
-    <h4 class="name" id=".dropping"><span class="type-signature">(static) </span>dropping<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a>}</span></h4>
+    <h4 class="name" id=".dropping"><span class="type-signature">(static) </span>dropping<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer.html#~DroppingBuffer">module:chanko/buffer~DroppingBuffer</a>}</span></h4>
 
     
 
@@ -750,7 +1735,7 @@ settings for the dispatcher after any new values have been set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line162">line 162</a>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -795,7 +1780,7 @@ settings for the dispatcher after any new values have been set.</p>
 already at capacity. Since adding a new item will always 'succeed' (even if
 it succeeds by just ignoring the add), it is never considered full and
 therefore a put to a channel buffered by a dropping buffer never blocks.</p>
-<p>This buffer is passed to <code>chan</code>, etc. to
+<p>This buffer is passed to <code><a href="module-chanko-Chanko.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
 </div>
 
@@ -889,7 +1874,7 @@ specified capacity.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+<span class="param-type"><a href="module-chanko_buffer.html#~DroppingBuffer">module:chanko/buffer~DroppingBuffer</a></span>
 
 
     </dd>
@@ -904,7 +1889,7 @@ specified capacity.</p>
 
     
 
-    <h4 class="name" id=".fixed"><span class="type-signature">(static) </span>fixed<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a>}</span></h4>
+    <h4 class="name" id=".fixed"><span class="type-signature">(static) </span>fixed<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer.html#~FixedBuffer">module:chanko/buffer~FixedBuffer</a>}</span></h4>
 
     
 
@@ -916,7 +1901,7 @@ specified capacity.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line97">line 97</a>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -961,7 +1946,7 @@ specified capacity.</p>
 demand. While it is capable of being over-filled, that ability is not used in
 Chanko. A buffer that is full will cause the next put to its channel to block
 until at least one item is removed from the buffer.</p>
-<p>This buffer is passed to <code>chan</code>, etc. to
+<p>This buffer is passed to <code><a href="module-chanko-Chanko.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
 </div>
 
@@ -1055,7 +2040,7 @@ specified capacity.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+<span class="param-type"><a href="module-chanko_buffer.html#~FixedBuffer">module:chanko/buffer~FixedBuffer</a></span>
 
 
     </dd>
@@ -1289,6 +2274,2022 @@ invoked.</p></td>
 
     
 
+    <h4 class="name" id=".isBuffered"><span class="type-signature">(static) </span>isBuffered<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line411">line 411</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines whether a channel is buffered.</p>
+<p>A channel is buffered if a buffer or a number was passed as the first
+argument of <code><a href="module-chanko-Chanko.html#.chan">chan</a></code> or if a transducer is a
+part of the channel.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The channel to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> if the channel is buffered or <code>false</code> if it
+isn't.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isClosed"><span class="type-signature">(static) </span>isClosed<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line395">line 395</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines whether a channel is closed.</p>
+<p>A closed channel will cause any <code>send</code> operation to return <code>false</code> and any
+<code>recv</code> operation to return any buffered items that remain, followed by
+`<a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The channel to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> if the channel is closed or <code>false</code> if it
+isn't.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isTimed"><span class="type-signature">(static) </span>isTimed<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line428">line 428</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines whether a channel is timed.</p>
+<p>A channel is timed if it was created either with the <code>timer</code> option of
+<code><a href="module-chanko-Chanko.html#.chan">chan</a></code> or with the
+<code><a href="module-chanko-Chanko.html#.timedChan">timedChan</a></code> function. It will
+automatically close after a certain period of time.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The channel to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> if the channel is timed or <code>false</code> if it
+isn't.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".recv"><span class="type-signature">(static) </span>recv<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line551">line 551</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Receives a value from this channel, blocking the async function until a
+value becomes available to be received (or until the channel closes with
+no more values on it to be received).</p>
+<p>This function <em>must</em> be called from within an async function and as part
+of an <code>await</code> expression.</p>
+<p>When <code>receive</code> is completed and its function unblocks, its <code>await</code>
+expression evaluates to the actual value that was received. If the target
+channel closed, then all of the values already placed onto it are
+resolved by <code>receive</code> as normal, and once no more values are available,
+the special value <code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code> is returned.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will resolve to the value received from
+the channel once that receive is completed. If the channel closes
+without a value being made available, this will resolve to
+<code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".recvAsync"><span class="type-signature">(static) </span>recvAsync<span class="signature">(callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line494">line 494</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Receives a value from this channel without blocking.</p>
+<p>This means that a call to <code>receiveAsync</code> does not go into an <code>await</code>
+expression, and it is not necessary to use it inside a async function.
+Rather than blocking until a value becomes available on the channel to be
+received, this one returns immediately and then invokes the callback (if
+provided) when a value becomes available. It can be regarded as a
+non-blocking version of <a href="module-chanko-Chanko.html#.recv">recv</a>`.</p>
+<p>While the primary use of this function is to receive values from channels
+in contexts where being inside an async function is impossible, it can
+still be used inside async functions at times when it's important that
+the receive doesn't block the function.</p>
+<p>The callback is a function of one parameter, and the value supplied for
+that parameter is the value received from the channel (either a value
+that was sent or <code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>). If the
+callback isn't present, nothing will happen after the value is taken.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~opCallback">module:chanko~opCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A function that gets invoked
+when a value is made available to be received (this value may be
+<code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code> if the channel closes with
+no available value). The function can take one parameter, which is
+the value that is received from the channel.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".recvOrThrow"><span class="type-signature">(static) </span>recvOrThrow<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line590">line 590</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Receives a value from a channel, blocking the async function until a value
+becomes available to be received (or until the channel closes with no more
+values on it to be received). If the received value is an error object, that
+error is thrown at that point.</p>
+<p>This function <em>must</em> be called from within an async function and as part of
+an <code>await</code> expression.</p>
+<p>It functions in every way like <code><a href="module-chanko-Chanko.html#.recv">recv</a></code>
+<em>except</em> in the case that the value on the channel is an object that has
+<code>Error.prototype</code> in its prototype chain (any built-in error, any
+properly-constructed custom error). If that happens, the error is thrown,
+which will cause the returned promise to be rejected with the error. It can
+then be handled up the promise chain like any other rejected promise.</p>
+<p><code>takeOrThrow</code> is roughly equivalent to:</p>
+<pre class="prettyprint source"><code>const value = await recv(ch);
+if (Error.prototype.isPrototypeOf(value)) {
+  throw value;
+}
+</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will resolve to the value taken from the
+channel once that take is completed. If the channel closes without a
+value being made available, this will resolve to
+<code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>. If the taken value is an
+error, the promise will instead be rejected with the error object as the
+reason.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".select"><span class="type-signature">(static) </span>select<span class="signature">(operations, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="module-chanko_channel.html#.SelectResult">module:chanko/channel.SelectResult</a>>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line274">line 274</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Completes the first operation among the provided operations that comes
+available, blocking the process until then.</p>
+<p><code>operations</code> is an array whose elements must be channels or two-element
+sub-arrays of channels and values, in any combination. An operation that is a
+channel is a take operation on that channel. An operation that is a
+two-element array is a put operation on that channel using that value.
+Exactly one of these operations will complete, and it will be the first
+operation that unblocks.</p>
+<p>This function <em>must</em> be called from within an <code>async</code> function and as part of
+an <code>await</code> expression if the return value is needed.</p>
+<p>When <code>select</code> is completed and its process unblocks, its <code>await</code> expression
+evaluates to an object of two properties. The <code>value</code> property becomes
+exactly what would have been returned by the equivalent <code>await put</code> or <code>await take</code> operation: a boolean in the case of a put, or the taken value in the
+case of a take. The <code>channel</code> property is set to the channel where the
+operation actually took place. This will be equivalent to the channel in the
+<code>operations</code> array which completed first, allowing the process to unblock.</p>
+<p>If there is more than one operation already available to complete when the
+call to <code>select</code> is made, the operation with the highest priority will be the
+one to complete. Regularly, priority is non-deterministic (i.e., it's set
+randomly). However, if the options object has a <code>priority</code> value set to
+<code>true</code>, priority will be assigned in the order of the operations in the
+supplied array.</p>
+<p>If all of the operations must block (i.e., there are no pending puts for take
+operations, or takes for put operations), a default value may be returned.
+This is only done if there is a <code>default</code> property in the options object, and
+the value of that property becomes the value returned by <code>await select</code>. The
+channel is set to the special value
+<code><a href="module-chanko-Chanko.html#.DEFAULT">DEFAULT</a></code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>operations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>A collection of elements that correspond to recv
+and send operations. A recv operation is signified by an element that is
+a channel (which is the channel to be taken from). A send operation is
+specified by an element that is itself a two-element array, which has a
+channel followed by a value (which is the channel and value to be sent).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>{}</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>An optional object which can change the behavior
+of <code>select</code> through two properties.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>priority</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>If <code>true</code>, then the priority of
+operations to complete when more than one is immediately available is a
+priority according to position within the operations array (earlier
+positions have the higher priority). If <code>false</code> or not present, the
+priorty of operation completion is random.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>default</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>If set and all of the operations initially
+block, the <code>select</code> call completes immediately with the value of this
+option (the channel will be
+<code><a href="module-chanko-Chanko.html#.DEFAULT">DEFAULT</a>)</code>. If not set, the <code>select</code>
+call will block until one of the operations completes and that value and
+channel will be the ones returned.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will
+resolve to an object of two properties: <code>value</code> will contain the value
+that would have been returned by the corresponding
+<code><a href="module-chanko-Chanko.html#.send">send</a></code> or
+<code><a href="module-chanko-Chanko.html#.recv">recv</a></code> operation; and <code>channel</code> will be
+a reference to the channel that completed the operation to allow <code>select</code>
+to unblock.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="module-chanko_channel.html#.SelectResult">module:chanko/channel.SelectResult</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".selectAsync"><span class="type-signature">(static) </span>selectAsync<span class="signature">(operations, callback, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line152">line 152</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Completes the first operation among the provided operations that comes
+available, without blocking.</p>
+<p>This means that a call to <code>selectAsync</code> does not go into an <code>await</code>
+expression, and it is not necessary to use it inside a process. Rather than
+blocking until an operation completes, this one returns immediately and then
+invokes the callback (if provided) as soon as one of the supplied operations
+completes. It can be regarded as a non-blocking version of
+<code><a href="module-chanko-Chanko.html#.select">select</a></code>.</p>
+<p>This function uses an operations list that's identical to the one used by
+<code><a href="module-chanko-Chanko.html#.select">select</a></code>. It's an array of values; if a
+value is a channel, then that operation is a take on that channel, while if
+it's a two-element array of channel and value, then that operation is a put
+of that value onto that channel. All options that are available to
+<code><a href="module-chanko-Chanko.html#.select">select</a></code> are also available here.</p>
+<p>The callback is a function of one parameter, which in this case is an object
+with <code>value</code> and <code>channel</code> properties.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>operations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>A collection of elements that correspond to recv
+and send operations. A recv operation is signified by an element that is
+a channel (which is the channel to be received from). A send operation is
+specified by an element that is itself a two-element array, which has a
+channel followed by a value (which is the channel and value to be sent).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~selectCallback">module:chanko~selectCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>A function that gets invoked
+when one of the operations completes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>{}</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>An optional object which can change the behavior
+of <code>selectAsync</code> through two properties.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>priority</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>If <code>true</code>, then the priority of
+operations to complete when more than one is immediately available is a
+priority according to position within the operations array (earlier
+positions have the higher priority). If <code>false</code> or not present, the
+priorty of operation completion is random.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>default</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>If set and all of the operations initially
+block, the <code>selectAsync</code> calls its callback immediately with the value of
+this option (the channel will be
+<code><a href="module-chanko-Chanko.html#.DEFAULT">DEFAULT</a>)</code>. If not set, the
+<code>selectAsync</code> call will not call its callback until one of the operations
+completes and that value and channel will be the ones returned.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".send"><span class="type-signature">(static) </span>send<span class="signature">(value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line525">line 525</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Sends a value to a channel, blocking the async function until that value is
+received from the channel by a different function (or until the channel
+closes).</p>
+<p>A value is always sent to the channel, but if that value isn't specified by
+the second parameter, it is <code>undefined</code>. Any value may be sent to a channel,
+with the sole exception of the special value
+<code><a href="module-chanko-Chanko.html#.CLOSED">CLOSED</a></code>.</p>
+<p>This function <em>must</em> be called from within an async function and as part of
+an <code>await</code> expression.</p>
+<p>When <code>send</code> is completed and its function unblocks, its <code>await</code> expression
+evaluates to a status boolean that indicates what caused the function to
+unblock. That value is <code>true</code> if the sent value was successfully taken by
+another process, or <code>false</code> if the unblocking happened because the target
+channel closed.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The value being put onto the channel.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will resolve to <code>true</code> or <code>false</code>
+depending on whether the put value is actually taken.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;boolean></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".sendAsync"><span class="type-signature">(static) </span>sendAsync<span class="signature">(value<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line460">line 460</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Sends a value to this channel without blocking.</p>
+<p>This means that a call to <code>sendAsync</code> does not go into an <code>await</code>
+expression, and it is not necessary to use it inside a async function.
+Rather than blocking until the sent value is taken by another async
+function, this one returns immediately and then invokes the callback (if
+provided) when the sent value is taken. It can be seen as a non-blocking
+version of <code><a href="module-chanko-Chanko.html#.send">send</a></code>.</p>
+<p>While the primary use of this function is to send values onto channels in
+contexts where being inside an async function is impossible (for example,
+in a DOM element's event handler), it can still be used inside async
+functions at times when it's important to make sure that the function
+doesn't block from the send.</p>
+<p>The callback is a function of one parameter. The parameter that's
+supplied to the callback is the same as what is supplied to <code>await send</code>:
+<code>true</code> if the value was taken, or <code>false</code> if the channel was closed. If
+the callback isn't present, nothing will happen after the value is taken.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The value being put onto the channel.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~opCallback">module:chanko~opCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A function that gets invoked
+either when the value is taken by another process or when the channel
+is closed. This function can take one parameter, which is <code>true</code> in
+the former case and <code>false</code> in the latter.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".sleep"><span class="type-signature">(static) </span>sleep<span class="signature">(delay<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
@@ -1483,7 +4484,7 @@ time has elapsed.</p>
 
     
 
-    <h4 class="name" id=".sliding"><span class="type-signature">(static) </span>sliding<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a>}</span></h4>
+    <h4 class="name" id=".sliding"><span class="type-signature">(static) </span>sliding<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer.html#~SlidingBuffer">module:chanko/buffer~SlidingBuffer</a>}</span></h4>
 
     
 
@@ -1495,7 +4496,7 @@ time has elapsed.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line230">line 230</a>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line243">line 243</a>
     </li></ul></dd>
     
 
@@ -1540,7 +4541,7 @@ time has elapsed.</p>
 a new item is added when the buffer is already at capacity. Since it's always
 capable of having items added to it, it's never considered full, and
 therefore a put to a channel buffered by a sliding buffer never blocks.</p>
-<p>This buffer is passed to <code>chan</code>, etc. to
+<p>This buffer is passed to <code><a href="module-chanko-Chanko.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
 </div>
 
@@ -1634,7 +4635,545 @@ specified capacity.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+<span class="param-type"><a href="module-chanko_buffer.html#~SlidingBuffer">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".timedChan"><span class="type-signature">(static) </span>timedChan<span class="signature">(delay)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line360">line 360</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates an unbuffered, timed channel. This channel closes automatically after
+the supplied number of milliseconds and is the equivalent of calling <code>chan(0, { timeout: delay })</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>delay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The number of milliseconds after the channel is created
+that it will be closed automatically.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new timed channel.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".transChan"><span class="type-signature">(static) </span>transChan<span class="signature">(transducer, handler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line379">line 379</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a buffered channel with a transducer and optional error handler. The
+buffer for this channel is a <code>FixedBuffer</code>
+of size 1. This is the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>transducer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko.html#~transducer">module:chanko~transducer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The transducer used to transform
+values on the new channel.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:chanko/channel~exceptionHandler</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An exception
+handler called with the error object as its only argument when an error
+happens inside a transducer. If this is not provided, a default handler
+is used that simply does nothing, including sending no output from the
+value that errored.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new channel with a transducer.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">module:chanko/channel~Channel</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".value"><span class="type-signature">(static) </span>value<span class="signature">(result)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line291">line 291</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>A convenience function to read the value out of a select result. This
+function is not necessary - after all, it's absolutely as correct to simply
+use <code>result.value</code> instead of <code>value(result)</code>, but it's provided for
+consistency with the rest of the function-centric API.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_channel.html#.SelectResult">module:chanko/channel.SelectResult</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The result coming from a
+select operation.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The value provided by the select operation.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
 
 
     </dd>

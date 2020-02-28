@@ -45,11 +45,11 @@ describe("Channel creation", () => {
       ).to.be.false;
     });
 
-    it("can create a timeout channel", () => {
+    it("can create a timed channel", () => {
       const sandbox = sinon.createSandbox();
       const clock = sandbox.useFakeTimers();
       const spy = sandbox.spy();
-      const ch = chan({ timeout: 500 });
+      const ch = chan({ timer: 500 });
 
       recvAsync(ch, value => {
         expect(value).to.equal(CLOSED);
