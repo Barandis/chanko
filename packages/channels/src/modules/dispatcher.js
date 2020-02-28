@@ -14,9 +14,9 @@ import {
 } from "modules/queue";
 const queue = q();
 
-const SET_IMMEDIATE = Symbol("setImmediate");
-const MESSAGE_CHANNEL = Symbol("MessageChannel");
-const SET_TIMEOUT = Symbol("setTimeout");
+const SET_IMMEDIATE = Symbol("SET_IMMEDIATE");
+const MESSAGE_CHANNEL = Symbol("MESSAGE_CHANNEL");
+const SET_TIMEOUT = Symbol("SET_TIMEOUT");
 
 const options = {
   batchSize: 1024,

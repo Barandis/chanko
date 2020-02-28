@@ -7,10 +7,10 @@
 
 import { queue as q, count as qCount, enqueue, dequeue } from "modules/queue";
 
-const BUFFER = Symbol("buffer");
-const FIXED = Symbol("fixed");
-const DROPPING = Symbol("dropping");
-const SLIDING = Symbol("sliding");
+const BUFFER = Symbol("BUFFER");
+const FIXED = Symbol("FIXED");
+const DROPPING = Symbol("DROPPING");
+const SLIDING = Symbol("SLIDING");
 
 function isBuffer(obj) {
   return !!obj?.[BUFFER];

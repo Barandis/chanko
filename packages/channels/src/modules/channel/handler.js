@@ -20,9 +20,9 @@ import { dispatch } from "modules/dispatcher";
 const MAX_DIRTY = 64;
 const MAX_QUEUED = 1024;
 
-const CLOSED = Symbol("closed");
+const CLOSED = Symbol("CLOSED");
 
-const BOX = Symbol("box");
+const BOX = Symbol("BOX");
 
 function isBox(obj) {
   return !!obj?.[BOX];

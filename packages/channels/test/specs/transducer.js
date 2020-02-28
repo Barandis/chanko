@@ -7,14 +7,7 @@
 
 import { expect, join } from "test/helper";
 
-import {
-  chan,
-  transChan,
-  recv,
-  send,
-  close,
-  CLOSED
-} from "modules/channel/index";
+import { chan, transChan, recv, send, close, CLOSED } from "modules/channel";
 import { go } from "modules/process";
 
 import { transducers as t } from "xduce";

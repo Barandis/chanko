@@ -41,7 +41,7 @@
  * @type {Symbol}
  * @private
  */
-const EMPTY = Symbol("empty");
+const EMPTY = Symbol("EMPTY");
 
 /**
  * A marker property name to indicate that an object is in fact a queue.
@@ -53,7 +53,7 @@ const EMPTY = Symbol("empty");
  * @type {Symbol}
  * @private
  */
-const QUEUE = Symbol("queue");
+const QUEUE = Symbol("QUEUE");
 
 /**
  * Determines whether an object is a queue.
