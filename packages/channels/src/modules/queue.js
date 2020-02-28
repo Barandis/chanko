@@ -9,6 +9,7 @@
  * Provides an efficient general-purpose queue.
  *
  * @module chanko/queue
+ * @private
  */
 
 /**
@@ -28,6 +29,7 @@
  * run each time the queue fills.
  *
  * @namespace Queue
+ * @private
  */
 
 /**

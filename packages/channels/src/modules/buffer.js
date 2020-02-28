@@ -7,8 +7,8 @@
 
 /**
  * Provides several types of buffers usable in buffered channels. These are all
- * built on a small, efficient queue (also provided) which is in turn backed by
- * a JavaScript array.
+ * built on a small, efficient queue which is in turn backed by a JavaScript
+ * array.
  *
  * @module chanko/buffer
  */
@@ -85,8 +85,8 @@ function isBuffer(obj) {
  * Chanko. A buffer that is full will cause the next put to its channel to block
  * until at least one item is removed from the buffer.
  *
- * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
- * create a buffered channel.
+ * This buffer is passed to `{@link module:chanko~Chanko.chan|chan}`, etc. to
+ * create a buffered channel. It is not meant to be used directly.
  *
  * @memberof module:chanko~Chanko
  * @param {number} size The number of items that the new buffer can hold before
@@ -150,8 +150,8 @@ function fixed(size) {
  * it succeeds by just ignoring the add), it is never considered full and
  * therefore a put to a channel buffered by a dropping buffer never blocks.
  *
- * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
- * create a buffered channel.
+ * This buffer is passed to `{@link module:chanko~Chanko.chan|chan}`, etc. to
+ * create a buffered channel. It is not meant to be used directly.
  *
  * @memberof module:chanko~Chanko
  * @param {number} size The number of items that the new buffer can hold before
@@ -218,8 +218,8 @@ function dropping(size) {
  * capable of having items added to it, it's never considered full, and
  * therefore a put to a channel buffered by a sliding buffer never blocks.
  *
- * This buffer can be passed to `{@link module:chanko~Chanko.chan|chan}` to
- * create a buffered channel.
+ * This buffer is passed to `{@link module:chanko~Chanko.chan|chan}`, etc. to
+ * create a buffered channel. It is not meant to be used directly.
  *
  * @memberof module:chanko~Chanko
  * @param {number} size The number of items that the new buffer can hold before
@@ -267,11 +267,11 @@ function sliding(size) {
 /**
  * Returns the queue that backs a buffer.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer whose queue is returned by this function.
  * @return {module:chanko/queue~Queue} The queue that backs the supplied buffer.
+ * @private
  */
 function queue(buffer) {
   return buffer.queue;
@@ -280,11 +280,11 @@ function queue(buffer) {
 /**
  * Returns the number of items a buffer can hold before it's full.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer whose size is returned by this function.
  * @return {number} The size of the supplied buffer.
+ * @private
  */
 function size(buffer) {
   return buffer.size;
@@ -293,11 +293,11 @@ function size(buffer) {
 /**
  * Returns the number of items a buffer is currently holding.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer whose current count is returned by this function.
  * @return {number} The number of items that the supplied buffer is holding.
+ * @private
  */
 function count(buffer) {
   return qCount(buffer.queue);
@@ -306,12 +306,12 @@ function count(buffer) {
 /**
  * Determines whether a buffer is at capacity.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer who's being checked to see if it's at capacity.
  * @return {number} Either `true` if the supplied buffer is full or `false` if
  *     it isn't.
+ * @private
  */
 function isFull(buffer) {
   return buffer[BUFFER] === FIXED ? qCount(buffer.queue) >= buffer.size : false;
@@ -320,11 +320,11 @@ function isFull(buffer) {
 /**
  * Adds one or more items to a buffer.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer where the supplied items will be added.
  * @param {...*} items The values being added to the supplied buffer.
+ * @private
  */
 function add(buffer, ...items) {
   switch (buffer[BUFFER]) {
@@ -359,11 +359,11 @@ function add(buffer, ...items) {
 /**
  * Removes the next item from a queue and returns it.
  *
- * @memberof module:chanko~Chanko
  * @param {module:chanko/buffer~FixedBuffer |
  *     module:chanko/buffer~DroppingBuffer | module:chanko/buffer~SlidingBuffer}
  *     buffer The buffer from which an item is being removed.
  * @return {*} The item that was removed from the supplied buffer.
+ * @private
  */
 function remove(buffer) {
   return dequeue(buffer.queue);
