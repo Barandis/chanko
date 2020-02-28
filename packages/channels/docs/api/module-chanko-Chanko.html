@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Chanko - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_queue.html">chanko/queue</a><ul class='methods'><li data-type='method'><a href="module-chanko_queue.html#~count">count</a></li><li data-type='method'><a href="module-chanko_queue.html#~dequeue">dequeue</a></li><li data-type='method'><a href="module-chanko_queue.html#~enqueue">enqueue</a></li><li data-type='method'><a href="module-chanko_queue.html#~filter">filter</a></li><li data-type='method'><a href="module-chanko_queue.html#~isEmpty">isEmpty</a></li><li data-type='method'><a href="module-chanko_queue.html#~isQueue">isQueue</a></li><li data-type='method'><a href="module-chanko_queue.html#~peek">peek</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko_buffer-DroppingBuffer.html">DroppingBuffer</a></li><li><a href="module-chanko_buffer-FixedBuffer.html">FixedBuffer</a></li><li><a href="module-chanko_buffer-SlidingBuffer.html">SlidingBuffer</a></li><li><a href="module-chanko_queue-Queue.html">Queue</a></li><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#protocols">protocols</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Chanko</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="module-chanko.html">chanko</a>~</span>
+        
+        Chanko
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext"><p>The core namespace under which all of the main functions reside in the API.
+Everything in this namespace is accessible as a member of the main <code>chanko</code>
+object that is required, imported, or accessed as a global object.</p></div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".EMPTY"><span class="type-signature">(static, constant) </span>EMPTY<span class="type-signature"> :Symbol</span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_queue.js.html">modules/queue.js</a>, <a href="modules_queue.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>The value returned when a queue is read when it's empty.</p>
+<p>This special value is used because <code>null</code> and <code>undefined</code> are possible
+legitimate values that can be stored in a queue. Another option is to use
+some kind of <code>Maybe</code> or <code>Option</code> type, but that requires more effort on the
+part of the end user to interface with.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Symbol</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(buffer, &hellip;items)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line329">line 329</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Adds one or more items to a buffer.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The buffer where the supplied items will be added.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>items</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The values being added to the supplied buffer.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".count"><span class="type-signature">(static) </span>count<span class="signature">(buffer)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line302">line 302</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns the number of items a buffer is currently holding.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The buffer whose current count is returned by this function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The number of items that the supplied buffer is holding.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".dropping"><span class="type-signature">(static) </span>dropping<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a dropping buffer of the specified capacity.</p>
+<p>A dropping buffer silently drops the item being added if the buffer is
+already at capacity. Since adding a new item will always 'succeed' (even if
+it succeeds by just ignoring the add), it is never considered full and
+therefore a put to a channel buffered by a dropping buffer never blocks.</p>
+<p>This buffer can be passed to <code>chan</code> to
+create a buffered channel.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of items that the new buffer can hold before
+newest items are dropped on add.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new dropping buffer of the
+specified capacity.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".fixed"><span class="type-signature">(static) </span>fixed<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a fixed buffer of the specified capacity.</p>
+<p>A fixed buffer is a 'normal' buffer, one that stores and returns items on
+demand. While it is capable of being over-filled, that ability is not used in
+Chanko. A buffer that is full will cause the next put to its channel to block
+until at least one item is removed from the buffer.</p>
+<p>This buffer can be passed to <code>chan</code> to
+create a buffered channel.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of items that the new buffer can hold before
+it's full.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new fixed buffer of the
+specified capacity.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isFull"><span class="type-signature">(static) </span>isFull<span class="signature">(buffer)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line316">line 316</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines whether a buffer is at capacity.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The buffer who's being checked to see if it's at capacity.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> if the supplied buffer is full or <code>false</code> if
+it isn't.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".queue"><span class="type-signature">(static) </span>queue<span class="signature">(buffer)</span><span class="type-signature"> &rarr; {<a href="module-chanko_queue-Queue.html">module:chanko/queue~Queue</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line276">line 276</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns the queue that backs a buffer.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The buffer whose queue is returned by this function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The queue that backs the supplied buffer.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-chanko_queue-Queue.html">module:chanko/queue~Queue</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".remove"><span class="type-signature">(static) </span>remove<span class="signature">(buffer)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line368">line 368</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Removes the next item from a queue and returns it.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The buffer from which an item is being removed.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The item that was removed from the supplied buffer.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".size"><span class="type-signature">(static) </span>size<span class="signature">(buffer)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line289">line 289</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns the number of items a buffer can hold before it's full.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-chanko_buffer-FixedBuffer.html">module:chanko/buffer~FixedBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-DroppingBuffer.html">module:chanko/buffer~DroppingBuffer</a></span>
+|
+
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The buffer whose size is returned by this function.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The size of the supplied buffer.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".sliding"><span class="type-signature">(static) </span>sliding<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_buffer.js.html">modules/buffer.js</a>, <a href="modules_buffer.js.html#line230">line 230</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a sliding buffer of the specified capacity.</p>
+<p>A sliding buffer drops the first-added (oldest) item already in the buffer if
+a new item is added when the buffer is already at capacity. Since it's always
+capable of having items added to it, it's never considered full, and
+therefore a put to a channel buffered by a sliding buffer never blocks.</p>
+<p>This buffer can be passed to <code>chan</code> to
+create a buffered channel.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of items that the new buffer can hold before
+oldest items are dropped on add.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new sliding buffer of the
+specified capacity.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
