@@ -1070,6 +1070,419 @@ specified capacity.</p>
 
     
 
+    <h4 class="name" id=".go"><span class="type-signature">(static) </span>go<span class="signature">(fn, &hellip;args)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_process.js.html">modules/process.js</a>, <a href="modules_process.js.html#line82">line 82</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Invokes an async function acting as a process.</p>
+<p>This is purely a convenience function, driven by the fact that it's necessary
+to use an IIFE to invoke an anonymous async function, and that's not very
+aesthetically pleasing. It does no more than invoke the passed function, but
+that at least releases us from the need to put the empty parentheses after
+the function definition.</p>
+<p>A named async function can simply be invoked (without being an IIFE) and
+doesn't benefit from this convenience.</p>
+<p>Anonymous process without <code>go</code>:</p>
+<pre class="prettyprint source"><code>(async () => {
+  ... do some process stuff here ...
+})();
+</code></pre>
+<p>Anonymous process with <code>go</code>:</p>
+<pre class="prettyprint source"><code>go(async () => {
+  ... do some process stuff here ...
+});
+</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The async function being used as a process.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Arguments that are sent to the async function when it's
+invoked.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The promise returned by the async function.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".sleep"><span class="type-signature">(static) </span>sleep<span class="signature">(delay<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_process.js.html">modules/process.js</a>, <a href="modules_process.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Blocks the process for the specified time (in milliseconds) and then unblocks
+it.</p>
+<p>This implements a delay, but one that's superior to other kinds of delays
+(<code>setTimeout</code>, etc.) because it blocks the process and allows the dispatcher
+to allow other processes to run while this one waits. The default delay is 0,
+which will release the process to allow others to run and then immediately
+re-queue it.</p>
+<p>This function <em>must</em> be called from within an <code>async</code> function and as part of
+an <code>await</code> expression.</p>
+<p>When this function completes and its process unblocks, the <code>await</code> expression
+doesn't take on any meaningful value. The purpose of this function is simply
+to delay, not to communicate any data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>delay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>the number of milliseconds that the process will
+block for. At the end of that time, the process is again eligible to be
+run by the dispatcher. If this is missing or set to <code>0</code>, the process will
+cede execution to the next one but immediately requeue itself to be run
+again.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that resolves with no meaningful result when the
+time has elapsed.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".sliding"><span class="type-signature">(static) </span>sliding<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_buffer-SlidingBuffer.html">module:chanko/buffer~SlidingBuffer</a>}</span></h4>
 
     
