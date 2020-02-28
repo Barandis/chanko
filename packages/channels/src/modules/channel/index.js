@@ -121,24 +121,9 @@ function chan(buffer, options) {
     handler
   );
 
-  const impl = chanImpl(buf, xf, maxDirty, maxQueued);
-
   const isTimed = typeof timeout === "number";
-  if (isTimed) {
-    setTimeout(() => closeImpl(impl), timeout);
-  }
 
-  const ch = Object.create(null, {
-    impl: {
-      value: impl
-    },
-    isBuffered: {
-      value: !!buf
-    },
-    isTimed: {
-      value: isTimed
-    }
-  });
+  const ch = chanImpl(buf, xf, isTimed, maxDirty, maxQueued);
 
   async function* iterator() {
     for (;;) {
@@ -164,7 +149,7 @@ function transChan(transducer, handler) {
 }
 
 function isClosed(channel) {
-  return channel.impl.closed;
+  return channel.closed;
 }
 
 function isBuffered(channel) {
@@ -176,14 +161,14 @@ function isTimed(channel) {
 }
 
 function sendAsync(channel, value, callback = () => {}) {
-  const result = handleSend(channel.impl, value, opHandler(callback));
+  const result = handleSend(channel, value, opHandler(callback));
   if (result && callback) {
     callback(result.value);
   }
 }
 
 function recvAsync(channel, callback = () => {}) {
-  const result = handleRecv(channel.impl, opHandler(callback));
+  const result = handleRecv(channel, opHandler(callback));
   if (result && callback) {
     callback(result.value);
   }
@@ -214,7 +199,7 @@ function recvOrThrow(channel) {
 }
 
 function close(channel) {
-  closeImpl(channel.impl);
+  closeImpl(channel);
 }
 
 export {

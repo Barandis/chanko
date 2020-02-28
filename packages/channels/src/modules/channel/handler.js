@@ -59,7 +59,13 @@ function sendBox(value, handler) {
   });
 }
 
-function channel(buffer, xform, maxDirty = MAX_DIRTY, maxQueued = MAX_QUEUED) {
+function channel(
+  buffer,
+  xform,
+  isTimed = false,
+  maxDirty = MAX_DIRTY,
+  maxQueued = MAX_QUEUED
+) {
   return Object.create(null, {
     buffer: {
       value: buffer
@@ -90,16 +96,22 @@ function channel(buffer, xform, maxDirty = MAX_DIRTY, maxQueued = MAX_QUEUED) {
     closed: {
       value: false,
       writable: true
+    },
+    isBuffered: {
+      value: !!buffer
+    },
+    isTimed: {
+      value: isTimed
     }
   });
 }
 
-function handleSend(impl, value, handler) {
+function handleSend(channel, value, handler) {
   if (value === CLOSED) {
     throw Error("Cannot send CLOSED to a channel");
   }
 
-  if (impl.closed) {
+  if (channel.closed) {
     handler.commit();
     return box(false);
   }
@@ -114,21 +126,21 @@ function handleSend(impl, value, handler) {
   // If the channel is unbuffered this process is skipped (there can't be a
   // transducer on an unbuffered channel anyway). If the buffer is full, the
   // transducer's work is deferred until later when the buffer is not full.
-  if (impl.buffer && !isFull(impl.buffer)) {
+  if (channel.buffer && !isFull(channel.buffer)) {
     handler.commit();
-    const done = isReduced(impl.xform[p.step](impl.buffer, value));
+    const done = isReduced(channel.xform[p.step](channel.buffer, value));
 
     for (;;) {
-      if (count(impl.buffer) === 0) {
+      if (count(channel.buffer) === 0) {
         break;
       }
-      receiver = dequeue(impl.recvs);
+      receiver = dequeue(channel.recvs);
       if (receiver === EMPTY) {
         break;
       }
       if (receiver.active) {
         callback = receiver.commit();
-        const val = remove(impl.buffer);
+        const val = remove(channel.buffer);
         if (callback) {
           dispatch(() => callback(val));
         }
@@ -136,7 +148,7 @@ function handleSend(impl, value, handler) {
     }
 
     if (done) {
-      close(impl);
+      close(channel);
     }
     return box(true);
   }
@@ -148,7 +160,7 @@ function handleSend(impl, value, handler) {
   // receives and the first one read will be EMPTY.) It processes the next
   // pending receive immediately.
   for (;;) {
-    receiver = dequeue(impl.recvs);
+    receiver = dequeue(channel.recvs);
     if (receiver === EMPTY) {
       break;
     }
@@ -166,39 +178,39 @@ function handleSend(impl, value, handler) {
   // channel with a full buffer, we queue the send to tlet it wait for a receive
   // to become available. Sends whose handlers have gone inactive (which happens
   // if they were processed as part of a `select` call) are periodically purged.
-  if (impl.dirtySends > impl.maxDirty) {
-    filter(impl.sends, sender => sender.handler.active);
-    impl.dirtySends = 0;
+  if (channel.dirtySends > channel.maxDirty) {
+    filter(channel.sends, sender => sender.handler.active);
+    channel.dirtySends = 0;
   } else {
-    impl.dirtySends++;
+    channel.dirtySends++;
   }
 
-  if (qCount(impl.sends) >= impl.maxQueued) {
+  if (qCount(channel.sends) >= channel.maxQueued) {
     throw Error(
-      `No more than ${impl.maxQueued} pending sends are allowed on a single channel`
+      `No more than ${channel.maxQueued} pending sends are allowed on a single channel`
     );
   }
-  enqueue(impl.sends, sendBox(value, handler));
+  enqueue(channel.sends, sendBox(value, handler));
 
   return null;
 }
 
-function handleRecv(impl, handler) {
+function handleRecv(channel, handler) {
   let sender, sendHandler, callback;
 
   // Runs if the channel is buffered and the buffered is not empty (an empty
   // buffer means there are no pending sends). We immediately process any sends
   // that were queued when there were no pending receives, up until the buffer
   // is filled with sent values.
-  if (impl.buffer && count(impl.buffer) > 0) {
+  if (channel.buffer && count(channel.buffer) > 0) {
     handler.commit();
-    const value = remove(impl.buffer);
+    const value = remove(channel.buffer);
 
     for (;;) {
-      if (isFull(impl.buffer)) {
+      if (isFull(channel.buffer)) {
         break;
       }
-      sender = dequeue(impl.sends);
+      sender = dequeue(channel.sends);
       if (sender === EMPTY) {
         break;
       }
@@ -209,8 +221,8 @@ function handleRecv(impl, handler) {
         if (callback) {
           dispatch(() => callback(true));
         }
-        if (isReduced(impl.xform[p.step](impl.buffer, sender.value))) {
-          close(impl);
+        if (isReduced(channel.xform[p.step](channel.buffer, sender.value))) {
+          close(channel);
         }
       }
     }
@@ -224,7 +236,7 @@ function handleRecv(impl, handler) {
   // pending send read from it will be EMPTY.) It processes the next pending
   // send immediately.
   for (;;) {
-    sender = dequeue(impl.sends);
+    sender = dequeue(channel.sends);
     if (sender === EMPTY) {
       break;
     }
@@ -243,7 +255,7 @@ function handleRecv(impl, handler) {
   // ensures that any sends that were already pending on the channel are
   // processed before closure, even if the channel was closed before that could
   // happen.
-  if (impl.closed) {
+  if (channel.closed) {
     handler.commit();
     return box(CLOSED);
   }
@@ -252,46 +264,46 @@ function handleRecv(impl, handler) {
   // pending sends, and if the channel is still open, the receive is queued to
   // be processed when a send is available. Receives whose handlers have gone
   // inactive as the result of `select` processing are periodically purged.
-  if (impl.dirtyRecvs > impl.maxDirty) {
-    filter(impl.recvs, receiver => receiver.active);
-    impl.dirtyRecvs = 0;
+  if (channel.dirtyRecvs > channel.maxDirty) {
+    filter(channel.recvs, receiver => receiver.active);
+    channel.dirtyRecvs = 0;
   } else {
-    impl.dirtyRecvs++;
+    channel.dirtyRecvs++;
   }
 
-  if (qCount(impl.recvs) >= impl.maxQueued) {
+  if (qCount(channel.recvs) >= channel.maxQueued) {
     throw Error(
-      `No more than ${impl.maxQueued} pending receives are allowed on a single channel`
+      `No more than ${channel.maxQueued} pending receives are allowed on a single channel`
     );
   }
-  enqueue(impl.recvs, handler);
+  enqueue(channel.recvs, handler);
 
   return null;
 }
 
-function close(impl) {
-  if (impl.closed) {
+function close(channel) {
+  if (channel.closed) {
     return;
   }
-  impl.closed = true;
+  channel.closed = true;
 
   let receiver, sender, callback;
 
   // If there is a buffer and it has at least one value in it, send those values
   // to any pending receives that might still be queued.
-  if (impl.buffer) {
-    impl.xform[p.result](impl.buffer);
+  if (channel.buffer) {
+    channel.xform[p.result](channel.buffer);
     for (;;) {
-      if (count(impl.buffer) === 0) {
+      if (count(channel.buffer) === 0) {
         break;
       }
-      receiver = dequeue(impl.recvs);
+      receiver = dequeue(channel.recvs);
       if (receiver === EMPTY) {
         break;
       }
       if (receiver.active) {
         callback = receiver.commit();
-        const value = remove(impl.buffer);
+        const value = remove(channel.buffer);
         if (callback) {
           dispatch(() => callback(value));
         }
@@ -302,7 +314,7 @@ function close(impl) {
   // Once the buffer is empty (or if there isn't a buffer at all), send CLOSED
   // to all remaining queued receives.
   for (;;) {
-    receiver = dequeue(impl.recvs);
+    receiver = dequeue(channel.recvs);
     if (receiver === EMPTY) {
       break;
     }
@@ -316,7 +328,7 @@ function close(impl) {
 
   // Send `false` to any remaining queued sends.
   for (;;) {
-    sender = dequeue(impl.sends);
+    sender = dequeue(channel.sends);
     if (sender === EMPTY) {
       break;
     }

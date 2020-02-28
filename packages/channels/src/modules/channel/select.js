@@ -14,15 +14,15 @@ function selectHandler(active, fn) {
     active: {
       get() {
         return active.value;
-      },
+      }
     },
 
     commit: {
       value: () => {
         active.value = false;
         return fn;
-      },
-    },
+      }
+    }
   });
 }
 
@@ -72,10 +72,10 @@ function selectAsync(ops, callback = () => {}, options = {}) {
     // Apply every operation to its channel, one at a time
     if (Array.isArray(op)) {
       [channel, value] = op;
-      result = handleSend(channel.impl, value, createSelectHandler(channel));
+      result = handleSend(channel, value, createSelectHandler(channel));
     } else {
       channel = op;
-      result = handleRecv(channel.impl, createSelectHandler(channel));
+      result = handleRecv(channel, createSelectHandler(channel));
     }
 
     // We check for box here because a box from a channel indicates that the
