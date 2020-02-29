@@ -13,6 +13,7 @@ module.exports = {
     path: path.join(__dirname, "lib"),
     library: "chanko",
     libraryTarget: "umd",
+    globalObject: "this",
   },
   module: {
     rules: [
