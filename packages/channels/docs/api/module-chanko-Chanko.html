@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -624,7 +624,7 @@ other method, so it should be used as a last resort.</p>
 
     
 
-    <h4 class="name" id=".chan"><span class="type-signature">(static) </span>chan<span class="signature">(buffer<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+    <h4 class="name" id=".chan"><span class="type-signature">(static) </span>chan<span class="signature">(buffer<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a>}</span></h4>
 
     
 
@@ -636,7 +636,7 @@ other method, so it should be used as a last resort.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line307">line 307</a>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -690,7 +690,7 @@ non-blocking variations (<code><a href="module-chanko-Chanko.html#.sendAsync">se
 channel. If this is <code>null</code> or <code>0</code>, the channel will be unbuffered. If it's a
 positive number, the channel will be buffered by a
 <code><a href="module-chanko_buffer.html#~FixedBuffer">FixedBuffer</a></code>of that size. If it's a
-<code>Buffer</code> object, that object will be used
+<code><a href="module-chanko_buffer.html#.Buffer">Buffer</a></code> object, that object will be used
 as the channel's buffer. If it's missing altogether, the channel will be
 unbuffered unless a <code>transducer</code> option is provided (see below), in which
 case it will be a <code><a href="module-chanko_buffer.html#~FixedBuffer">FixedBuffer</a></code> of
@@ -840,44 +840,6 @@ queue.</p>
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>timer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The number of milliseconds after channel
-creation that the new channel will automatically close.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -1052,7 +1014,7 @@ accidentally eating up all of the available memory.</p></td>
 
         <tr>
             
-                <td class="name"><code>timeout</code></td>
+                <td class="name"><code>timer</code></td>
             
 
             <td class="type">
@@ -1083,7 +1045,7 @@ accidentally eating up all of the available memory.</p></td>
             
 
             <td class="description last"><p>If this value is present, the channel will
-be a timeout channel that closes automatically after this number of
+be a timed channel that closes automatically after this number of
 milliseconds.</p></td>
         </tr>
 
@@ -1128,7 +1090,7 @@ milliseconds.</p></td>
     </dt>
     <dd>
         
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
     </dd>
@@ -1143,7 +1105,7 @@ milliseconds.</p></td>
 
     
 
-    <h4 class="name" id=".channel"><span class="type-signature">(static) </span>channel<span class="signature">(result)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id=".channel"><span class="type-signature">(static) </span>channel<span class="signature">(result)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a>}</span></h4>
 
     
 
@@ -1155,7 +1117,7 @@ milliseconds.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line306">line 306</a>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -1279,7 +1241,8 @@ select operation.</p></td>
 
         
 <div class="param-desc">
-    <p>The channel upon which the select operation completed.</p>
+    <p>The channel upon which the select
+operation completed.</p>
 </div>
 
 
@@ -1290,7 +1253,7 @@ select operation.</p></td>
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
     </dd>
@@ -1411,7 +1374,7 @@ channel. Once the buffer is depleted, any future receives will return
             <td class="type">
             
                 
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
             
@@ -2373,7 +2336,7 @@ part of the channel.</p>
             <td class="type">
             
                 
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
             
@@ -2535,7 +2498,7 @@ isn't.</p>
             <td class="type">
             
                 
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
             
@@ -2698,7 +2661,7 @@ automatically close after a certain period of time.</p>
             <td class="type">
             
                 
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
             
@@ -3191,7 +3154,7 @@ reason.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line274">line 274</a>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line275">line 275</a>
     </li></ul></dd>
     
 
@@ -3557,7 +3520,7 @@ to unblock.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line152">line 152</a>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -4650,7 +4613,7 @@ specified capacity.</p>
 
     
 
-    <h4 class="name" id=".timedChan"><span class="type-signature">(static) </span>timedChan<span class="signature">(delay)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+    <h4 class="name" id=".timedChan"><span class="type-signature">(static) </span>timedChan<span class="signature">(delay)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a>}</span></h4>
 
     
 
@@ -4662,7 +4625,7 @@ specified capacity.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line360">line 360</a>
+        <a href="modules_channel_index.js.html">modules/channel/index.js</a>, <a href="modules_channel_index.js.html#line359">line 359</a>
     </li></ul></dd>
     
 
@@ -4703,7 +4666,7 @@ specified capacity.</p>
 
 <div class="description usertext">
     <p>Creates an unbuffered, timed channel. This channel closes automatically after
-the supplied number of milliseconds and is the equivalent of calling <code>chan(0, { timeout: delay })</code>.</p>
+the supplied number of milliseconds and is the equivalent of calling <code>chan(0, { timer: delay })</code>.</p>
 </div>
 
 
@@ -4803,7 +4766,7 @@ that it will be closed automatically.</p></td>
     </dt>
     <dd>
         
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
     </dd>
@@ -4818,7 +4781,7 @@ that it will be closed automatically.</p></td>
 
     
 
-    <h4 class="name" id=".transChan"><span class="type-signature">(static) </span>transChan<span class="signature">(transducer, handler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:chanko/channel~Channel}</span></h4>
+    <h4 class="name" id=".transChan"><span class="type-signature">(static) </span>transChan<span class="signature">(transducer, handler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a>}</span></h4>
 
     
 
@@ -4871,8 +4834,9 @@ that it will be closed automatically.</p></td>
 
 <div class="description usertext">
     <p>Creates a buffered channel with a transducer and optional error handler. The
-buffer for this channel is a <code>FixedBuffer</code>
-of size 1. This is the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
+buffer for this channel is a
+<code>FixedBuffer</code> of size 1. This is
+the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
 </div>
 
 
@@ -4950,7 +4914,7 @@ values on the new channel.</p></td>
             <td class="type">
             
                 
-<span class="param-type">module:chanko/channel~exceptionHandler</span>
+<span class="param-type"><a href="module-chanko.html#~exceptionHandler">module:chanko~exceptionHandler</a></span>
 
 
             
@@ -4970,11 +4934,11 @@ values on the new channel.</p></td>
 
             
 
-            <td class="description last"><p>An exception
-handler called with the error object as its only argument when an error
-happens inside a transducer. If this is not provided, a default handler
-is used that simply does nothing, including sending no output from the
-value that errored.</p></td>
+            <td class="description last"><p>An exception handler called
+with the error object as its only argument when an error happens inside a
+transducer. If this is not provided, a default handler is used that
+simply does nothing, including sending no output from the value that
+errored.</p></td>
         </tr>
 
     
@@ -5011,7 +4975,7 @@ value that errored.</p></td>
     </dt>
     <dd>
         
-<span class="param-type">module:chanko/channel~Channel</span>
+<span class="param-type"><a href="module-chanko_channel.html#.Channel">module:chanko/channel.Channel</a></span>
 
 
     </dd>
@@ -5038,7 +5002,7 @@ value that errored.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line291">line 291</a>
+        <a href="modules_channel_select.js.html">modules/channel/select.js</a>, <a href="modules_channel_select.js.html#line292">line 292</a>
     </li></ul></dd>
     
 

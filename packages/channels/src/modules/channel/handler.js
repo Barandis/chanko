@@ -405,7 +405,7 @@ function handleSend(channel, value, handler) {
  * functions instead.
  *
  * @memberof module:chanko/channel
- * @param {module:chanko/channel~Channel} channel The channel that the value is
+ * @param {module:chanko/channel.Channel} channel The channel that the value is
  *     being received from.
  * @param {boolean} handler.active Determines whether the receive is still
  *     active and should still be serviced.
@@ -517,7 +517,7 @@ function handleRecv(channel, handler) {
  * {@link module:chanko~CLOSED|CLOSED}.
  *
  * @memberof module:chanko/channel
- * @param {module:chanko/channel~Channel} channel The channel to be closed.
+ * @param {module:chanko/channel.Channel} channel The channel to be closed.
  * @private
  */
 function close(channel) {

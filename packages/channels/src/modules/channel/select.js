@@ -101,6 +101,7 @@ function randomArray(upper) {
  *     selected operation happened.
  * @return {module:chanko/channel.SelectResult} The properties wrapped into an
  *     object for output.
+ * @private
  */
 function selectResult(value, channel) {
   return Object.assign(Object.create(null), { value, channel });
@@ -301,7 +302,8 @@ function value(result) {
  * @memberof module:chanko~Chanko
  * @param {module:chanko/channel.SelectResult} result The result coming from a
  *     select operation.
- * @return {*} The channel upon which the select operation completed.
+ * @return {module:chanko/channel.Channel} The channel upon which the select
+ *     operation completed.
  */
 function channel(result) {
   return result.channel;

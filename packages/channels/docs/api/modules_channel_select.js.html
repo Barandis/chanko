@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -85,15 +85,15 @@ function selectHandler(active, fn) {
     active: {
       get() {
         return active.value;
-      },
+      }
     },
 
     commit: {
       value: () => {
         active.value = false;
         return fn;
-      },
-    },
+      }
+    }
   });
 }
 
@@ -145,6 +145,7 @@ function randomArray(upper) {
  *     selected operation happened.
  * @return {module:chanko/channel.SelectResult} The properties wrapped into an
  *     object for output.
+ * @private
  */
 function selectResult(value, channel) {
   return Object.assign(Object.create(null), { value, channel });
@@ -326,7 +327,7 @@ function select(ops, options = {}) {
  * function is not necessary - after all, it's absolutely as correct to simply
  * use `result.value` instead of `value(result)`, but it's provided for
  * consistency with the rest of the function-centric API.
- * 
+ *
  * @memberof module:chanko~Chanko
  * @param {module:chanko/channel.SelectResult} result The result coming from a
  *     select operation.
@@ -341,11 +342,12 @@ function value(result) {
  * function is not necessary - after all, it's absolutely as correct to simply
  * use `result.channel` instead of `channel(result)`, but it's provided for
  * consistency with the rest of the function-centric API.
- * 
+ *
  * @memberof module:chanko~Chanko
  * @param {module:chanko/channel.SelectResult} result The result coming from a
  *     select operation.
- * @return {*} The channel upon which the select operation completed.
+ * @return {module:chanko/channel.Channel} The channel upon which the select
+ *     operation completed.
  */
 function channel(result) {
   return result.channel;

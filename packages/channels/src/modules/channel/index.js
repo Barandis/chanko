@@ -75,8 +75,9 @@ import { protocols as p } from "modules/protocol";
  * merely returns `{@link module:chanko~Chanko.CLOSED|CLOSED}`, which will
  * result in no new value being written to the channel.
  *
- * @callback exceptionHandler
+ * @type {module:chanko~exceptionHandler}
  * @memberof module:chanko/channel
+ * @private
  */
 const DEFAULT_HANDLER = () => CLOSED;
 
@@ -246,7 +247,7 @@ function parseArgs(buffer, options, defaultOptions) {
  * channel. If this is `null` or `0`, the channel will be unbuffered. If it's a
  * positive number, the channel will be buffered by a
  * `{@link module:chanko/buffer~FixedBuffer|FixedBuffer} `of that size. If it's a
- * `{@link module:chanko/buffer~Buffer|Buffer}` object, that object will be used
+ * `{@link module:chanko/buffer.Buffer|Buffer}` object, that object will be used
  * as the channel's buffer. If it's missing altogether, the channel will be
  * unbuffered unless a `transducer` option is provided (see below), in which
  * case it will be a `{@link module:chanko/buffer~FixedBuffer|FixedBuffer}` of
@@ -300,7 +301,7 @@ function parseArgs(buffer, options, defaultOptions) {
  * @param {number} [options.timer] If this value is present, the channel will
  *     be a timed channel that closes automatically after this number of
  *     milliseconds.
- * @return {module:chanko/channel~Channel} A new channel.
+ * @return {module:chanko/channel.Channel} A new channel.
  */
 function chan(buffer, options) {
   const defaultOptions = {
@@ -353,7 +354,7 @@ function chan(buffer, options) {
  * @memberof module:chanko~Chanko
  * @param {number} delay The number of milliseconds after the channel is created
  *     that it will be closed automatically.
- * @return {module:chanko/channel~Channel} A new timed channel.
+ * @return {module:chanko/channel.Channel} A new timed channel.
  */
 function timedChan(delay = 0) {
   return chan({ timer: delay });
@@ -361,18 +362,19 @@ function timedChan(delay = 0) {
 
 /**
  * Creates a buffered channel with a transducer and optional error handler. The
- * buffer for this channel is a `{@link module:chanko/buffers~FixedBuffer|FixedBuffer}`
- * of size 1. This is the equivalent of `chan(1, { transducer, handler })`.
+ * buffer for this channel is a
+ * `{@link module:chanko/buffers~FixedBuffer|FixedBuffer}` of size 1. This is
+ * the equivalent of `chan(1, { transducer, handler })`.
  *
  * @memberof module:chanko~Chanko
  * @param {module:chanko~transducer} transducer The transducer used to transform
  *     values on the new channel.
- * @param {module:chanko/channel~exceptionHandler} [handler] An exception
- *     handler called with the error object as its only argument when an error
- *     happens inside a transducer. If this is not provided, a default handler
- *     is used that simply does nothing, including sending no output from the
- *     value that errored.
- * @return {module:chanko/channel~Channel} A new channel with a transducer.
+ * @param {module:chanko~exceptionHandler} [handler] An exception handler called
+ *     with the error object as its only argument when an error happens inside a
+ *     transducer. If this is not provided, a default handler is used that
+ *     simply does nothing, including sending no output from the value that
+ *     errored.
+ * @return {module:chanko/channel.Channel} A new channel with a transducer.
  */
 function transChan(transducer, handler) {
   return chan({ transducer, handler });
@@ -386,7 +388,7 @@ function transChan(transducer, handler) {
  * `{@link module:chanko~Chanko.CLOSED|CLOSED}.
  *
  * @memberof module:chanko~Chanko
- * @param {module:chanko/channel~Channel} channel The channel to check.
+ * @param {module:chanko/channel.Channel} channel The channel to check.
  * @return {boolean} Either `true` if the channel is closed or `false` if it
  *     isn't.
  */
@@ -402,7 +404,7 @@ function isClosed(channel) {
  * part of the channel.
  *
  * @memberof module:chanko~Chanko
- * @param {module:chanko/channel~Channel} channel The channel to check.
+ * @param {module:chanko/channel.Channel} channel The channel to check.
  * @return {boolean} Either `true` if the channel is buffered or `false` if it
  *     isn't.
  */
@@ -419,7 +421,7 @@ function isBuffered(channel) {
  * automatically close after a certain period of time.
  *
  * @memberof module:chanko~Chanko
- * @param {module:chanko/channel~Channel} channel The channel to check.
+ * @param {module:chanko/channel.Channel} channel The channel to check.
  * @return {boolean} Either `true` if the channel is timed or `false` if it
  *     isn't.
  */
@@ -612,7 +614,7 @@ function recvOrThrow(channel) {
  * {@link module:chanko~Chanko.CLOSED|CLOSED}.
  *
  * @memberof module:chanko~Chanko
- * @param {module:chanko/channel~Channel} channel The channel to be closed.
+ * @param {module:chanko/channel.Channel} channel The channel to be closed.
  */
 function close(channel) {
   closeImpl(channel);

@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a><ul class='methods'></ul></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko.html">chanko</a></li><li><a href="module-chanko_buffer.html">chanko/buffer</a></li><li><a href="module-chanko_channel.html">chanko/channel</a></li><li><a href="module-chanko_dispatcher.html">chanko/dispatcher</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-chanko-Chanko.html">Chanko</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -56,7 +56,7 @@ import {
   EMPTY,
   filter,
   count as qCount,
-  enqueue,
+  enqueue
 } from "modules/queue";
 import { isFull, count, remove } from "modules/buffer";
 import { dispatch } from "modules/dispatcher";
@@ -157,11 +157,11 @@ function box(value) {
   return Object.create(null, {
     value: {
       value,
-      writable: true,
+      writable: true
     },
     [BOX]: {
-      value: true,
-    },
+      value: true
+    }
   });
 }
 
@@ -194,14 +194,14 @@ function sendBox(value, handler) {
   return Object.create(null, {
     value: {
       value,
-      writable: true,
+      writable: true
     },
     handler: {
-      value: handler,
+      value: handler
     },
     [BOX]: {
-      value: true,
-    },
+      value: true
+    }
   });
 }
 
@@ -241,7 +241,7 @@ function sendBox(value, handler) {
  * any properties of interest to an end user.
  *
  * @memberof module:chanko/channel
- * @typedef Channel 
+ * @typedef Channel
  */
 
 /**
@@ -264,7 +264,7 @@ function sendBox(value, handler) {
  *     before they're purged.
  * @param {number} maxQueued=1024 The maximum number of operations that can be
  *     queued before new ones are rejected.
- * @return {module:chanko/channel~Channel} A new channel.
+ * @return {module:chanko/channel.Channel} A new channel.
  * @private
  */
 function channel(
@@ -328,9 +328,9 @@ function channel(
  * handlers. It is not meant for general use. Use those other operations
  * functions instead.
  *
- * 
+ *
  * @memberof module:chanko/channel
- * @param {module:chanko/channel~Channel} channel The channel that the value is
+ * @param {module:chanko/channel.Channel} channel The channel that the value is
  *     being sent to.
  * @param {*} value The value to be put onto the channel.
  * @param {boolean} handler.active Determines whether the send is still active
@@ -449,7 +449,7 @@ function handleSend(channel, value, handler) {
  * functions instead.
  *
  * @memberof module:chanko/channel
- * @param {module:chanko/channel~Channel} channel The channel that the value is
+ * @param {module:chanko/channel.Channel} channel The channel that the value is
  *     being received from.
  * @param {boolean} handler.active Determines whether the receive is still
  *     active and should still be serviced.
@@ -559,9 +559,9 @@ function handleRecv(channel, handler) {
  * those values to any future receives, though no new values may be added to the
  * channel. Once the buffer is depleted, any future receives will return
  * {@link module:chanko~CLOSED|CLOSED}.
- * 
+ *
  * @memberof module:chanko/channel
- * @param {module:chanko/channel~Channel} channel The channel to be closed.
+ * @param {module:chanko/channel.Channel} channel The channel to be closed.
  * @private
  */
 function close(channel) {
@@ -633,7 +633,7 @@ export {
   handleRecv,
   close,
   box,
-  isBox,
+  isBox
 };
 </code></pre>
         </article>
