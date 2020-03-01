@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "CSP channels for JavaScript",
   "main": "lib/chanko.js",
+  "module": "lib/chanko.min.js",
   "scripts": {
     "clean": "rimraf lib",
     "clean:docs": "rimraf docs/api",

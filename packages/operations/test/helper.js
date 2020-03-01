@@ -8,6 +8,8 @@
 import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 
+import { send, recv, close } from "@chanko/channels";
+
 chai.use(sinonChai);
 
 // Big explanation here.
@@ -69,4 +71,33 @@ function join(...promises) {
   return Promise.all(promises);
 }
 
-export { expect, join };
+async function fillChannel(channel, count, closeAfter) {
+  for (let i = 1; i <= count; i++) {
+    await send(channel, i);
+  }
+  if (closeAfter) {
+    close(channel);
+  }
+}
+
+async function fillChannelWith(channel, array, closeAfter) {
+  for (const item of array) {
+    await send(channel, item);
+  }
+  if (closeAfter) {
+    close(channel);
+  }
+}
+
+async function expectChannel(channel, expected, wait) {
+  if (wait) {
+    await recv(wait);
+  }
+  const values = [];
+  for (let i = 0, count = expected.length; i < count; i++) {
+    values.push(await recv(channel));
+  }
+  expect(values).to.deep.equal(expected);
+}
+
+export { expect, join, fillChannel, fillChannelWith, expectChannel };
