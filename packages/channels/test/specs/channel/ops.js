@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect, join } from "test/helper";
+import { expect } from "test/helper";
 import sinon from "sinon";
 
 import { chan, send, recv, close, CLOSED, isClosed } from "modules/channel";
-import { sleep, go } from "modules/process";
+import { sleep, go, join } from "modules/process";
 import { config, SET_TIMEOUT, SET_IMMEDIATE } from "modules/dispatcher";
 
 describe("Channel operations", () => {
   context("close", () => {
-    it("does nothing if hte channel is already closed", () => {
+    it("does nothing if the channel is already closed", () => {
       const ch = chan();
       close(ch);
       expect(isClosed(ch)).to.be.true;

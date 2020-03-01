@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect, join } from "test/helper";
+import { expect } from "test/helper";
 import sinon from "sinon";
 
 import {
@@ -17,9 +17,9 @@ import {
   recv,
   isBuffered,
   close
-} from "modules/channel/index";
+} from "modules/channel";
 import { fixed, dropping, sliding } from "modules/buffer";
-import { go, sleep } from "modules/process";
+import { go, sleep, join } from "modules/process";
 
 import { transducers as t } from "xduce";
 

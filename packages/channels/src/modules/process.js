@@ -83,4 +83,19 @@ function go(fn, ...args) {
   return fn(...args);
 }
 
-export { sleep, go };
+/**
+ * Joins all of the provided processes into a single process, returning a
+ * promise that wraps all of the individual processes' promises. Putting this in
+ * an `await` statement will block until all of the processes complete.
+ *
+ * @memberof module:chanko~Chanko
+ * @param {...function} fns Any number of async functions whose resolutions are
+ *     being waited for.
+ * @return {Promise} A promise that resolves when all of the processes promises
+ *     resolve.
+ */
+function join(...fns) {
+  return Promise.all(fns);
+}
+
+export { sleep, go, join };

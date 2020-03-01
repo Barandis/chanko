@@ -8,7 +8,6 @@
 
 import {
   expect,
-  join,
   fillChannel,
   expectChannel,
   fillChannelWith
@@ -26,6 +25,7 @@ import {
 
 import {
   go,
+  join,
   chan,
   send,
   recv,

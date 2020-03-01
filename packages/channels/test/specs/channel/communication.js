@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect, join } from "test/helper";
+import { expect } from "test/helper";
 import sinon from "sinon";
 
 import {
@@ -22,8 +22,8 @@ import {
   channel,
   DEFAULT,
   recvOrThrow
-} from "modules/channel/index";
-import { go, sleep } from "modules/process";
+} from "modules/channel";
+import { go, sleep, join } from "modules/process";
 
 describe("Channel communication", () => {
   context("recv", () => {

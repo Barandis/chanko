@@ -47,7 +47,7 @@ export {
   MESSAGE_CHANNEL,
   SET_TIMEOUT
 } from "modules/dispatcher";
-export { go, sleep } from "modules/process";
+export { go, sleep, join } from "modules/process";
 export { EMPTY } from "modules/queue";
 
 /**
