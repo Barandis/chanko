@@ -159,6 +159,16 @@ describe("Channel communication", () => {
       });
     });
 
+    it("returns false multple times", async () => {
+      const ch = chan();
+      close(ch);
+
+      return go(async () => {
+        expect(await send(ch)).to.be.false;
+        expect(await send(ch)).to.be.false;
+      });
+    });
+
     it("blocks until a value is received off the channel", async () => {
       const ch = chan();
       const spy = sinon.spy();

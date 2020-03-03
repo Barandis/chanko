@@ -20,7 +20,8 @@ import {
   split,
   tap,
   untap,
-  untapAll
+  untapAll,
+  map
 } from "modules/flow";
 
 import {
@@ -40,6 +41,7 @@ import {
 } from "@chanko/channels";
 
 const even = x => x % 2 === 0;
+const sum3 = (a, b, c) => a + b + c;
 
 describe("Flow control operations", () => {
   describe("pipe", () => {
@@ -400,5 +402,67 @@ describe("Flow control operations", () => {
         return join(p1, p2);
       });
     });
+  });
+
+  describe("map", () => {
+    it("combines channels through a mapping function", () => {
+      const inputs = [chan(), chan(), chan()];
+      const output = map(sum3, inputs);
+
+      const p1 = fillChannel(inputs[0], 5);
+      const p2 = fillChannel(inputs[1], 5);
+      const p3 = fillChannel(inputs[2], 5);
+
+      const p4 = expectChannel(output, [3, 6, 9, 12, 15]);
+
+      return join(p1, p2, p3, p4);
+    });
+
+    it("accepts a buffer to back the output channel", async () => {
+      const inputs = [chan(5), chan(5), chan(5)];
+      const output = map(sum3, inputs, sliding(3));
+
+      const p1 = fillChannel(inputs[0], 5);
+      const p2 = fillChannel(inputs[1], 5);
+      const p3 = fillChannel(inputs[2], 5);
+
+      const p4 = go(async () => {
+        await sleep();
+        await sleep();
+        for (let i = 3; i <= 5; i++) {
+          expect(await recv(output)).to.equal(i * 3);
+        }
+      });
+
+      return join(p1, p2, p3, p4);
+    });
+  });
+
+  it("closes the output when the first input closes", async () => {
+    const inputs = [chan(), chan(), chan()];
+    const output = map(sum3, inputs);
+
+    const p1 = go(async () => {
+      for (let i = 1; i <= 5; i++) {
+        await send(inputs[0], i);
+      }
+    });
+
+    const p2 = go(async () => {
+      for (let i = 1; i <= 3; i++) {
+        await send(inputs[1], i);
+      }
+      close(inputs[1]);
+    });
+
+    const p3 = go(async () => {
+      for (let i = 1; i <= 5; i++) {
+        await send(inputs[2], i);
+      }
+    });
+
+    const p4 = expectChannel(output, [3, 6, 9, CLOSED, CLOSED]);
+
+    return join(p1, p2, p3, p4);
   });
 });
