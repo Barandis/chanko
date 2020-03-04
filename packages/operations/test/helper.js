@@ -12,6 +12,12 @@ import { send, recv, close } from "@chanko/channels";
 
 chai.use(sinonChai);
 
+const FOO = "foo";
+const BAR = "bar";
+const BAZ = "baz";
+const QUX = "qux";
+const QUUX = "quux";
+
 async function fillChannel(channel, count, closeAfter) {
   for (let i = 1; i <= count; i++) {
     await send(channel, i);
@@ -41,4 +47,14 @@ async function expectChannel(channel, expected, wait) {
   expect(values).to.deep.equal(expected);
 }
 
-export { expect, fillChannel, fillChannelWith, expectChannel };
+export {
+  expect,
+  fillChannel,
+  fillChannelWith,
+  expectChannel,
+  FOO,
+  BAR,
+  BAZ,
+  QUX,
+  QUUX
+};

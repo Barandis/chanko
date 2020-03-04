@@ -32,11 +32,9 @@ import {
   CLOSED
 } from "@chanko/channels";
 
-const TAPS = Symbol("multitap/taps");
+import { isNumber } from "modules/common";
 
-function isNumber(x) {
-  return Object.prototype.toString.call(x) === "[object Number]" && isFinite(x);
-}
+const TAPS = Symbol("multitap/taps");
 
 /**
  * Pipes the values from one channel to another channel.
