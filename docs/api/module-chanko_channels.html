@@ -1,84 +1,97 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    
-    <meta charset="utf-8">
-    <title>chanko/channels - Documentation</title>
-    
-    
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
-    <script src="scripts/nav.js" defer></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Chanko Module: chanko/channels</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.slate.css">
+
 </head>
+
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Chanko</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-chanko_channels.html">chanko/channels</a></li><li><a href="module-chanko_operations.html">chanko/operations</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
 
-<label for="nav-trigger" class="overlay"></label>
-
-<nav >
-    
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_channels.html">chanko/channels</a><ul class='methods'></ul></li><li><a href="module-chanko_operations.html">chanko/operations</a><ul class='methods'></ul></li></ul>
-</nav>
-
-<div id="main">
-    
-    <h1 class="page-title">chanko/channels</h1>
-    
-
-    
+</div>
+</div>
 
 
+<div class="container" id="toc-content">
+<div class="row">
 
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
 
+	<h1 class="page-title">Module: chanko/channels</h1>
 <section>
 
 <header>
     
-        
-            
-        
-    
 </header>
 
+
 <article>
+    <div class="container-overview">
     
-        <div class="container-overview">
         
-            
-                <div class="description usertext"><p>All of the public-facing Chanko functions are gathered here in one place to
+            <div class="description"><p>All of the public-facing Chanko functions are gathered here in one place to
 be exported as a whole. This is a completely flat list of exports, as
 inluding any object literals for export (which would be natural for buffers,
 for example) would keep tree-shaking from working right.</p></div>
-            
+        
 
-            
-                
-
-
-
-
+        
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_index.js.html">channels/src/index.js</a>, <a href="channels_src_index.js.html#line8">line 8</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -88,130 +101,67 @@ for example) would keep tree-shaking from working right.</p></div>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_index.js.html">channels/src/index.js</a>,
+				 <a href="channels_src_index.js.html#sunlight-1-line-8">line 8</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
         
-        </div>
     
+    </div>
 
     
 
     
 
     
-    
-    
 
-     
+    
 
     
 
     
         <h3 class="subsection-title">Members</h3>
 
-        
+        <dl>
             
-<h4 class="name" id=".CLOSED"><span class="type-signature">(static, constant) </span>CLOSED<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
-<dl class="details">
+<hr>
+<dt class="name" id=".CLOSED">
+    <h4 id=".CLOSED"><span class="type-signature">&lt;static, constant> </span>CLOSED<span class="type-signature"> :Symbol</span></h4>
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_handler.js.html">channels/src/modules/channel/handler.js</a>, <a href="channels_src_modules_channel_handler.js.html#line52">line 52</a>
-    </li></ul></dd>
+</dt>
+<dd>
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>*he value returned from a receive on a channel when that channel is closed
+    <div class="description">
+        <p>*he value returned from a receive on a channel when that channel is closed
 and has no more values available.</p>
 <p>This is a special value that is returned under a certain circumstance, namely
 when a receive is performed on a closed channel. Because of that, it cannot
@@ -219,45 +169,31 @@ be returned from a receive on an open channel. For that reason, <code>CLOSED</co
 the only value that cannot be sent onto a channel — it would be
 impossible to distinguish between a legitimate value of <code>CLOSED</code> and an
 actual closed channel.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
 
+            </li>
+        </ul>
+    
 
-
-
-
-
-        
-            
-<h4 class="name" id=".DEFAULT"><span class="type-signature">(static, constant) </span>DEFAULT<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
+    
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line25">line 25</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -267,75 +203,83 @@ actual closed channel.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_handler.js.html">channels/src/modules/channel/handler.js</a>,
+				 <a href="channels_src_modules_channel_handler.js.html#sunlight-1-line-52">line 52</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+        
+            
+<hr>
+<dt class="name" id=".DEFAULT">
+    <h4 id=".DEFAULT"><span class="type-signature">&lt;static, constant> </span>DEFAULT<span class="type-signature"> :Symbol</span></h4>
 
-
-<div class="description usertext">
-    <p>The name of the channel returned from <code>await <a href="module-chanko_channels.html#.select">select</a></code> or sent to the callback in
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The name of the channel returned from <code>await <a href="module-chanko_channels.html#.select">select</a></code> or sent to the callback in
 <code><a href="module-chanko_channels.html#.selectAsync">selectAsync</a></code> when the default is
 returned as its value.</p>
 <p>This only happens when an <code><a href="module-chanko_channels.html#.select">select</a> / <a href="module-chanko_channels.html#.selectAsync">selectAsync</a></code> call is performed,
 all operations are initially blocking, and a <code>default</code> option is sent. The
 immediate response in that situation is <code>{ value: options.default, channel: DEFAULT }</code>.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
 
+            </li>
+        </ul>
+    
 
-
-
-
-
-        
-            
-<h4 class="name" id=".EMPTY"><span class="type-signature">(static, constant) </span>EMPTY<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
+    
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_queue.js.html">channels/src/modules/queue.js</a>, <a href="channels_src_modules_queue.js.html#line46">line 46</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -345,368 +289,419 @@ immediate response in that situation is <code>{ value: options.default, channel:
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-25">line 25</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+        
+            
+<hr>
+<dt class="name" id=".EMPTY">
+    <h4 id=".EMPTY"><span class="type-signature">&lt;static, constant> </span>EMPTY<span class="type-signature"> :Symbol</span></h4>
 
-
-<div class="description usertext">
-    <p>The value returned when a queue is read when it's empty.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The value returned when a queue is read when it's empty.</p>
 <p>This special value is used because <code>null</code> and <code>undefined</code> are possible
 legitimate values that can be stored in a queue. Another option is to use
 some kind of <code>Maybe</code> or <code>Option</code> type, but that requires more effort on the
 part of the end user to interface with.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
 
-
-
-
-
-
-        
-            
-<h4 class="name" id=".MESSAGE_CHANNEL"><span class="type-signature">(static, constant) </span>MESSAGE_CHANNEL<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>, <a href="channels_src_modules_dispatcher.js.html#line78">line 78</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-chanko_channels.html#.config">config</a></li>
+            </li>
         </ul>
-    </dd>
     
 
     
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_queue.js.html">channels/src/modules/queue.js</a>,
+				 <a href="channels_src_modules_queue.js.html#sunlight-1-line-46">line 46</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+        
+            
+<hr>
+<dt class="name" id=".MESSAGE_CHANNEL">
+    <h4 id=".MESSAGE_CHANNEL"><span class="type-signature">&lt;static, constant> </span>MESSAGE_CHANNEL<span class="type-signature"> :Symbol</span></h4>
 
-
-<div class="description usertext">
-    <p>The dispatch method option indicating that a <code>MessageChannel</code> should be used
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The dispatch method option indicating that a <code>MessageChannel</code> should be used
 to dispatch tasks.</p>
 <p>For environments that don't support <code>MessageChannel</code>, this falls back to
 <code><a href="module-chanko_channels.html#.SET_TIMEOUT">SET_TIMEOUT</a></code>.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
 
-
-
-
-
-
-        
-            
-<h4 class="name" id=".SET_IMMEDIATE"><span class="type-signature">(static, constant) </span>SET_IMMEDIATE<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>, <a href="channels_src_modules_dispatcher.js.html#line65">line 65</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-chanko_channels.html#.config">config</a></li>
+            </li>
         </ul>
-    </dd>
     
 
     
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>,
+				 <a href="channels_src_modules_dispatcher.js.html#sunlight-1-line-78">line 78</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="module-chanko_channels.html#.config">config</a></li>
+			</ul>
+	</dd>
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+        
+            
+<hr>
+<dt class="name" id=".SET_IMMEDIATE">
+    <h4 id=".SET_IMMEDIATE"><span class="type-signature">&lt;static, constant> </span>SET_IMMEDIATE<span class="type-signature"> :Symbol</span></h4>
 
-
-<div class="description usertext">
-    <p>The dispatch method option indicating that <code>setImmediate</code> should be used to
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The dispatch method option indicating that <code>setImmediate</code> should be used to
 dispatch tasks.</p>
 <p>This is the default option. For environments that don't support
 <code>setImmediate</code>, this falls back to
 <code><a href="module-chanko_channels.html#.MESSAGE_CHANNEL">MESSAGE_CHANNEL</a></code>.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
 
-
-
-
-
-
-        
-            
-<h4 class="name" id=".SET_TIMEOUT"><span class="type-signature">(static, constant) </span>SET_TIMEOUT<span class="type-signature"> :Symbol</span></h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>, <a href="channels_src_modules_dispatcher.js.html#line91">line 91</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-chanko_channels.html#.config">config</a></li>
+            </li>
         </ul>
-    </dd>
     
 
     
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>,
+				 <a href="channels_src_modules_dispatcher.js.html#sunlight-1-line-65">line 65</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="module-chanko_channels.html#.config">config</a></li>
+			</ul>
+	</dd>
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+        
+            
+<hr>
+<dt class="name" id=".SET_TIMEOUT">
+    <h4 id=".SET_TIMEOUT"><span class="type-signature">&lt;static, constant> </span>SET_TIMEOUT<span class="type-signature"> :Symbol</span></h4>
 
-
-<div class="description usertext">
-    <p>The dispatch method option indicating that <code>setTimeout</code> should be used to
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The dispatch method option indicating that <code>setTimeout</code> should be used to
 dispatch tasks.</p>
 <p>This method is always available, but it's also always less efficient than any
 other method, so it should be used as a last resort.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type">Symbol</span>
 
 
-        </li>
-    </ul>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>,
+				 <a href="channels_src_modules_dispatcher.js.html#sunlight-1-line-91">line 91</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="module-chanko_channels.html#.config">config</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
 
 
+    
+</dd>
 
-        
+        </dl>
     
 
     
         <h3 class="subsection-title">Methods</h3>
 
-        
+        <dl>
             
+<hr>
+<dt>
+    <h4 class="name" id=".chan"><span class="type-signature">&lt;static> </span>chan( [buffer] [, options])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".chan"><span class="type-signature">(static) </span>chan<span class="signature">(buffer<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line309">line 309</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates and returns a new channel.</p>
+    <div class="description">
+        <p>Creates and returns a new channel.</p>
 <p>By default this channel will be a simple unbuffered, untransformed channel,
 but that can be changed through options. A channel does not have any
 externally useful functions. It exists largely to be passed into
@@ -737,22 +732,19 @@ handler. This is a function that expects to receive an error object as a
 parameter and can return a value that is then put onto the channel. If this
 value is <code><a href="module-chanko_channels.html#.CLOSED">CLOSED</a></code>, then no value will
 be put onto the channel upon handler completion.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -762,7 +754,7 @@ be put onto the channel upon handler completion.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -786,6 +778,7 @@ be put onto the channel upon handler completion.</p>
 |
 
 <span class="param-type"><a href="module-chanko_channels.html#.Buffer">module:chanko/channels.Buffer</a></span>
+
 
 
             
@@ -827,6 +820,7 @@ which case it will be buffered with a size 1
 <span class="param-type">Object</span>
 
 
+
             
             </td>
 
@@ -846,10 +840,10 @@ which case it will be buffered with a size 1
 
             <td class="description last"><p>A set of options for configuring the channel's
 queue.</p>
-                <h6>Properties</h6>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -859,7 +853,7 @@ queue.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -882,6 +876,7 @@ queue.</p>
             
                 
 <span class="param-type"><a href="module-chanko_channels.html#.Transducer">module:chanko/channels.Transducer</a></span>
+
 
 
             
@@ -926,6 +921,7 @@ will be thrown.</p></td>
 <span class="param-type"><a href="module-chanko_channels.html#.ExceptionHandler">module:chanko/channels.ExceptionHandler</a></span>
 
 
+
             
             </td>
 
@@ -968,6 +964,7 @@ channel when the handler finishes running.</p></td>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -986,7 +983,7 @@ channel when the handler finishes running.</p></td>
             
                 <td class="default">
                 
-                    <code>64</code>
+                    64
                 
                 </td>
             
@@ -1014,6 +1011,7 @@ and is best left alone.</p></td>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -1032,7 +1030,7 @@ and is best left alone.</p></td>
             
                 <td class="default">
                 
-                    <code>1024</code>
+                    1024
                 
                 </td>
             
@@ -1053,6 +1051,7 @@ accidentally eating up all of the available memory.</p></td>
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -1092,31 +1091,79 @@ milliseconds.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-309">line 309</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new channel.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -1125,90 +1172,45 @@ milliseconds.</p></td>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".channel"><span class="type-signature">&lt;static> </span>channel(result)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".channel"><span class="type-signature">(static) </span>channel<span class="signature">(result)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line308">line 308</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>A convenience function to read the channel out of a select result. This
+    <div class="description">
+        <p>A convenience function to read the channel out of a select result. This
 function is not necessary - after all, it's absolutely as correct to simply
 use <code>result.channel</code> instead of <code>channel(result)</code>, but it's provided for
 consistency with the rest of the function-centric API.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1239,6 +1241,7 @@ consistency with the rest of the function-centric API.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.SelectResult">module:chanko/channels.SelectResult</a></span>
 
 
+
             
             </td>
 
@@ -1254,24 +1257,72 @@ select operation.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-308">line 308</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>The channel upon which the select
 operation completed.</p>
@@ -1279,7 +1330,7 @@ operation completed.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -1288,71 +1339,29 @@ operation completed.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".close"><span class="type-signature">&lt;static> </span>close(channel)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".close"><span class="type-signature">(static) </span>close<span class="signature">(channel)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line622">line 622</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Closes the channel, if it isn't already closed. This immediately returns any
+    <div class="description">
+        <p>Closes the channel, if it isn't already closed. This immediately returns any
 buffered values to pending receives. If there are no buffered values (or if
 they've already been taken by other receives), then all of the rest of the
 receives are completed with the value of
@@ -1363,22 +1372,19 @@ all of the pending receives have been handled. The channel will still provide
 those values to any future receives, though no new values may be added to the
 channel. Once the buffer is depleted, any future receives will return
 <code><a href="module-chanko_channels.html#.CLOSED">CLOSED</a></code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1409,6 +1415,7 @@ channel. Once the buffer is depleted, any future receives will return
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
             
             </td>
 
@@ -1423,48 +1430,17 @@ channel. Once the buffer is depleted, any future receives will return
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
     
 
-    <h4 class="name" id=".config"><span class="type-signature">(static) </span>config<span class="signature">(opts)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.DispatcherConfig">module:chanko/channels.DispatcherConfig</a>}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>, <a href="channels_src_modules_dispatcher.js.html#line269">line 269</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -1474,31 +1450,66 @@ channel. Once the buffer is depleted, any future receives will return
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-622">line 622</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
-<div class="description usertext">
-    <p>Sets one or more of the dispatcher configuration options.</p>
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".config"><span class="type-signature">&lt;static> </span>config(opts)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Sets one or more of the dispatcher configuration options.</p>
 <p>This is advanced setting for the dispatcher that is responsible for queueing
 up channel operations and processes. It is likely that this function will
 never need to be called in normal operation.</p>
@@ -1506,22 +1517,19 @@ never need to be called in normal operation.</p>
 <code>config</code>, then the option is set to the value sent in. Properties that aren't
 any of these options are ignored, and any of these options that do not appear
 in the passed object are left with their current values.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1552,6 +1560,7 @@ in the passed object are left with their current values.</p>
 <span class="param-type">Object</span>
 
 
+
             
             </td>
 
@@ -1561,10 +1570,10 @@ in the passed object are left with their current values.</p>
 
             <td class="description last"><p>A mapping of options to their new values. Extra values
 (properties that are not options) are ignored.</p>
-                <h6>Properties</h6>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1574,7 +1583,7 @@ in the passed object are left with their current values.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -1595,6 +1604,7 @@ in the passed object are left with their current values.</p>
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -1632,6 +1642,7 @@ completes.</p></td>
             
                 
 <span class="param-type">Symbol</span>
+
 
 
             
@@ -1673,24 +1684,72 @@ fall back to the next method that is available.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>,
+				 <a href="channels_src_modules_dispatcher.js.html#sunlight-1-line-269">line 269</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>The configuration
 settings for the dispatcher after any new values have been set.</p>
@@ -1698,7 +1757,7 @@ settings for the dispatcher after any new values have been set.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -1707,93 +1766,48 @@ settings for the dispatcher after any new values have been set.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.DispatcherConfig">module:chanko/channels.DispatcherConfig</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".dropping"><span class="type-signature">&lt;static> </span>dropping(size)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".dropping"><span class="type-signature">(static) </span>dropping<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.DroppingBuffer">module:chanko/channels.DroppingBuffer</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line174">line 174</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates a dropping buffer of the specified capacity.</p>
+    <div class="description">
+        <p>Creates a dropping buffer of the specified capacity.</p>
 <p>A dropping buffer silently drops the item being added if the buffer is
 already at capacity. Since adding a new item will always 'succeed' (even if
 it succeeds by just ignoring the add), it is never considered full and
 therefore a put to a channel buffered by a dropping buffer never blocks.</p>
 <p>This buffer is passed to <code><a href="module-chanko_channels.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1822,6 +1836,7 @@ create a buffered channel. It is not meant to be used directly.</p>
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -1839,24 +1854,72 @@ newest items are dropped on add.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-174">line 174</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new dropping buffer of the
 specified capacity.</p>
@@ -1864,7 +1927,7 @@ specified capacity.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -1873,93 +1936,48 @@ specified capacity.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.DroppingBuffer">module:chanko/channels.DroppingBuffer</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".fixed"><span class="type-signature">&lt;static> </span>fixed(size)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".fixed"><span class="type-signature">(static) </span>fixed<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.FixedBuffer">module:chanko/channels.FixedBuffer</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line108">line 108</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates a fixed buffer of the specified capacity.</p>
+    <div class="description">
+        <p>Creates a fixed buffer of the specified capacity.</p>
 <p>A fixed buffer is a 'normal' buffer, one that stores and returns items on
 demand. While it is capable of being over-filled, that ability is not used in
 Chanko. A buffer that is full will cause the next put to its channel to block
 until at least one item is removed from the buffer.</p>
 <p>This buffer is passed to <code><a href="module-chanko_channels.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1990,6 +2008,7 @@ create a buffered channel. It is not meant to be used directly.</p>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -2005,24 +2024,72 @@ it's full.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-108">line 108</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new fixed buffer of the
 specified capacity.</p>
@@ -2030,7 +2097,7 @@ specified capacity.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2039,71 +2106,29 @@ specified capacity.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.FixedBuffer">module:chanko/channels.FixedBuffer</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".go"><span class="type-signature">&lt;static> </span>go(fn, args)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".go"><span class="type-signature">(static) </span>go<span class="signature">(fn, &hellip;args)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>, <a href="channels_src_modules_process.js.html#line82">line 82</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Invokes an async function acting as a process.</p>
+    <div class="description">
+        <p>Invokes an async function acting as a process.</p>
 <p>This is purely a convenience function, driven by the fact that it's necessary
 to use an IIFE to invoke an anonymous async function, and that's not very
 aesthetically pleasing. It does no more than invoke the passed function, but
@@ -2121,22 +2146,19 @@ doesn't benefit from this convenience.</p>
   ... do some process stuff here ...
 });
 </code></pre>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2146,7 +2168,7 @@ doesn't benefit from this convenience.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -2167,6 +2189,7 @@ doesn't benefit from this convenience.</p>
             
                 
 <span class="param-type">function</span>
+
 
 
             
@@ -2200,6 +2223,7 @@ doesn't benefit from this convenience.</p>
 <span class="param-type">*</span>
 
 
+
             
             </td>
 
@@ -2225,31 +2249,79 @@ invoked.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>,
+				 <a href="channels_src_modules_process.js.html#sunlight-1-line-82">line 82</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>The promise returned by the async function.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2258,90 +2330,45 @@ invoked.</p></td>
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".isBuffered"><span class="type-signature">&lt;static> </span>isBuffered(channel)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".isBuffered"><span class="type-signature">(static) </span>isBuffered<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line414">line 414</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Determines whether a channel is buffered.</p>
+    <div class="description">
+        <p>Determines whether a channel is buffered.</p>
 <p>A channel is buffered if a buffer or a number was passed as the first
 argument of <code><a href="module-chanko_channels.html#.chan">chan</a></code> or if a transducer is a
 part of the channel.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2372,6 +2399,7 @@ part of the channel.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
             
             </td>
 
@@ -2386,24 +2414,72 @@ part of the channel.</p>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-414">line 414</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>Either <code>true</code> if the channel is buffered or <code>false</code> if it
 isn't.</p>
@@ -2411,7 +2487,7 @@ isn't.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2420,90 +2496,45 @@ isn't.</p>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".isClosed"><span class="type-signature">&lt;static> </span>isClosed(channel)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".isClosed"><span class="type-signature">(static) </span>isClosed<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line398">line 398</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Determines whether a channel is closed.</p>
+    <div class="description">
+        <p>Determines whether a channel is closed.</p>
 <p>A closed channel will cause any <code>send</code> operation to return <code>false</code> and any
 <code>recv</code> operation to return any buffered items that remain, followed by
 <code><a href="module-chanko_channels.html#.CLOSED">CLOSED</a></code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2534,6 +2565,7 @@ isn't.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
             
             </td>
 
@@ -2548,24 +2580,72 @@ isn't.</p>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-398">line 398</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>Either <code>true</code> if the channel is closed or <code>false</code> if it
 isn't.</p>
@@ -2573,7 +2653,7 @@ isn't.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2582,91 +2662,46 @@ isn't.</p>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".isTimed"><span class="type-signature">&lt;static> </span>isTimed(channel)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".isTimed"><span class="type-signature">(static) </span>isTimed<span class="signature">(channel)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line431">line 431</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Determines whether a channel is timed.</p>
+    <div class="description">
+        <p>Determines whether a channel is timed.</p>
 <p>A channel is timed if it was created either with the <code>timer</code> option of
 <code><a href="module-chanko_channels.html#.chan">chan</a></code> or with the
 <code><a href="module-chanko_channels.html#.timedChan">timedChan</a></code> function. It will
 automatically close after a certain period of time.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2697,6 +2732,7 @@ automatically close after a certain period of time.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
             
             </td>
 
@@ -2711,24 +2747,72 @@ automatically close after a certain period of time.</p>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-431">line 431</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>Either <code>true</code> if the channel is timed or <code>false</code> if it
 isn't.</p>
@@ -2736,7 +2820,7 @@ isn't.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2745,89 +2829,44 @@ isn't.</p>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".join"><span class="type-signature">&lt;static> </span>join(fns)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".join"><span class="type-signature">(static) </span>join<span class="signature">(&hellip;fns)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>, <a href="channels_src_modules_process.js.html#line97">line 97</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Joins all of the provided processes into a single process, returning a
+    <div class="description">
+        <p>Joins all of the provided processes into a single process, returning a
 promise that wraps all of the individual processes' promises. Putting this in
 an <code>await</code> statement will block until all of the processes complete.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2837,7 +2876,7 @@ an <code>await</code> statement will block until all of the processes complete.<
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -2858,6 +2897,7 @@ an <code>await</code> statement will block until all of the processes complete.<
             
                 
 <span class="param-type">function</span>
+
 
 
             
@@ -2885,24 +2925,72 @@ being waited for.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>,
+				 <a href="channels_src_modules_process.js.html#sunlight-1-line-97">line 97</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that resolves when all of the processes promises
 resolve.</p>
@@ -2910,7 +2998,7 @@ resolve.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -2919,71 +3007,29 @@ resolve.</p>
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".recv"><span class="type-signature">&lt;static> </span>recv()</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".recv"><span class="type-signature">(static) </span>recv<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line554">line 554</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Receives a value from this channel, blocking the async function until a
+    <div class="description">
+        <p>Receives a value from this channel, blocking the async function until a
 value becomes available to be received (or until the channel closes with
 no more values on it to be received).</p>
 <p>This function <em>must</em> be called from within an async function and as part
@@ -2993,35 +3039,80 @@ expression evaluates to the actual value that was received. If the target
 channel closed, then all of the values already placed onto it are
 resolved by <code>receive</code> as normal, and once no more values are available,
 the special value <code><a href="module-chanko_channels.html#.CLOSED">CLOSED</a></code> is returned.</p>
-</div>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-554">line 554</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that will resolve to the value received from
 the channel once that receive is completed. If the channel closes
@@ -3031,7 +3122,7 @@ without a value being made available, this will resolve to
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -3040,71 +3131,29 @@ without a value being made available, this will resolve to
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".recvAsync"><span class="type-signature">&lt;static> </span>recvAsync( [callback])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".recvAsync"><span class="type-signature">(static) </span>recvAsync<span class="signature">(callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line497">line 497</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Receives a value from this channel without blocking.</p>
+    <div class="description">
+        <p>Receives a value from this channel without blocking.</p>
 <p>This means that a call to <code>receiveAsync</code> does not go into an <code>await</code>
 expression, and it is not necessary to use it inside a async function. Rather
 than blocking until a value becomes available on the channel to be received,
@@ -3119,22 +3168,19 @@ doesn't block the function.</p>
 parameter is the value received from the channel (either a value that was
 sent or <code><a href="module-chanko_channels.html#.CLOSED">CLOSED</a></code>). If the callback
 isn't present, nothing will happen after the value is taken.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3144,7 +3190,7 @@ isn't present, nothing will happen after the value is taken.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -3165,6 +3211,7 @@ isn't present, nothing will happen after the value is taken.</p>
             
                 
 <span class="param-type"><a href="module-chanko_channels.html#.OpCallback">module:chanko/channels.OpCallback</a></span>
+
 
 
             
@@ -3195,48 +3242,17 @@ value that is received from the channel.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
     
 
-    <h4 class="name" id=".recvOrThrow"><span class="type-signature">(static) </span>recvOrThrow<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line593">line 593</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -3246,31 +3262,66 @@ value that is received from the channel.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-497">line 497</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
-<div class="description usertext">
-    <p>Receives a value from a channel, blocking the async function until a value
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".recvOrThrow"><span class="type-signature">&lt;static> </span>recvOrThrow()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Receives a value from a channel, blocking the async function until a value
 becomes available to be received (or until the channel closes with no more
 values on it to be received). If the received value is an error object, that
 error is thrown at that point.</p>
@@ -3288,35 +3339,80 @@ if (Error.prototype.isPrototypeOf(value)) {
   throw value;
 }
 </code></pre>
-</div>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-593">line 593</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that will resolve to the value taken from the
 channel once that take is completed. If the channel closes without a
@@ -3328,7 +3424,7 @@ reason.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -3337,71 +3433,29 @@ reason.</p>
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".select"><span class="type-signature">&lt;static> </span>select(operations [, options])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".select"><span class="type-signature">(static) </span>select<span class="signature">(operations, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="module-chanko_channels.html#.SelectResult">module:chanko/channels.SelectResult</a>>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line275">line 275</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Completes the first operation among the provided operations that comes
+    <div class="description">
+        <p>Completes the first operation among the provided operations that comes
 available, blocking the process until then.</p>
 <p><code>operations</code> is an array whose elements must be channels or two-element
 sub-arrays of channels and values, in any combination. An operation that is a
@@ -3429,22 +3483,19 @@ This is only done if there is a <code>default</code> property in the options obj
 the value of that property becomes the value returned by <code>await select</code>. The
 channel is set to the special value
 <code><a href="module-chanko_channels.html#.DEFAULT">DEFAULT</a></code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3454,7 +3505,7 @@ channel is set to the special value
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -3477,6 +3528,7 @@ channel is set to the special value
             
                 
 <span class="param-type">Array.&lt;object></span>
+
 
 
             
@@ -3518,6 +3570,7 @@ channel followed by a value (which is the channel and value to be sent).</p></td
 <span class="param-type">object</span>
 
 
+
             
             </td>
 
@@ -3536,17 +3589,17 @@ channel followed by a value (which is the channel and value to be sent).</p></td
             
                 <td class="default">
                 
-                    <code>{}</code>
+                    {}
                 
                 </td>
             
 
             <td class="description last"><p>An optional object which can change the behavior
 of <code>select</code> through two properties.</p>
-                <h6>Properties</h6>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3556,7 +3609,7 @@ of <code>select</code> through two properties.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -3581,6 +3634,7 @@ of <code>select</code> through two properties.</p>
 <span class="param-type">boolean</span>
 
 
+
             
             </td>
 
@@ -3599,7 +3653,7 @@ of <code>select</code> through two properties.</p>
             
                 <td class="default">
                 
-                    <code>false</code>
+                    false
                 
                 </td>
             
@@ -3622,6 +3676,7 @@ priorty of operation completion is random.</p></td>
             
                 
 <span class="param-type">*</span>
+
 
 
             
@@ -3664,24 +3719,72 @@ value and channel will be the ones returned.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-275">line 275</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that will
 resolve to an object of two properties: <code>value</code> will contain the value
@@ -3694,7 +3797,7 @@ be a reference to the channel that completed the operation to allow
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -3703,71 +3806,29 @@ be a reference to the channel that completed the operation to allow
 <span class="param-type">Promise.&lt;<a href="module-chanko_channels.html#.SelectResult">module:chanko/channels.SelectResult</a>></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".selectAsync"><span class="type-signature">&lt;static> </span>selectAsync(operations, callback [, options])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".selectAsync"><span class="type-signature">(static) </span>selectAsync<span class="signature">(operations, callback, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line153">line 153</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Completes the first operation among the provided operations that comes
+    <div class="description">
+        <p>Completes the first operation among the provided operations that comes
 available, without blocking.</p>
 <p>This means that a call to <code>selectAsync</code> does not go into an <code>await</code>
 expression, and it is not necessary to use it inside a process. Rather than
@@ -3783,22 +3844,19 @@ of that value onto that channel. All options that are available to
 <code><a href="module-chanko_channels.html#.select">select</a></code> are also available here.</p>
 <p>The callback is a function of one parameter, which in this case is an object
 with <code>value</code> and <code>channel</code> properties.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3808,7 +3866,7 @@ with <code>value</code> and <code>channel</code> properties.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -3831,6 +3889,7 @@ with <code>value</code> and <code>channel</code> properties.</p>
             
                 
 <span class="param-type">Array.&lt;Object></span>
+
 
 
             
@@ -3872,6 +3931,7 @@ channel followed by a value (which is the channel and value to be sent).</p></td
 <span class="param-type"><a href="module-chanko_channels.html#.SelectCallback">module:chanko/channels.SelectCallback</a></span>
 
 
+
             
             </td>
 
@@ -3908,6 +3968,7 @@ invoked when one of the operations completes.</p></td>
 <span class="param-type">Object</span>
 
 
+
             
             </td>
 
@@ -3926,17 +3987,17 @@ invoked when one of the operations completes.</p></td>
             
                 <td class="default">
                 
-                    <code>{}</code>
+                    {}
                 
                 </td>
             
 
             <td class="description last"><p>An optional object which can change the behavior
 of <code>selectAsync</code> through two properties.</p>
-                <h6>Properties</h6>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3946,7 +4007,7 @@ of <code>selectAsync</code> through two properties.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -3971,6 +4032,7 @@ of <code>selectAsync</code> through two properties.</p>
 <span class="param-type">boolean</span>
 
 
+
             
             </td>
 
@@ -3989,7 +4051,7 @@ of <code>selectAsync</code> through two properties.</p>
             
                 <td class="default">
                 
-                    <code>false</code>
+                    false
                 
                 </td>
             
@@ -4012,6 +4074,7 @@ priorty of operation completion is random.</p></td>
             
                 
 <span class="param-type">*</span>
+
 
 
             
@@ -4054,48 +4117,17 @@ completes and that value and channel will be the ones returned.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
     
 
-    <h4 class="name" id=".send"><span class="type-signature">(static) </span>send<span class="signature">(value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line528">line 528</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -4105,31 +4137,66 @@ completes and that value and channel will be the ones returned.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-153">line 153</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
-<div class="description usertext">
-    <p>Sends a value to a channel, blocking the async function until that value is
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".send"><span class="type-signature">&lt;static> </span>send( [value])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Sends a value to a channel, blocking the async function until that value is
 received from the channel by a different function (or until the channel
 closes).</p>
 <p>A value is always sent to the channel, but if that value isn't specified by
@@ -4143,22 +4210,19 @@ evaluates to a status boolean that indicates what caused the function to
 unblock. That value is <code>true</code> if the sent value was successfully taken by
 another process, or <code>false</code> if the unblocking happened because the target
 channel closed.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -4168,7 +4232,7 @@ channel closed.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -4189,6 +4253,7 @@ channel closed.</p>
             
                 
 <span class="param-type">*</span>
+
 
 
             
@@ -4215,24 +4280,72 @@ channel closed.</p>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-528">line 528</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that will resolve to <code>true</code> or <code>false</code>
 depending on whether the put value is actually taken.</p>
@@ -4240,7 +4353,7 @@ depending on whether the put value is actually taken.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -4249,71 +4362,29 @@ depending on whether the put value is actually taken.</p>
 <span class="param-type">Promise.&lt;boolean></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".sendAsync"><span class="type-signature">&lt;static> </span>sendAsync( [value] [, callback])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".sendAsync"><span class="type-signature">(static) </span>sendAsync<span class="signature">(value<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line463">line 463</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Sends a value to this channel without blocking.</p>
+    <div class="description">
+        <p>Sends a value to this channel without blocking.</p>
 <p>This means that a call to <code>sendAsync</code> does not go into an <code>await</code> expression,
 and it is not necessary to use it inside a async function. Rather than
 blocking until the sent value is taken by another async function, this one
@@ -4329,22 +4400,19 @@ from the send.</p>
 the callback is the same as what is supplied to <code>await send</code>: <code>true</code> if the
 value was taken, or <code>false</code> if the channel was closed. If the callback isn't
 present, nothing will happen after the value is taken.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -4354,7 +4422,7 @@ present, nothing will happen after the value is taken.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -4375,6 +4443,7 @@ present, nothing will happen after the value is taken.</p>
             
                 
 <span class="param-type">*</span>
+
 
 
             
@@ -4410,6 +4479,7 @@ present, nothing will happen after the value is taken.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.OpCallback">module:chanko/channels.OpCallback</a></span>
 
 
+
             
             </td>
 
@@ -4437,48 +4507,17 @@ in the former case and <code>false</code> in the latter.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
     
 
-    <h4 class="name" id=".sleep"><span class="type-signature">(static) </span>sleep<span class="signature">(delay<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>, <a href="channels_src_modules_process.js.html#line44">line 44</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -4488,31 +4527,66 @@ in the former case and <code>false</code> in the latter.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-463">line 463</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
-<div class="description usertext">
-    <p>Blocks the process for the specified time (in milliseconds) and then unblocks
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".sleep"><span class="type-signature">&lt;static> </span>sleep( [delay])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Blocks the process for the specified time (in milliseconds) and then unblocks
 it.</p>
 <p>This implements a delay, but one that's superior to other kinds of delays
 (<code>setTimeout</code>, etc.) because it blocks the process and allows the dispatcher
@@ -4524,22 +4598,19 @@ an <code>await</code> expression.</p>
 <p>When this function completes and its process unblocks, the <code>await</code> expression
 doesn't take on any meaningful value. The purpose of this function is simply
 to delay, not to communicate any data.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -4549,7 +4620,7 @@ to delay, not to communicate any data.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -4574,6 +4645,7 @@ to delay, not to communicate any data.</p>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -4592,7 +4664,7 @@ to delay, not to communicate any data.</p>
             
                 <td class="default">
                 
-                    <code>0</code>
+                    0
                 
                 </td>
             
@@ -4608,24 +4680,72 @@ again.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_process.js.html">channels/src/modules/process.js</a>,
+				 <a href="channels_src_modules_process.js.html#sunlight-1-line-44">line 44</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A promise that resolves with no meaningful result when the
 time has elapsed.</p>
@@ -4633,7 +4753,7 @@ time has elapsed.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -4642,93 +4762,48 @@ time has elapsed.</p>
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".sliding"><span class="type-signature">&lt;static> </span>sliding(size)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".sliding"><span class="type-signature">(static) </span>sliding<span class="signature">(size)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.SlidingBuffer">module:chanko/channels.SlidingBuffer</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line243">line 243</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates a sliding buffer of the specified capacity.</p>
+    <div class="description">
+        <p>Creates a sliding buffer of the specified capacity.</p>
 <p>A sliding buffer drops the first-added (oldest) item already in the buffer if
 a new item is added when the buffer is already at capacity. Since it's always
 capable of having items added to it, it's never considered full, and
 therefore a put to a channel buffered by a sliding buffer never blocks.</p>
 <p>This buffer is passed to <code><a href="module-chanko_channels.html#.chan">chan</a></code>, etc. to
 create a buffered channel. It is not meant to be used directly.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -4759,6 +4834,7 @@ create a buffered channel. It is not meant to be used directly.</p>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -4774,24 +4850,72 @@ oldest items are dropped on add.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-243">line 243</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new sliding buffer of the
 specified capacity.</p>
@@ -4799,7 +4923,7 @@ specified capacity.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -4808,88 +4932,43 @@ specified capacity.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.SlidingBuffer">module:chanko/channels.SlidingBuffer</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".timedChan"><span class="type-signature">&lt;static> </span>timedChan(delay)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".timedChan"><span class="type-signature">(static) </span>timedChan<span class="signature">(delay)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line362">line 362</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates an unbuffered, timed channel. This channel closes automatically after
+    <div class="description">
+        <p>Creates an unbuffered, timed channel. This channel closes automatically after
 the supplied number of milliseconds and is the equivalent of calling <code>chan(0, { timer: delay })</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -4922,6 +5001,7 @@ the supplied number of milliseconds and is the equivalent of calling <code>chan(
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -4930,7 +5010,7 @@ the supplied number of milliseconds and is the equivalent of calling <code>chan(
             
                 <td class="default">
                 
-                    <code>0</code>
+                    0
                 
                 </td>
             
@@ -4943,31 +5023,79 @@ that it will be closed automatically.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-362">line 362</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new timed channel.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -4976,90 +5104,45 @@ that it will be closed automatically.</p></td>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".transChan"><span class="type-signature">&lt;static> </span>transChan(transducer [, handler])</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".transChan"><span class="type-signature">(static) </span>transChan<span class="signature">(transducer, handler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>, <a href="channels_src_modules_channel_index.js.html#line382">line 382</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Creates a buffered channel with a transducer and optional error handler. The
+    <div class="description">
+        <p>Creates a buffered channel with a transducer and optional error handler. The
 buffer for this channel is a
 <code><a href="module-chanko_channels.html#.FixedBuffer">FixedBuffer</a></code> of size 1. This is
 the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -5069,7 +5152,7 @@ the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -5090,6 +5173,7 @@ the equivalent of <code>chan(1, { transducer, handler })</code>.</p>
             
                 
 <span class="param-type"><a href="module-chanko_channels.html#.Transducer">module:chanko/channels.Transducer</a></span>
+
 
 
             
@@ -5124,6 +5208,7 @@ transform values on the new channel.</p></td>
 <span class="param-type"><a href="module-chanko_channels.html#.ExceptionHandler">module:chanko/channels.ExceptionHandler</a></span>
 
 
+
             
             </td>
 
@@ -5152,31 +5237,79 @@ value that errored.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_index.js.html">channels/src/modules/channel/index.js</a>,
+				 <a href="channels_src_modules_channel_index.js.html#sunlight-1-line-382">line 382</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new channel with a transducer.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -5185,90 +5318,45 @@ value that errored.</p></td>
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id=".value"><span class="type-signature">&lt;static> </span>value(result)</h4>
+    
+    
+</dt>
+<dd>
 
     
-
-    <h4 class="name" id=".value"><span class="type-signature">(static) </span>value<span class="signature">(result)</span><span class="type-signature"> &rarr; {*}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line292">line 292</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>A convenience function to read the value out of a select result. This
+    <div class="description">
+        <p>A convenience function to read the value out of a select result. This
 function is not necessary - after all, it's absolutely as correct to simply
 use <code>result.value</code> instead of <code>value(result)</code>, but it's provided for
 consistency with the rest of the function-centric API.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -5299,6 +5387,7 @@ consistency with the rest of the function-centric API.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.SelectResult">module:chanko/channels.SelectResult</a></span>
 
 
+
             
             </td>
 
@@ -5314,31 +5403,79 @@ select operation.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-292">line 292</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>The value provided by the select operation.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -5347,84 +5484,45 @@ select operation.</p></td>
 <span class="param-type">*</span>
 
 
+
     </dd>
 </dl>
 
-    
-
-
 
         
+
+    
+</dd>
+
+        </dl>
     
 
     
         <h3 class="subsection-title">Type Definitions</h3>
 
-        
+        <dl>
                 
-<h4 class="name" id=".Buffer">Buffer</h4>
-
-
-
-
-
-<dl class="details">
+<hr>
+<dt class="name" id=".Buffer">
+    <h4 id=".Buffer">Buffer</h4>
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line19">line 19</a>
-    </li></ul></dd>
+</dt>
+<dd>
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>A buffer that stores values sent to a buffered channel until a process
+    <div class="description">
+        <p>A buffer that stores values sent to a buffered channel until a process
 receives them.</p>
 <p>Different buffer differ only in the way that they determine whether they are
 full and in what happens when a new value is added to a full buffer.</p>
-</div>
+    </div>
+    
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
 <span class="param-type"><a href="module-chanko_channels.html#.FixedBuffer">module:chanko/channels.FixedBuffer</a></span>
 |
 
@@ -5434,34 +5532,20 @@ full and in what happens when a new value is added to a full buffer.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.SlidingBuffer">module:chanko/channels.SlidingBuffer</a></span>
 
 
-        </li>
-    </ul>
 
+            </li>
+        </ul>
+    
 
-
-
-
-
-            
-                
-<h4 class="name" id=".Channel">Channel</h4>
-
-
-
-
-
+    
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_handler.js.html">channels/src/modules/channel/handler.js</a>, <a href="channels_src_modules_channel_handler.js.html#line164">line 164</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -5471,31 +5555,53 @@ full and in what happens when a new value is added to a full buffer.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-19">line 19</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt class="name" id=".Channel">
+    <h4 id=".Channel">Channel</h4>
 
-
-<div class="description usertext">
-    <p>A channel, used by processes to communicate with one another.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A channel, used by processes to communicate with one another.</p>
 <p>For each operation, the channel first tests to see if there's a corresponding
 operation already queued (i.e., if we're doing a <code>send</code> that there's a queued
 <code>recv</code> and vice versa). If there is, that corresponding operation is
@@ -5523,35 +5629,20 @@ thrown.</p>
 <code><a href="module-chanko_channels.html#.chan">chan</a></code>. However, this object is intended to
 be used as a value to pass to channel operation functions; it doesn't have
 any properties of interest to an end user.</p>
-</div>
+    </div>
+    
 
+    
 
-
-
-
-
-
-
-            
-                
-<h4 class="name" id=".DispatcherConfig">DispatcherConfig</h4>
-
-
-
-
-
+    
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>, <a href="channels_src_modules_dispatcher.js.html#line224">line 224</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -5561,32 +5652,80 @@ any properties of interest to an end user.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_handler.js.html">channels/src/modules/channel/handler.js</a>,
+				 <a href="channels_src_modules_channel_handler.js.html#sunlight-1-line-164">line 164</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id=".DispatcherConfig">
+    <h4 id=".DispatcherConfig">DispatcherConfig</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The configuration of the Chanko dispatcher. An object like this is returned
+from the <a href="module-chanko_channels.html#.config">module:chanko/channels.config</a> function, and it may also be
+passed to the same function (though each property is optional in that case).</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
 
     <h5 class="subsection-title">Properties:</h5>
 
-    
+    <dl>
 
-<table class="props">
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -5617,6 +5756,7 @@ any properties of interest to an end user.</p>
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -5641,6 +5781,7 @@ will run in a single batch.</p></td>
 <span class="param-type">Symbol</span>
 
 
+
             
             </td>
 
@@ -5655,51 +5796,15 @@ a separate line of execution.</p></td>
     
     </tbody>
 </table>
-
-
-
-
-
-
-<div class="description usertext">
-    <p>The configuration of the Chanko dispatcher. An object like this is returned
-from the <a href="module-chanko_channels.html#.config">module:chanko/channels.config</a> function, and it may also be
-passed to the same function (though each property is optional in that case).</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id=".DroppingBuffer">DroppingBuffer</h4>
-
-
-
-
-
-<dl class="details">
+</dl>
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line145">line 145</a>
-    </li></ul></dd>
-    
+
+	
+
+	
+
+	
 
     
 
@@ -5709,72 +5814,71 @@ passed to the same function (though each property is optional in that case).</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_dispatcher.js.html">channels/src/modules/dispatcher.js</a>,
+				 <a href="channels_src_modules_dispatcher.js.html#sunlight-1-line-224">line 224</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt class="name" id=".DroppingBuffer">
+    <h4 id=".DroppingBuffer">DroppingBuffer</h4>
 
-
-<div class="description usertext">
-    <p>A buffer implementation that drops newly added items when the buffer is full.</p>
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A buffer implementation that drops newly added items when the buffer is full.</p>
 <p>This dropping behavior is silent: the new item is simply not added to the
 queue. Note that this buffer is never <code>full</code> because it can always be added
 to without exceeding the size, even if that 'adding' doesn't result in a new
 item actually appearing in the buffer.</p>
-</div>
-
-
-
-
-
-
-
-
-            
-                
+    </div>
+    
 
     
 
-    <h4 class="name" id=".ExceptionHandler"><span class="type-signature"></span>ExceptionHandler<span class="signature">(err)</span><span class="type-signature"> &rarr; {*}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_index.js.html">channels/src/index.js</a>, <a href="channels_src_index.js.html#line46">line 46</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -5784,52 +5888,72 @@ item actually appearing in the buffer.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-145">line 145</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id=".ExceptionHandler"><span class="type-signature"></span>ExceptionHandler(err)</h4>
+    
+    
+</dt>
+<dd>
 
-
-<div class="description usertext">
-    <p>An error handling funciton. This is used to handle exceptions thrown in async
+    
+    <div class="description">
+        <p>An error handling funciton. This is used to handle exceptions thrown in async
 functions and in transducers. The return value of an exception handler is
 typically sent to a channel; if the exception happened within an async
 function, it will be sent to that function's output channel, and if the
 excpetion happened in a transducer, it will be sent to the channel to which
 the transducer is attached.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -5860,6 +5984,7 @@ the transducer is attached.</p>
 <span class="param-type">object</span>
 
 
+
             
             </td>
 
@@ -5875,31 +6000,79 @@ have to be handled.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_index.js.html">channels/src/index.js</a>,
+				 <a href="channels_src_index.js.html#sunlight-1-line-46">line 46</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A value decided by the handler that will be sent to a channel.</p>
 </div>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -5908,103 +6081,45 @@ have to be handled.</p></td>
 <span class="param-type">*</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
+</dd>
 
             
                 
-<h4 class="name" id=".FixedBuffer">FixedBuffer</h4>
-
-
-
-
-
-<dl class="details">
+<hr>
+<dt class="name" id=".FixedBuffer">
+    <h4 id=".FixedBuffer">FixedBuffer</h4>
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line80">line 80</a>
-    </li></ul></dd>
+</dt>
+<dd>
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>A buffer implementation that never discards buffered items when a new item is
+    <div class="description">
+        <p>A buffer implementation that never discards buffered items when a new item is
 added.</p>
 <p>This buffer has a concept of <em>full</em>, but it's a soft limit. If the size of
 the buffer is exceeded, added items are still stored.</p>
-</div>
-
-
-
-
-
-
-
-
-            
-                
+    </div>
+    
 
     
 
-    <h4 class="name" id=".OpCallback"><span class="type-signature"></span>OpCallback<span class="signature">(value)</span><span class="type-signature"></span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_index.js.html">channels/src/index.js</a>, <a href="channels_src_index.js.html#line61">line 61</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -6014,51 +6129,71 @@ the buffer is exceeded, added items are still stored.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-80">line 80</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id=".OpCallback"><span class="type-signature"></span>OpCallback(value)</h4>
+    
+    
+</dt>
+<dd>
 
-
-<div class="description usertext">
-    <p>A callback that's run when a non-blocking channel operation completes. The
+    
+    <div class="description">
+        <p>A callback that's run when a non-blocking channel operation completes. The
 value that this function receives is identical to what is returned by a
 blocking call: the value received from the channel for a <code>recv</code>, or <code>true</code> or
 <code>false</code> depending on the channel status for a <code>send</code>. Any return value from
 this callback is ignored.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -6089,6 +6224,7 @@ this callback is ignored.</p>
 <span class="param-type">*</span>
 
 
+
             
             </td>
 
@@ -6104,48 +6240,17 @@ not a value was successfully sent.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-                
-
     
 
-    <h4 class="name" id=".SelectCallback"><span class="type-signature"></span>SelectCallback<span class="signature">(data)</span><span class="type-signature"></span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_index.js.html">channels/src/index.js</a>, <a href="channels_src_index.js.html#line74">line 74</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -6155,52 +6260,84 @@ not a value was successfully sent.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_index.js.html">channels/src/index.js</a>,
+				 <a href="channels_src_index.js.html#sunlight-1-line-61">line 61</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
-<div class="description usertext">
-    <p>A callback that's run when a non-blocking <code>select</code> operation completes. The
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id=".SelectCallback"><span class="type-signature"></span>SelectCallback(data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>A callback that's run when a non-blocking <code>select</code> operation completes. The
 value that this function receives is an object with two properties: the value
 that the <code>select</code> operation completed with (either the value received from
 the channel in a receive operation, or <code>true</code> or <code>false</code> in a send
 operation), along with the channel where the operation actually happened. Any
 return value from this callback is ignored.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -6231,6 +6368,7 @@ return value from this callback is ignored.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.SelectResult">module:chanko/channels.SelectResult</a></span>
 
 
+
             
             </td>
 
@@ -6246,44 +6384,17 @@ select operation.</p></td>
     </tbody>
 </table>
 
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-                
-<h4 class="name" id=".SelectResult">SelectResult</h4>
-
-
-
-
-
+    
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>, <a href="channels_src_modules_channel_select.js.html#line81">line 81</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -6293,32 +6404,79 @@ select operation.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_index.js.html">channels/src/index.js</a>,
+				 <a href="channels_src_index.js.html#sunlight-1-line-74">line 74</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
-
-    <h5 class="subsection-title">Properties:</h5>
+    
 
     
 
-<table class="props">
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id=".SelectResult">
+    <h4 id=".SelectResult">SelectResult</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A result that comes from <code>select</code> operations.</p>
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -6349,6 +6507,7 @@ select operation.</p></td>
 <span class="param-type">*</span>
 
 
+
             
             </td>
 
@@ -6374,6 +6533,7 @@ the value received from the channel. If it resulted in a send, this is
 <span class="param-type"><a href="module-chanko_channels.html#.Channel">module:chanko/channels.Channel</a></span>
 
 
+
             
             </td>
 
@@ -6388,39 +6548,15 @@ selected operation happened.</p></td>
     
     </tbody>
 </table>
-
-
-
-
-
-
-<div class="description usertext">
-    <p>A result that comes from <code>select</code> operations.</p>
-</div>
-
-
-
-
-
-
-
-
-            
-                
-<h4 class="name" id=".SlidingBuffer">SlidingBuffer</h4>
-
-
-
-
-
-<dl class="details">
+</dl>
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>, <a href="channels_src_modules_buffer.js.html#line211">line 211</a>
-    </li></ul></dd>
-    
+
+	
+
+	
+
+	
 
     
 
@@ -6430,35 +6566,53 @@ selected operation happened.</p></td>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_channel_select.js.html">channels/src/modules/channel/select.js</a>,
+				 <a href="channels_src_modules_channel_select.js.html#sunlight-1-line-81">line 81</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt class="name" id=".SlidingBuffer">
+    <h4 id=".SlidingBuffer">SlidingBuffer</h4>
 
-
-<div class="description usertext">
-    <p>A buffer implementation that drops the oldest item when an item is added to a
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A buffer implementation that drops the oldest item when an item is added to a
 full buffer.</p>
 <p>This is very similar to
 <a href="module-chanko_channels.html#.DroppingBuffer">DroppingBuffer</a>; the only
@@ -6466,39 +6620,20 @@ difference is in what happens when an item is added. In this buffer, the new
 item is indeed added to the buffer, but in order to keep the count of the
 buffer at or below its size, the oldest item in the buffer is silently
 dropped.</p>
-</div>
-
-
-
-
-
-
-
-
-            
-                
+    </div>
+    
 
     
 
-    <h4 class="name" id=".Transducer"><span class="type-signature"></span>Transducer<span class="signature">(xform)</span><span class="type-signature"> &rarr; {<a href="module-chanko_channels.html#.Transducer">module:chanko/channels.Transducer</a>}</span></h4>
-
     
-
-
-
-
 <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="channels_src_index.js.html">channels/src/index.js</a>, <a href="channels_src_index.js.html#line88">line 88</a>
-    </li></ul></dd>
     
 
-    
+	
 
-    
+	
+
+	
 
     
 
@@ -6508,31 +6643,54 @@ dropped.</p>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-211">line 211</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
+</dd>
 
+            
+                
+<hr>
+<dt>
+    <h4 class="name" id=".Transducer"><span class="type-signature"></span>Transducer(xform)</h4>
+    
+    
+</dt>
+<dd>
 
-
-<div class="description usertext">
-    <p>A function that transforms data and can be composed with other transducers
+    
+    <div class="description">
+        <p>A function that transforms data and can be composed with other transducers
 into a single transducer. The transducers themselves are provided by other
 libraries; the only involvement of this librar is as a consumer of
 transducers.</p>
@@ -6544,22 +6702,19 @@ returned. These values need not concern a user of ths library; just pass a
 transducer to <code><a href="module-chanko_channels.html#.chan">chan</a></code> or
 <code><a href="module-chanko_channels.html#.transChan">transChan</a></code> and everything else will
 be handled.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    </div>
     
 
-<table class="params">
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -6590,6 +6745,7 @@ be handled.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Transducer">module:chanko/channels.Transducer</a></span>
 
 
+
             
             </td>
 
@@ -6605,24 +6761,72 @@ transducer to.</p></td>
     </tbody>
 </table>
 
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="channels_src_index.js.html">channels/src/index.js</a>,
+				 <a href="channels_src_index.js.html#sunlight-1-line-88">line 88</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
     <p>A new transducer consisting of
 the composition of this one and <code>xform</code>.</p>
@@ -6630,7 +6834,7 @@ the composition of this one and <code>xform</code>.</p>
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -6639,14 +6843,17 @@ the composition of this one and <code>xform</code>.</p>
 <span class="param-type"><a href="module-chanko_channels.html#.Transducer">module:chanko/channels.Transducer</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
+</dd>
 
-
-
-            
+            </dl>
     
 
     
@@ -6657,20 +6864,133 @@ the composition of this one and <code>xform</code>.</p>
 
 
 
-    
-    
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
 </div>
 
-<br class="clear">
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+
+
+	<span class="copyright">
+	2000, Thomas J. Otterson
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
 </footer>
 
-<script>prettyPrint();</script>
-<script src="scripts/polyfill.js"></script>
-<script src="scripts/linenumber.js"></script>
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
 
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
 
 
 </body>
