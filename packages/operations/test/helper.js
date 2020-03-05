@@ -47,11 +47,20 @@ async function expectChannel(channel, expected, wait) {
   expect(values).to.deep.equal(expected);
 }
 
+// This is here because Sinon's `tickAsync` yields back to the event loop BEFORE
+// it advances the timers, so an additional 0ms delay is necessary to make the
+// event loop run AFTER the timers advance
+async function tickAsync(clock, time) {
+  await clock.tickAsync(time);
+  await clock.tickAsync(0);
+}
+
 export {
   expect,
   fillChannel,
   fillChannelWith,
   expectChannel,
+  tickAsync,
   FOO,
   BAR,
   BAZ,

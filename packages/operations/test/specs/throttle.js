@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect, FOO, BAR, BAZ, QUX, QUUX, tickAsync } from "test/helper";
+import { expect, FOO, BAR, BAZ, QUX, tickAsync } from "test/helper";
 import sinon from "sinon";
 
-import { debounce } from "modules/timing";
+import { throttle } from "modules/timing";
 
 import {
   go,
@@ -21,7 +21,7 @@ import {
   fixed
 } from "@chanko/channels";
 
-describe("debounce", () => {
+describe("throttle", () => {
   let sandbox;
   let clock;
 
@@ -33,7 +33,7 @@ describe("debounce", () => {
 
   it("accepts a buffer for the output channel", async () => {
     const input = chan();
-    const output = debounce(input, fixed(1), 100);
+    const output = throttle(input, fixed(1), 100);
     const spy = sandbox.spy();
 
     const p1 = go(async () => {
@@ -42,23 +42,19 @@ describe("debounce", () => {
     });
 
     const p2 = go(async () => {
+      expect(spy).not.to.be.called;
       await send(input, FOO);
-    });
 
-    const p3 = go(async () => {
-      expect(spy).not.to.be.called;
       await tickAsync(clock, 75);
-      expect(spy).not.to.be.called;
-      await tickAsync(clock, 50);
-      expect(spy).to.be.calledOnce;
+      expect(spy).to.be.called;
     });
 
-    return join(p1, p2, p3);
+    return join(p1, p2);
   });
 
   it("closes the output when the input closes", async () => {
     const input = chan();
-    const output = debounce(input, 100);
+    const output = throttle(input, 100);
 
     close(input);
 
@@ -67,135 +63,15 @@ describe("debounce", () => {
     });
   });
 
-  context("with trailing option", () => {
+  context("with leading and trailing options", () => {
     let input, output;
 
     beforeEach(() => {
       input = chan();
-      output = debounce(input, 100);
+      output = throttle(input, 100);
     });
 
-    it("holds the input value until the delay expires", async () => {
-      const spy = sandbox.spy();
-
-      const p1 = go(async () => {
-        await send(input, FOO);
-      });
-
-      const p2 = go(async () => {
-        expect(await recv(output)).to.equal(FOO);
-        spy();
-      });
-
-      const p3 = go(async () => {
-        expect(spy).not.to.be.called;
-        await tickAsync(clock, 75);
-        expect(spy).not.to.be.called;
-        await tickAsync(clock, 50);
-        expect(spy).to.be.calledOnce;
-      });
-
-      return join(p1, p2, p3);
-    });
-
-    it("restarts the delay if another value is sent", async () => {
-      const spy = sandbox.spy();
-
-      const p1 = go(async () => {
-        expect(await recv(output)).to.equal(BAR);
-        spy();
-      });
-
-      const p2 = go(async () => {
-        expect(spy).not.to.be.called;
-
-        await send(input, FOO);
-
-        await tickAsync(clock, 75);
-        expect(spy).not.to.be.called;
-
-        await send(input, BAR);
-
-        await tickAsync(clock, 75);
-        expect(spy).not.to.be.called;
-
-        await tickAsync(clock, 50);
-        expect(spy).to.be.calledOnce;
-      });
-
-      return join(p1, p2);
-    });
-  });
-
-  context("with leading option and no trailing option", () => {
-    let input, output;
-
-    beforeEach(() => {
-      input = chan();
-      output = debounce(input, 100, { leading: true, trailing: false });
-    });
-
-    it("returns the input value immediately", async () => {
-      const spy = sandbox.spy();
-
-      const p1 = go(async () => {
-        expect(await recv(output)).to.equal(FOO);
-        spy();
-      });
-
-      const p2 = go(async () => {
-        expect(spy).not.to.be.called;
-
-        await send(input, FOO);
-        await tickAsync(clock, 0);
-
-        expect(spy).to.be.calledOnce;
-      });
-
-      return join(p1, p2);
-    });
-
-    it("will not return another value until the delay expires", async () => {
-      const spy = sandbox.spy();
-
-      const p1 = go(async () => {
-        expect(await recv(output)).to.equal(FOO);
-        expect(await recv(output)).to.equal(QUX);
-        spy();
-      });
-
-      const p2 = go(async () => {
-        expect(spy).not.to.be.called;
-        await send(input, FOO);
-        expect(spy).not.to.be.called;
-        await tickAsync(clock, 75);
-
-        await send(input, BAR);
-        expect(spy).not.to.be.called;
-        await tickAsync(clock, 75);
-
-        await send(input, BAZ);
-        expect(spy).not.to.be.called;
-        await tickAsync(clock, 150);
-
-        await send(input, QUX);
-        await tickAsync(clock, 0);
-        expect(spy).to.be.calledOnce;
-      });
-
-      return join(p1, p2);
-    });
-  });
-
-  context("with both leading and trailing option", () => {
-    let input, output;
-
-    beforeEach(() => {
-      input = chan();
-      output = debounce(input, 100, { leading: true });
-    });
-
-    it("returns the input value immediately", async () => {
+    it("returns the first input value immediately", async () => {
       const spy = sandbox.spy();
 
       const p1 = go(async () => {
@@ -213,7 +89,7 @@ describe("debounce", () => {
       return join(p1, p2);
     });
 
-    it("doesn't return a single input after the delay expires", async () => {
+    it("doesn't return a single value after the delay expires", async () => {
       const p1 = go(async () => {
         expect(await recv(output)).to.equal(FOO);
         expect(await recv(output)).to.equal(BAR);
@@ -228,7 +104,35 @@ describe("debounce", () => {
       return join(p1, p2);
     });
 
-    it("does return a second input after the delay expires", async () => {
+    it("does return a second value after the delay expires", async () => {
+      const spy = sandbox.spy();
+
+      const p1 = go(async () => {
+        expect(await recv(output)).to.equal(FOO);
+        spy();
+        expect(await recv(output)).to.equal(BAR);
+        spy();
+      });
+
+      const p2 = go(async () => {
+        expect(spy).not.to.be.called;
+
+        await send(input, FOO);
+        await tickAsync(clock, 50);
+        expect(spy).to.be.calledOnce;
+
+        await send(input, BAR);
+        await tickAsync(clock, 25);
+        expect(spy).to.be.calledOnce;
+
+        await tickAsync(clock, 50);
+        expect(spy).to.be.calledTwice;
+      });
+
+      return join(p1, p2);
+    });
+
+    it("restarts the timiner without waiting for new input", async () => {
       const spy = sandbox.spy();
 
       const p1 = go(async () => {
@@ -238,40 +142,127 @@ describe("debounce", () => {
         spy();
         expect(await recv(output)).to.equal(BAZ);
         spy();
+        expect(await recv(output)).to.equal(QUX);
+        spy();
       });
 
       const p2 = go(async () => {
-        expect(spy).not.to.be.called;
-
         await send(input, FOO);
         await tickAsync(clock, 50);
         expect(spy).to.be.calledOnce;
 
         await send(input, BAR);
-        await tickAsync(clock, 50);
         expect(spy).to.be.calledOnce;
 
         await tickAsync(clock, 75);
         expect(spy).to.be.calledTwice;
-
         await send(input, BAZ);
-        await tickAsync(clock, 0);
+        expect(spy).to.be.calledTwice;
+
+        await tickAsync(clock, 100);
         expect(spy).to.be.calledThrice;
+        await send(input, QUX);
+        expect(spy).to.be.calledThrice;
+
+        await tickAsync(clock, 100);
+        expect(spy.callCount).to.equal(4);
       });
 
       return join(p1, p2);
     });
   });
 
-  context("with maxDelay option", () => {
+  context("with leading option only", () => {
     let input, output;
 
     beforeEach(() => {
       input = chan();
-      output = debounce(input, 100, { maxDelay: 250 });
+      output = throttle(input, 100, { trailing: false });
     });
 
-    it("interrupts the debounce after maxDelay elapses", async () => {
+    it("returns the first value immediately", async () => {
+      const spy = sandbox.spy();
+
+      const p1 = go(async () => {
+        expect(await recv(output)).to.equal(FOO);
+        spy();
+      });
+
+      const p2 = go(async () => {
+        expect(spy).not.to.be.called;
+        await send(input, FOO);
+        await tickAsync(clock, 0);
+        expect(spy).to.be.calledOnce;
+      });
+
+      return join(p1, p2);
+    });
+
+    it("drops any input that is sent before the delay elapses", async () => {
+      const spy = sandbox.spy();
+
+      const p1 = go(async () => {
+        expect(await recv(output)).to.equal(FOO);
+        spy();
+        expect(await recv(output)).to.equal(BAZ);
+        spy();
+      });
+
+      const p2 = go(async () => {
+        expect(spy).not.to.be.called;
+        await send(input, FOO);
+        await tickAsync(clock, 5);
+        expect(spy).to.be.calledOnce;
+
+        for (let i = 0; i < 5; i++) {
+          await send(input, BAR);
+          await tickAsync(clock, 10);
+          expect(spy).to.be.calledOnce;
+        }
+
+        await tickAsync(clock, 75);
+        await send(input, BAZ);
+        await tickAsync(clock, 0);
+        expect(spy).to.be.calledTwice;
+      });
+
+      return join(p1, p2);
+    });
+  });
+
+  context("with trailing option only", () => {
+    let input, output;
+
+    beforeEach(() => {
+      input = chan();
+      output = throttle(input, 100, { leading: false });
+    });
+
+    it("returns a single value after the delay has elapsed", async () => {
+      const spy = sandbox.spy();
+
+      const p1 = go(async () => {
+        expect(await recv(output)).to.equal(FOO);
+        spy();
+      });
+
+      const p2 = go(async () => {
+        expect(spy).not.to.be.called;
+        await send(input, FOO);
+        await tickAsync(clock, 0);
+        expect(spy).not.to.be.called;
+
+        await tickAsync(clock, 50);
+        expect(spy).not.to.be.called;
+
+        await tickAsync(clock, 75);
+        expect(spy).to.be.calledOnce;
+      });
+
+      return join(p1, p2);
+    });
+
+    it("returns only the last input before the delay has elapsed", async () => {
       const spy = sandbox.spy();
 
       const p1 = go(async () => {
@@ -281,59 +272,24 @@ describe("debounce", () => {
 
       const p2 = go(async () => {
         expect(spy).not.to.be.called;
-
         await send(input, FOO);
-        await tickAsync(clock, 75); // 75
+        await tickAsync(clock, 25);
         expect(spy).not.to.be.called;
 
         await send(input, BAR);
-        await tickAsync(clock, 75); // 150
+        await tickAsync(clock, 25);
         expect(spy).not.to.be.called;
 
         await send(input, BAZ);
-        await tickAsync(clock, 75); // 225
+        await tickAsync(clock, 25);
         expect(spy).not.to.be.called;
 
         await send(input, QUX);
-        await tickAsync(clock, 75); // 300
-        expect(spy).to.be.calledOnce;
-      });
-
-      return join(p1, p2);
-    });
-
-    it("restarts maxDelay if the delay is allowed to expire", async () => {
-      const spy = sandbox.spy();
-
-      const p1 = go(async () => {
-        expect(await recv(output)).to.equal(FOO);
-        spy();
-        expect(await recv(output)).to.equal(QUUX);
-        spy();
-      });
-
-      const p2 = go(async () => {
+        await tickAsync(clock, 5);
         expect(spy).not.to.be.called;
 
-        await send(input, FOO);
-        await tickAsync(clock, 150);
+        await tickAsync(clock, 45);
         expect(spy).to.be.calledOnce;
-
-        await send(input, BAR);
-        await tickAsync(clock, 75);
-        expect(spy).to.be.calledOnce;
-
-        await send(input, BAZ);
-        await tickAsync(clock, 75);
-        expect(spy).to.be.calledOnce;
-
-        await send(input, QUX);
-        await tickAsync(clock, 75);
-        expect(spy).to.be.calledOnce;
-
-        await send(input, QUUX);
-        await tickAsync(clock, 75);
-        expect(spy).to.be.calledTwice;
       });
 
       return join(p1, p2);
@@ -346,10 +302,10 @@ describe("debounce", () => {
     beforeEach(() => {
       input = chan();
       cancel = chan();
-      output = debounce(input, 100, { cancel });
+      output = throttle(input, 100, { cancel });
     });
 
-    it("cancels debounce and closes channel on receive", async () => {
+    it("cancels throttling and closes the channel on receive", async () => {
       const p1 = go(async () => {
         expect(await recv(output)).to.equal(FOO);
         expect(await recv(output)).to.equal(CLOSED);
@@ -357,7 +313,6 @@ describe("debounce", () => {
 
       const p2 = go(async () => {
         await send(input, FOO);
-        await tickAsync(clock, 125);
         await send(input, BAR);
         await tickAsync(clock, 50);
         await send(cancel);
