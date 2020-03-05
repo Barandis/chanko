@@ -7,10 +7,10 @@
     "bundle:prod": "node scripts/command.js bundle:prod",
     "check": "node scripts/command.js check",
     "clean": "node scripts/command.js clean",
-    "clean:docs": "node scripts/command.js clean:docs",
+    "clean:docs": "rimraf docs/api",
     "commit": "npx git-cz",
     "cover": "node scripts/command.js cover",
-    "docs": "node scripts/command.js docs",
+    "docs": "npm run clean:docs && jsdoc -c ./jsdoc.json",
     "lint": "node scripts/command.js lint",
     "test": "node scripts/command.js test",
     "upload": "node scripts/command.js upload"
