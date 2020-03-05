@@ -313,6 +313,7 @@ describe("throttle", () => {
 
       const p2 = go(async () => {
         await send(input, FOO);
+        await tickAsync(clock, 0);
         await send(input, BAR);
         await tickAsync(clock, 50);
         await send(cancel);
