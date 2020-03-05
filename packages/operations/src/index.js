@@ -16,3 +16,4 @@ export {
   untapAll
 } from "modules/flow";
 export { reduce, toChannel, toArray } from "modules/conversion";
+export { debounce, throttle } from "modules/timing";
