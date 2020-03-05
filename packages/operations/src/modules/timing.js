@@ -57,11 +57,11 @@ import { isNumber } from "modules/common";
  * delay (per `trailing`) if *another* input value was put onto the source
  * channel before the delay expired.
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The source channel.
- * @param {(number|module:chanko/buffer~Buffer)} [buffer=0] A buffer used to
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The source channel.
+ * @param {(number|module:chanko/channels.Buffer)} [buffer=0] A buffer used to
  *     create the destination channel. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer|FixedBuffer} of that size will be
+ *     {@link module:chanko/channels.FixedBuffer|FixedBuffer} of that size will be
  *     used. If this is `0` or not present, the channel will be unbuffered.
  * @param {number} delay The debouncing delay, in milliseconds.
  * @param {Object} [options={}] A set of options to further configure the
@@ -84,12 +84,12 @@ import { isNumber } from "modules/common";
  *     ended because of lack of input; the last input is made available on the
  *     destination channel (if `trailing` is `true`), and the next input will
  *     trigger another debounce operation.
- * @param {module:chanko/channel~Channel} [options.cancel] A channel used to
+ * @param {module:chanko/channels.Channel} [options.cancel] A channel used to
  *     signal a cancellation of the debouncing. Any value put onto this channel
  *     will cancel the current debouncing operation, closing the output channel
  *     and discarding any values that were waiting for the debounce threshold
  *     timer to be sent to the output.
- * @return {module:chanko/channel~Channel} The newly-created destination
+ * @return {module:chanko/channels.Channel} The newly-created destination
  *     channel, where all of the values will be debounced from the source
  *     channel.
  */
@@ -192,12 +192,12 @@ function debounce(src, buffer, delay, options) {
  * delay (per `trailing`) if *another* input value was sent to the source
  * channel before the delay expired.
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The source channel.
- * @param {(number|module:chanko/buffer~Buffer)} [buffer=0] A buffer used to
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The source channel.
+ * @param {(number|module:chanko/channels.Buffer)} [buffer=0] A buffer used to
  *     create the destination channel. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer|FixedBuffer} of that size will be
- *     used. If this is `0` or not present, the channel will be unbuffered.
+ *     {@link module:chanko/channels.FixedBuffer|FixedBuffer} of that size will
+ *     be used. If this is `0` or not present, the channel will be unbuffered.
  * @param {number} delay The throttling delay, in milliseconds.
  * @param {Object} [options={}] A set of options to further configure the
  * throttling.
@@ -210,12 +210,12 @@ function debounce(src, buffer, delay, options) {
  *     expires. If this is `false`, any inputs that come in during the delay are
  *     ignored, and the next value is not put onto the destination channel until
  *     the first input *after* the delay expires.
- * @param {module:chanko/channel~Channel} [options.cancel] A channel used to
+ * @param {module:chanko/channels.Channel} [options.cancel] A channel used to
  *     signal a cancellation of the throttling. Any value put onto this channel
  *     will cancel the current throttling operation, closing the output channel
  *     and discarding any values that were waiting for the throttle threshold
  *     timer to be sent to the output.
- * @return {module:chanko/channel~Channel}} The newly-created destination
+ * @return {module:chanko/channels.Channel}} The newly-created destination
  *     channel, where all of the values will be throttled from the source
  *     channel.
  */

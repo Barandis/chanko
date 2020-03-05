@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_channels.html">chanko/channels</a><ul class='methods'></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#isNumber">isNumber</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-chanko_channels.html">chanko/channels</a><ul class='methods'></ul></li><li><a href="module-chanko_operations.html">chanko/operations</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -100,8 +100,8 @@ const TAPS = Symbol("multitap/taps");
  * case for this function is to wrap the destination channel(s) of one of the
  * other flow control functions below to have a channel that survives the source
  * channel closing. The rest of those functions (aside from the special-case
- * `{@link module:chanko/operations~Operations.tap|tap}`) automatically close
- * their destination channels when the source channels close.
+ * `{@link module:chanko/operations.tap|tap}`) automatically close their
+ * destination channels when the source channels close.
  *
  * ```
  * import { go, chan, send, recv, close, isClosed } from "@chanko/channels";
@@ -123,13 +123,13 @@ const TAPS = Symbol("multitap/taps");
  * });
  * ```
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The source channel.
- * @param {module:chanko/channel~Channel} dest The destination channel.
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The source channel.
+ * @param {module:chanko/channels.Channel} dest The destination channel.
  * @param {boolean} [keepOpen=false] A flag to indicate that the destination
  *     channel should be kept open after the source channel closes. By default
  *     the destination channel will close when the source channel closes.
- * @return {module:chanko/channel~Channel} The destination channel.
+ * @return {module:chanko/channels.Channel} The destination channel.
  */
 function pipe(src, dst, keepOpen = false) {
   go(async () => {
@@ -209,21 +209,21 @@ function pipe(src, dst, keepOpen = false) {
  * // -> 3
  * ```
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko~predicate} fn A predicate function used to test each
- * value on the input channel.
- * @param {module:chanko/channel~Channel} src The source channel.
- * @param {(number|module:chanko/buffer~Buffer)} [tBuffer=0] A buffer used to
+ * @memberof module:chanko/operations
+ * @param {module:chanko/operations.Predicate} fn A predicate function used to
+ * test each value on the input channel.
+ * @param {module:chanko/channels.Channel} src The source channel.
+ * @param {(number|module:chanko/channels.Buffer)} [tBuffer=0] A buffer used to
  *     create the destination channel which receives all values that passed the
  *     predicate. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer} of that size will be used. If
+ *     {@link module:chanko/channels.FixedBuffer} of that size will be used. If
  *     this is `0` or not present, the channel will be unbuffered.
- * @param {(number|module:chanko/buffer~Buffer)} [fBuffer=0] A buffer used to
+ * @param {(number|module:chanko/channels.Buffer)} [fBuffer=0] A buffer used to
  *     create the destination channel which receives all values that did not
  *     pass the predicate. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer} of that size will be used. If
+ *     {@link module:chanko/channels.FixedBuffer} of that size will be used. If
  *     this is `0` or not present, the channel will be unbuffered.
- * @return {module:chanko/channel~Channel[]} An array of two channels. The first
+ * @return {module:chanko/channels.Channel[]} An array of two channels. The first
  *     is the destination channel with all of the values that passed the
  *     predicate, the second is the destination channel with all of the values
  *     that did not pass the predicate.
@@ -291,13 +291,13 @@ function partition(fn, src, tBuffer = 0, fBuffer = 0) {
  * });
  * ```
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel[]} srcs An array of source channels.
- * @param {(number|module:chanko/buffer~Buffer)} [buffer=0] A buffer used to
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel[]} srcs An array of source channels.
+ * @param {(number|module:chanko/channels.Buffer)} [buffer=0] A buffer used to
  *     create the destination channel. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer} of that size will be used. If
+ *     {@link module:chanko/channels.FixedBuffer} of that size will be used. If
  *     this is `0` or not present, the channel will be unbuffered.
- * @return {module:chanko/channel~Channel} The destination channel, which will
+ * @return {module:chanko/channels.Channel} The destination channel, which will
  *     receive all values put onto every source channel.
  */
 function merge(srcs, buffer = 0) {
@@ -365,18 +365,18 @@ function merge(srcs, buffer = 0) {
  * output channels to be received from before the next send to the input channel
  * can complete.
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The source channel.
- * @param {...(number|module:chanko/buffer~Buffer)} [buffers=2] The buffers used
- *     to create the destination channels. Each entry is treated separately. If
- *     one is a number, then a
- *     {@link module:chanko/buffer~FixedBuffer|FixedBuffer} of that size will be
- *     used. If one is a `0`, then the corresponding channel will be unbuffered.
- *     **Exception:** if a single number is passed, then that number of
- *     unbuferred channels will be created. This means that the default is to
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The source channel.
+ * @param {...(number|module:chanko/channels.Buffer)} [buffers=2] The buffers
+ *     used to create the destination channels. Each entry is treated
+ *     separately. If one is a number, then a
+ *     {@link module:chanko/channels.FixedBuffer|FixedBuffer} of that size will
+ *     be used. If one is a `0`, then the corresponding channel will be
+ *     unbuffered. **Exception:** if a single number is passed, then that number
+ *     of unbuferred channels will be created. This means that the default is to
  *     create two unbuffered channels. To create a single channel with a fixed
- *     buffer, use `{@link chanko~Chanko.fixed|fixed}` explicitly.
- * @return {module:chanko/channel~Channel[]} An array of destination channels.
+ *     buffer, use `{@link chanko/channels.fixed|fixed}` explicitly.
+ * @return {module:chanko/channels.Channel[]} An array of destination channels.
  */
 function split(src, ...buffers) {
   let bfs = buffers.length === 0 ? [2] : buffers;
@@ -427,7 +427,7 @@ function split(src, ...buffers) {
  * property is an array of the channels tapping this channel, and it will be
  * removed if all taps are removed.
  *
- * @param {module:chanko/channel~Channel} src The source channel to be tapped.
+ * @param {module:chanko/channels.Channel} src The source channel to be tapped.
  * @private
  */
 function makeTap(src) {
@@ -471,15 +471,14 @@ function makeTap(src) {
  * (destination) channels receive each value sent to the tapped (source)
  * channel.
  *
- * This is different from
- * `{@link module:chanko/operations~Operations.split|split}` in that it's
- * temporary. Channels can tap a channel and then untap it, multiple times, as
- * needed. If a source channel has all of its taps removed, then it reverts to a
- * normal channel, just as it was before it was tapped.
+ * This is different from `{@link module:chanko/operations.split|split}` in that
+ * it's temporary. Channels can tap a channel and then untap it, multiple times,
+ * as needed. If a source channel has all of its taps removed, then it reverts
+ * to a normal channel, just as it was before it was tapped.
  *
- * Also unlike `{@link module:chanko/operations~Operations.split|split}`, each
- * call can only tap once. For multiple channels to tap a source channel, `tap`
- * has to be called multiple times.
+ * Also unlike `{@link module:chanko/operations.split|split}`, each call can
+ * only tap once. For multiple channels to tap a source channel, `tap` has to be
+ * called multiple times.
  *
  * Closing either the source or any of the destination channels has no effect on
  * any of the other channels.
@@ -504,12 +503,12 @@ function makeTap(src) {
  *
  * ```
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The channel to be tapped.
- * @param {module:chanko/channel~Channel} [dest] The channel tapping the source
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The channel to be tapped.
+ * @param {module:chanko/channels.Channel} [dest] The channel tapping the source
  *     channel. If this is not present, a new unbuffered channel will be
  *     created.
- * @return {module:chanko/channel~Channel} The destination channel. This is the
+ * @return {module:chanko/channels.Channel} The destination channel. This is the
  *     same as the second argument, if present; otherwise it is the
  *     newly-created channel tapping the source channel.
  */
@@ -534,9 +533,9 @@ function tap(src, dst = chan()) {
  * to normal (i.e., it no longer has the tapping code applied to it and can be
  * taken from as normal).
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The tapped channel.
- * @param {module:chanko/channel~Channel} dest The channel that is tapping the
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The tapped channel.
+ * @param {module:chanko/channels.Channel} dest The channel that is tapping the
  *     source channel that should no longer be tapping the source channel.
  */
 function untap(src, dst) {
@@ -559,8 +558,8 @@ function untap(src, dst) {
  * that might have been tapping it no longer receive values from the source
  * channel. If the source channel had no taps, this function does nothing.
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/channel~Channel} src The tapped channel. All taps will
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} src The tapped channel. All taps will
  *     be removed from this channel.
  */
 function untapAll(src) {
@@ -627,15 +626,15 @@ function untapAll(src) {
  * });
  * ```
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/operations~mapper} fn The mapping function. This should
+ * @memberof module:chanko/operations
+ * @param {module:chanko/operations.Mapper} fn The mapping function. This should
  *     have one parameter for each source channel and return a single value.
- * @param {module:chanko/channel~Channel[]} srcs The source channels.
- * @param {(number|module:chanko/buffer~Buffer)} [buffer=0] A buffer used to
+ * @param {module:chanko/channels.Channel[]} srcs The source channels.
+ * @param {(number|module:chanko/channels.Buffer)} [buffer=0] A buffer used to
  *     create the destination channel. If this is a number, a
- *     {@link module:chanko/buffer~FixedBuffer} of that size will be used. If
+ *     {@link module:chanko/channels.FixedBuffer} of that size will be used. If
  *     this is `0` or not present, the channel will be unbuffered.
- * @return {module:chanko/channel~Channel} The destination channel.
+ * @return {module:chanko/channels.Channel} The destination channel.
  */
 function map(fn, srcs, buffer = 0) {
   const dst = chan(buffer);

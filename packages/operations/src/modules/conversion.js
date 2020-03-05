@@ -54,14 +54,14 @@ import { go, chan, send, sendAsync, close } from "@chanko/channels";
  * ever appear on the output channel. The closing of the channel is what
  * signifies that the reduction should be completed.
  *
- * @memberof module:chanko/operations~Operations
- * @param {module:chanko/operations~reducer} fn The reducer function responsible
+ * @memberof module:chanko/operations
+ * @param {module:chanko/operations.Reducer} fn The reducer function responsible
  *     for turning the series of channel values into a single output value.
- * @param {module:chanko/channel~Channel} ch The channel whose values are being
- * reduced into a single output value.
+ * @param {module:chanko/channels.Channel} channel The channel whose values are
+ *     being reduced into a single output value.
  * @param {*} init The initial value to feed into the reducer function for the
- * first reduction step.
- * @return {module:chanko/channel~Channel} A channel that will, when the input
+ *     first reduction step.
+ * @return {module:chanko/channels.Channel} A channel that will, when the input
  *     channel closes, have the reduced value put into it. When this value is
  *     taken, the channel will automatically close.
  */
@@ -94,10 +94,10 @@ function reduce(fn, channel, init) {
  *
  * ```
  * import { go, chan, recv, isClosed } from "@chanko/channels";
- * import { onto } from "@chanko/operations";
+ * import { toChannel } from "@chanko/operations";
  *
  * const input = [1, 2, 3];
- * const output = onto(input);
+ * const output = toChannel(input);
  *
  * go(async () => {
  *   console.log(await recv(output));     // -> 1
@@ -107,13 +107,13 @@ function reduce(fn, channel, init) {
  * });
  * ```
  *
- * @memberof module:chanko/operations~Operations
+ * @memberof module:chanko/operations
  * @param {iterable} iterable The iterable containing the values to be sent to
  *     the channel.
- * @param {module:chanko/channel~Channel} [channel] The channel onto which to
+ * @param {module:chanko/channels.Channel} [channel] The channel onto which to
  *     put all of the array elements. If this is not present, a new channel will
  *     be created.
- * @return {module:chanko/channel~Channel} the channel onto which the array
+ * @return {module:chanko/channels.Channel} the channel onto which the array
  *     elements are put. This is the same as the input channel, but if no input
  *     channel is specified, this will be a new channel. It will close when the
  *     final value is taken from it.
@@ -142,10 +142,10 @@ function toChannel(iterable, channel = chan(iterable.length)) {
  *
  * ```
  * import { go, chan, send, recv, close } from "@chanko/channels";
- * import { into } from "@chanko/operations";
+ * import { toArray } from "@chanko/operations";
  *
  * const input = chan();
- * const output = into(input);
+ * const output = toArray(input);
  *
  * go(async () => {
  *   await send(input, 1);
@@ -164,12 +164,12 @@ function toChannel(iterable, channel = chan(iterable.length)) {
  * ever appear on the output channel. The closing of the channel is what
  * signifies that all of the values needed to make the array are now available.
  *
- * @memberof module:chanko/operations~Chanko
- * @param {module:cispy/channel~Channel} channel The channel from which values
+ * @memberof module:chanko/operations
+ * @param {module:chanko/channels.Channel} channel The channel from which values
  *     are received to put into the array.
  * @param {array} [array] The array to put the channel values into. If this is
  *     not present, a new, empty array will be created.
- * @return {module:cispy/channel~Channel} A channel that will, when the input
+ * @return {module:chanko/channels.Channel} A channel that will, when the input
  *     channel closes, have the array of channel values put onto it. When this
  *     array is received, the channel will automatically close.
  */
