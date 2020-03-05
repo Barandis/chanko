@@ -1892,7 +1892,7 @@ newest items are dropped on add.</p></td>
 		<ul class="dummy">
 			<li>
 				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
-				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-174">line 174</a>
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-184">line 184</a>
 			</li>
 		</ul>
 	</dd>
@@ -2062,7 +2062,7 @@ it's full.</p></td>
 		<ul class="dummy">
 			<li>
 				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
-				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-108">line 108</a>
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-113">line 113</a>
 			</li>
 		</ul>
 	</dd>
@@ -4888,7 +4888,7 @@ oldest items are dropped on add.</p></td>
 		<ul class="dummy">
 			<li>
 				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
-				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-243">line 243</a>
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-258">line 258</a>
 			</li>
 		</ul>
 	</dd>
@@ -5513,7 +5513,7 @@ select operation.</p></td>
     <div class="description">
         <p>A buffer that stores values sent to a buffered channel until a process
 receives them.</p>
-<p>Different buffer differ only in the way that they determine whether they are
+<p>Different buffers differ only in the way that they determine whether they are
 full and in what happens when a new value is added to a full buffer.</p>
     </div>
     
@@ -5626,8 +5626,8 @@ sent to the transformer's reduction step function); trying to create a
 channel with a transformer but without a buffer will result in an error being
 thrown.</p>
 <p>This is the object that is returned from a call to
-<code><a href="module-chanko_channels.html#.chan">chan</a></code>. However, this object is intended to
-be used as a value to pass to channel operation functions; it doesn't have
+<code><a href="module-chanko_channels.html#.chan">chan</a></code>. However, this object is intended
+to be used as a value to pass to channel operation functions; it doesn't have
 any properties of interest to an end user.</p>
     </div>
     
@@ -5865,6 +5865,10 @@ a separate line of execution.</p></td>
 queue. Note that this buffer is never <code>full</code> because it can always be added
 to without exceeding the size, even if that 'adding' doesn't result in a new
 item actually appearing in the buffer.</p>
+<p>A buffer of this type exists only as an object that can be passed to a
+channel creation function (such as <a href="module-chanko_channels.html#.chan">chan</a>)
+to make that channel a buffered channel. It doesn't have any properties that
+are intended for external use.</p>
     </div>
     
 
@@ -5906,7 +5910,7 @@ item actually appearing in the buffer.</p>
 		<ul class="dummy">
 			<li>
 				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
-				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-145">line 145</a>
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-150">line 150</a>
 			</li>
 		</ul>
 	</dd>
@@ -6106,6 +6110,10 @@ have to be handled.</p></td>
 added.</p>
 <p>This buffer has a concept of <em>full</em>, but it's a soft limit. If the size of
 the buffer is exceeded, added items are still stored.</p>
+<p>A buffer of this type exists only as an object that can be passed to a
+channel creation function (such as <a href="module-chanko_channels.html#.chan">chan</a>)
+to make that channel a buffered channel. It doesn't have any properties that
+are intended for external use.</p>
     </div>
     
 
@@ -6620,6 +6628,10 @@ difference is in what happens when an item is added. In this buffer, the new
 item is indeed added to the buffer, but in order to keep the count of the
 buffer at or below its size, the oldest item in the buffer is silently
 dropped.</p>
+<p>A buffer of this type exists only as an object that can be passed to a
+channel creation function (such as <a href="module-chanko_channels.html#.chan">chan</a>)
+to make that channel a buffered channel. It doesn't have any properties that
+are intended for external use.</p>
     </div>
     
 
@@ -6661,7 +6673,7 @@ dropped.</p>
 		<ul class="dummy">
 			<li>
 				<a href="channels_src_modules_buffer.js.html">channels/src/modules/buffer.js</a>,
-				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-211">line 211</a>
+				 <a href="channels_src_modules_buffer.js.html#sunlight-1-line-221">line 221</a>
 			</li>
 		</ul>
 	</dd>
@@ -6899,7 +6911,7 @@ the composition of this one and <code>xform</code>.</p>
 
 
 	<span class="copyright">
-	2000, Thomas J. Otterson
+	&copy; Copyright 2020, Thomas J. Otterson. All rights reserved.
 	</span>
 
 <span class="jsdoc-message">

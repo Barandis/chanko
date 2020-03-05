@@ -24,7 +24,7 @@
   },
   "templates": {
     "systemName": "Chanko",
-    "copyright": "2000, Thomas J. Otterson",
+    "copyright": "&copy; Copyright 2020, Thomas J. Otterson. All rights reserved.",
     "includeDate": false,
     "navType": "vertical",
     "theme": "slate",

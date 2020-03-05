@@ -20,7 +20,7 @@ import { queue as q, count as qCount, enqueue, dequeue } from "modules/queue";
  * A buffer that stores values sent to a buffered channel until a process
  * receives them.
  *
- * Different buffer differ only in the way that they determine whether they are
+ * Different buffers differ only in the way that they determine whether they are
  * full and in what happens when a new value is added to a full buffer.
  *
  * @memberof module:chanko/channels
@@ -83,6 +83,11 @@ function isBuffer(obj) {
  *
  * This buffer has a concept of *full*, but it's a soft limit. If the size of
  * the buffer is exceeded, added items are still stored.
+ *
+ * A buffer of this type exists only as an object that can be passed to a
+ * channel creation function (such as {@link module:chanko/channels.chan|chan})
+ * to make that channel a buffered channel. It doesn't have any properties that
+ * are intended for external use.
  *
  * @typedef FixedBuffer
  * @memberof module:chanko/channels
@@ -149,6 +154,11 @@ function fixed(size) {
  * queue. Note that this buffer is never `full` because it can always be added
  * to without exceeding the size, even if that 'adding' doesn't result in a new
  * item actually appearing in the buffer.
+ *
+ * A buffer of this type exists only as an object that can be passed to a
+ * channel creation function (such as {@link module:chanko/channels.chan|chan})
+ * to make that channel a buffered channel. It doesn't have any properties that
+ * are intended for external use.
  *
  * @typedef DroppingBuffer
  * @memberof module:chanko/channels
@@ -218,6 +228,11 @@ function dropping(size) {
  * item is indeed added to the buffer, but in order to keep the count of the
  * buffer at or below its size, the oldest item in the buffer is silently
  * dropped.
+ *
+ * A buffer of this type exists only as an object that can be passed to a
+ * channel creation function (such as {@link module:chanko/channels.chan|chan})
+ * to make that channel a buffered channel. It doesn't have any properties that
+ * are intended for external use.
  *
  * @typedef SlidingBuffer
  * @memberof module:chanko/channels

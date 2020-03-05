@@ -192,8 +192,8 @@ function sendBox(value, handler) {
  * thrown.
  *
  * This is the object that is returned from a call to
- * `{@link module:chanko/channels.chan|chan}`. However, this object is intended to
- * be used as a value to pass to channel operation functions; it doesn't have
+ * `{@link module:chanko/channels.chan|chan}`. However, this object is intended
+ * to be used as a value to pass to channel operation functions; it doesn't have
  * any properties of interest to an end user.
  *
  * @memberof module:chanko/channels
@@ -202,17 +202,17 @@ function sendBox(value, handler) {
 
 /**
  * Creates a channel. This is a low-level function;
- * `{@link module:chanko~Chanko.chan|chan}` performs some necessary
+ * `{@link module:chanko/channels.chan|chan}` performs some necessary
  * manipulations on arguments before using this function to perform the actual
  * creation.
  *
  * @memberof module:chanko/channel
- * @param {null | module:chanko/buffer~Buffer} buffer An optional buffer that,
+ * @param {null | module:chanko/channels.Buffer} buffer An optional buffer that,
  *     if present, is used to create a buffered channel. If this is `null`, an
  *     unbuffered channel is created.
- * @param {module:chanko~transducer} xform The transducer used to transform
- *     values sent to the channel. If no transformations are necessary, a
- *     passthrough transducer should be provided.
+ * @param {module:chanko/channels.Transducer} xform The transducer used to
+ *     transform values sent to the channel. If no transformations are
+ *     necessary, a passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
  *     The timining mechanism is handled outside the channel, but this property
  *     is provided to be able to query whether that's the case.
@@ -220,7 +220,7 @@ function sendBox(value, handler) {
  *     before they're purged.
  * @param {number} maxQueued=1024 The maximum number of operations that can be
  *     queued before new ones are rejected.
- * @return {module:chanko/channel.Channel} A new channel.
+ * @return {module:chanko/channels.Channel} A new channel.
  * @private
  */
 function channel(
