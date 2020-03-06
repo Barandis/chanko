@@ -38,7 +38,7 @@ import {
   dropping,
   isBuffered,
   isClosed
-} from "@chanko/channels";
+} from "@chanko/csp";
 
 const even = x => x % 2 === 0;
 const sum3 = (a, b, c) => a + b + c;

@@ -22,7 +22,7 @@ import {
   CLOSED,
   isTimed,
   timedChan
-} from "@chanko/channels";
+} from "@chanko/csp";
 
 import { isNumber } from "modules/common";
 

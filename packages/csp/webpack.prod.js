@@ -16,7 +16,7 @@ const banner = fs.readFileSync(path.resolve(__dirname, "LICENSE"), "utf8");
 module.exports = merge(common, {
   mode: "production",
   output: {
-    filename: "operations.js",
+    filename: "chanko-csp.min.js",
   },
   plugins: [new webpack.BannerPlugin({ banner, entryOnly: true })],
 });

@@ -9,7 +9,7 @@ import { expect, fillChannel, expectChannel } from "test/helper";
 
 import { reduce, toChannel, toArray } from "modules/conversion";
 
-import { go, join, chan, send, recv, close, isClosed } from "@chanko/channels";
+import { go, join, chan, send, recv, close, isClosed } from "@chanko/csp";
 
 describe("Channel conversion functions", () => {
   describe("reduce", () => {

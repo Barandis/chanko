@@ -1,9 +1,8 @@
 {
-  "name": "@chanko/channels",
+  "name": "@chanko/channel-ops",
   "version": "0.1.0",
-  "description": "CSP channels for JavaScript",
-  "main": "lib/chanko.js",
-  "module": "lib/chanko.min.js",
+  "description": "Multi-channel operations for @chanko/channels",
+  "main": "lib/chanko-ops.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",
@@ -37,7 +36,9 @@
     "lib",
     "src"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@chanko/csp": "^0.1.0"
+  },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-babel",
     "all": true,

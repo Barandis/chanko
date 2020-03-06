@@ -30,7 +30,7 @@ import {
   recvAsync,
   close,
   CLOSED
-} from "@chanko/channels";
+} from "@chanko/csp";
 
 import { isNumber } from "modules/common";
 

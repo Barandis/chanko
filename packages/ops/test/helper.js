@@ -8,7 +8,7 @@
 import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 
-import { send, recv, close } from "@chanko/channels";
+import { send, recv, close } from "@chanko/csp";
 
 chai.use(sinonChai);
 

@@ -50,7 +50,7 @@
     "xduce": "^2.0.2"
   },
   "dependencies": {
-    "@chanko/channels": "file:packages/channels"
+    "@chanko/csp": "file:packages/csp"
   },
   "config": {
     "commitizen": {

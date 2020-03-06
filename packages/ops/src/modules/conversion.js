@@ -13,7 +13,7 @@
  * @private
  */
 
-import { go, chan, send, sendAsync, close } from "@chanko/channels";
+import { go, chan, send, sendAsync, close } from "@chanko/csp";
 
 /**
  * Creates a single value from a channel by running its values through a

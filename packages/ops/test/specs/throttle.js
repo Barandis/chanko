@@ -10,16 +10,7 @@ import sinon from "sinon";
 
 import { throttle } from "modules/timing";
 
-import {
-  go,
-  join,
-  chan,
-  send,
-  recv,
-  close,
-  CLOSED,
-  fixed
-} from "@chanko/channels";
+import { go, join, chan, send, recv, close, CLOSED, fixed } from "@chanko/csp";
 
 describe("throttle", () => {
   let sandbox;
