@@ -4,8 +4,8 @@
   },
   "source": {
     "include": [
-      "packages/channels/src",
-      "packages/operations/src"
+      "packages/csp/src",
+      "packages/ops/src"
     ]
   },
   "plugins": [
@@ -13,7 +13,7 @@
   ],
   "opts": {
     "encoding": "utf8",
-    "template": "node_modules/ink-docstrap/template",
+    "template": "node_modules/docdash",
     "destination": "docs/api/",
     "recurse": true,
     "verbose": true
@@ -22,14 +22,10 @@
     "parser": "gfm",
     "hardwrap": false
   },
-  "templates": {
-    "systemName": "Chanko",
-    "copyright": "&copy; Copyright 2020, Thomas J. Otterson. All rights reserved.",
-    "includeDate": false,
-    "navType": "vertical",
-    "theme": "slate",
-    "linenums": true,
-    "outputSourceFiles": true,
-    "syntaxTheme": "dark"
+  "docdash": {
+    "sort": true,
+    "search": true,
+    "collapse": true,
+    "typedefs": true
   }
 }

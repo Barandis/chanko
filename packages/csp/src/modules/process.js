@@ -9,7 +9,7 @@
  * Provides small utility functions to make it easier to interact with async
  * functions as processes.
  *
- * @module chanko/process
+ * @module csp/process
  * @private
  */
 
@@ -32,7 +32,7 @@ import { timedChan, recvAsync } from "modules/channel";
  * doesn't take on any meaningful value. The purpose of this function is simply
  * to delay, not to communicate any data.
  *
- * @memberof module:chanko/channels
+ * @memberof module:csp
  * @param {number} [delay=0] the number of milliseconds that the process will
  *     block for. At the end of that time, the process is again eligible to be
  *     run by the dispatcher. If this is missing or set to `0`, the process will
@@ -73,7 +73,7 @@ function sleep(delay = 0) {
  * });
  * ```
  *
- * @memberof module:chanko/channels
+ * @memberof module:csp
  * @param {function} fn The async function being used as a process.
  * @param {...*} args Arguments that are sent to the async function when it's
  *     invoked.
@@ -88,7 +88,7 @@ function go(fn, ...args) {
  * promise that wraps all of the individual processes' promises. Putting this in
  * an `await` statement will block until all of the processes complete.
  *
- * @memberof module:chanko/channels
+ * @memberof module:csp
  * @param {...function} fns Any number of async functions whose resolutions are
  *     being waited for.
  * @return {Promise} A promise that resolves when all of the processes promises

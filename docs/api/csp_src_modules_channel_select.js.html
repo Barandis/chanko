@@ -1,4 +1,50 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>csp/src/modules/channel/select.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-ops.html">ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untapAll">untapAll</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">csp/src/modules/channel/select.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Copyright (c) 2020 Thomas J. Otterson
  *
  * This software is released under the MIT License.
@@ -65,7 +111,7 @@ function selectHandler(active, fn) {
  */
 function randomArray(upper) {
   const array = [];
-  for (let k = 0; k < upper; k++) {
+  for (let k = 0; k &lt; upper; k++) {
     array.push(k);
   }
   for (let j = upper - 1; j > 0; j--) {
@@ -168,7 +214,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
 
   let result;
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i &lt; count; i++) {
     // Choose an operation. If `priority` is true then it's the next index,
     // otherwise it's random
     const op = ops[priority ? i : indices[i]];
@@ -198,7 +244,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
   // if the default channel rather than waiting for the queued operations to
   // complete.
   if (
-    !isBox(result) &&
+    !isBox(result) &amp;&amp;
     Object.prototype.hasOwnProperty.call(options, "default")
   ) {
     if (active.value) {
@@ -261,7 +307,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
  *     option (the channel will be `{@link module:csp.DEFAULT|DEFAULT})`. If not
  *     set, the `select` call will block until one of the operations completes
  *     and that value and channel will be the ones returned.
- * @return {Promise<module:csp.SelectResult>} A promise that will resolve to an
+ * @return {Promise&lt;module:csp.SelectResult>} A promise that will resolve to an
  *     object of two properties: `value` will contain the value that would have
  *     been returned by the corresponding `{@link module:csp.send|send}` or
  *     `{@link module:csp.recv|recv}` operation; and `channel` will be a
@@ -306,3 +352,32 @@ function channel(result) {
 }
 
 export { DEFAULT, select, selectAsync, value, channel };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Mar 05 2020 21:55:44 GMT-0500 (Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

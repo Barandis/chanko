@@ -1,4 +1,50 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>ops/src/modules/flow.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-ops.html">ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untapAll">untapAll</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">ops/src/modules/flow.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Copyright (c) 2020 Thomas J. Otterson
  *
  * This software is released under the MIT License.
@@ -334,10 +380,10 @@ function merge(srcs, buffer = 0) {
  */
 function split(src, ...buffers) {
   let bfs = buffers.length === 0 ? [2] : buffers;
-  if (bfs.length === 1 && isNumber(bfs[0])) {
+  if (bfs.length === 1 &amp;&amp; isNumber(bfs[0])) {
     const count = bfs[0];
     bfs = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i &lt; count; i++) {
       bfs.push(0);
     }
   }
@@ -597,7 +643,7 @@ function map(fn, srcs, buffer = 0) {
   const temp = chan();
   let count;
 
-  for (let i = 0; i < srclen; i++) {
+  for (let i = 0; i &lt; srclen; i++) {
     callbacks[i] = (index => {
       return value => {
         values[index] = value;
@@ -611,7 +657,7 @@ function map(fn, srcs, buffer = 0) {
   go(async () => {
     for (;;) {
       count = srclen;
-      for (let i = 0; i < srclen; i++) {
+      for (let i = 0; i &lt; srclen; i++) {
         recvAsync(srcs[i], callbacks[i]);
       }
       const values = await recv(temp);
@@ -636,3 +682,32 @@ function map(fn, srcs, buffer = 0) {
 }
 
 export { pipe, partition, merge, split, tap, untap, untapAll, map };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Mar 05 2020 21:55:44 GMT-0500 (Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

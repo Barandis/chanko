@@ -1,4 +1,50 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>csp/src/modules/channel/handler.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-ops.html">ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untapAll">untapAll</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">csp/src/modules/channel/handler.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Copyright (c) 2020 Thomas J. Otterson
  *
  * This software is released under the MIT License.
@@ -12,7 +58,7 @@ import {
   EMPTY,
   filter,
   count as qCount,
-  enqueue
+  enqueue,
 } from "modules/queue";
 import { isFull, count, remove } from "modules/buffer";
 import { dispatch } from "modules/dispatcher";
@@ -42,7 +88,7 @@ const MAX_QUEUED = 1024;
  * This is a special value that is returned under a certain circumstance, namely
  * when a receive is performed on a closed channel. Because of that, it cannot
  * be returned from a receive on an open channel. For that reason, `CLOSED` is
- * the only value that cannot be sent onto a channel &mdash; it would be
+ * the only value that cannot be sent onto a channel &amp;mdash; it would be
  * impossible to distinguish between a legitimate value of `CLOSED` and an
  * actual closed channel.
  *
@@ -113,11 +159,11 @@ function box(value) {
   return Object.create(null, {
     value: {
       value,
-      writable: true
+      writable: true,
     },
     [BOX]: {
-      value: true
-    }
+      value: true,
+    },
   });
 }
 
@@ -149,14 +195,14 @@ function sendBox(value, handler) {
   return Object.create(null, {
     value: {
       value,
-      writable: true
+      writable: true,
     },
     handler: {
-      value: handler
+      value: handler,
     },
     [BOX]: {
-      value: true
-    }
+      value: true,
+    },
   });
 }
 
@@ -226,45 +272,45 @@ function channel(
   xform,
   isTimed = false,
   maxDirty = MAX_DIRTY,
-  maxQueued = MAX_QUEUED
+  maxQueued = MAX_QUEUED,
 ) {
   return Object.create(null, {
     buffer: {
-      value: buffer
+      value: buffer,
     },
     xform: {
-      value: xform
+      value: xform,
     },
     maxDirty: {
-      value: maxDirty
+      value: maxDirty,
     },
     maxQueued: {
-      value: maxQueued
+      value: maxQueued,
     },
     recvs: {
-      value: queue()
+      value: queue(),
     },
     sends: {
-      value: queue()
+      value: queue(),
     },
     dirtyRecvs: {
       value: 0,
-      writable: true
+      writable: true,
     },
     dirtySends: {
       value: 0,
-      writable: true
+      writable: true,
     },
     closed: {
       value: false,
-      writable: true
+      writable: true,
     },
     isBuffered: {
-      value: !!buffer
+      value: !!buffer,
     },
     isTimed: {
-      value: isTimed
-    }
+      value: isTimed,
+    },
   });
 }
 
@@ -319,7 +365,7 @@ function handleSend(channel, value, handler) {
   // If the channel is unbuffered this process is skipped (there can't be a
   // transducer on an unbuffered channel anyway). If the buffer is full, the
   // transducer's work is deferred until later when the buffer is not full.
-  if (channel.buffer && !isFull(channel.buffer)) {
+  if (channel.buffer &amp;&amp; !isFull(channel.buffer)) {
     handler.commit();
     const done = isReduced(channel.xform[p.step](channel.buffer, value));
 
@@ -380,7 +426,7 @@ function handleSend(channel, value, handler) {
 
   if (qCount(channel.sends) >= channel.maxQueued) {
     throw Error(
-      `No more than ${channel.maxQueued} pending sends are allowed on a single channel`
+      `No more than ${channel.maxQueued} pending sends are allowed on a single channel`,
     );
   }
   enqueue(channel.sends, sendBox(value, handler));
@@ -422,7 +468,7 @@ function handleRecv(channel, handler) {
   // buffer means there are no pending sends). We immediately process any sends
   // that were queued when there were no pending receives, up until the buffer
   // is filled with sent values.
-  if (channel.buffer && count(channel.buffer) > 0) {
+  if (channel.buffer &amp;&amp; count(channel.buffer) > 0) {
     handler.commit();
     const value = remove(channel.buffer);
 
@@ -494,7 +540,7 @@ function handleRecv(channel, handler) {
   if (qCount(channel.recvs) >= channel.maxQueued) {
     const max = channel.maxQueued;
     throw Error(
-      `No more than ${max} pending receives are allowed on a single channel`
+      `No more than ${max} pending receives are allowed on a single channel`,
     );
   }
   enqueue(channel.recvs, handler);
@@ -588,5 +634,34 @@ export {
   handleRecv,
   close,
   box,
-  isBox
+  isBox,
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Mar 05 2020 21:55:44 GMT-0500 (Eastern Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

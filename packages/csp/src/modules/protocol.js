@@ -16,7 +16,7 @@
  * These are the same symbols as available in my transducer library. They are
  * publicly available from there.
  *
- * @module chanko/protocol
+ * @module csp/protocol
  * @private
  */
 
@@ -24,7 +24,8 @@
  * The mapping of protocol names to their respective property key names. The
  * values of this map will depend on whether symbols are available.
  *
- * @typedef {object} protocolMap
+ * @typedef {object} ProtocolMap
+ * @memberof module:csp/protocol
  * @property {Symbol} init The `transducer/init` protocol. This is used
  *     to mark functions that initialize a target collection before adding items
  *     to it.
@@ -50,7 +51,7 @@
 /**
  * The mapping of protocol names to their respective property key names.
  *
- * @type {module:chanko/protocol~protocolMap}
+ * @type {module:csp/protocol.ProtocolMap}
  * @private
  */
 const protocols = Object.create(null, {

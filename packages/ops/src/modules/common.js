@@ -8,7 +8,7 @@
 /**
  * Utility functions used by more than one other module.
  *
- * @module chanko/operations/common
+ * @module ops/common
  * @private
  */
 

@@ -7,13 +7,13 @@
 
 /**
  * A set of utility functions that give one or more channels some extra
- * functionality. Each of these accept one or more
- * {@link module:chanko/channels.Channel} objects and then combine or manipulate
- * them in (hopefully) useful ways, such as merging them, splitting them,
- * reducing values they receive to a single value, or throttling them so that
- * they only produce one result in a given time period.
+ * functionality. Each of these accept one or more {@link module:csp.Channel}
+ * objects and then combine or manipulate them in (hopefully) useful ways, such
+ * as merging them, splitting them, reducing values they receive to a single
+ * value, or throttling them so that they only produce one result in a given
+ * time period.
  *
- * @module chanko/operations
+ * @module ops
  */
 
 export {
@@ -34,7 +34,7 @@ export { debounce, throttle } from "modules/timing";
  * meets the function's criteria for passing, returns `true` or `false`.
  *
  * @callback Predicate
- * @memberof module:chanko/operations
+ * @memberof module:ops
  * @param {*} value The value to test. Whether or not the value passes the test
  *     depends on the criteria established by the predicate.
  * @return {boolean} Either `true` if the value passes or `false` if it doesn't.
@@ -45,7 +45,7 @@ export { debounce, throttle } from "modules/timing";
  * number of input values and calculates an output value from them.
  *
  * @callback Mapper
- * @memberof module:chanko/operations
+ * @memberof module:ops
  * @param {...*} values The input values.
  * @return {*} An output value calculated from the input values.
  */
@@ -55,7 +55,7 @@ export { debounce, throttle } from "modules/timing";
  * reducing channel values into a single value.
  *
  * @callback Reducer
- * @memberof module:chanko/operations
+ * @memberof module:ops
  * @param {*} acc The current accumulated value.
  * @param {*} value The new value that needs to be integrated into the
  *     accumulated value.

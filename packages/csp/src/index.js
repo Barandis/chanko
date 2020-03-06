@@ -11,7 +11,7 @@
  * inluding any object literals for export (which would be natural for buffers,
  * for example) would keep tree-shaking from working right.
  *
- * @module chanko/channels
+ * @module csp
  */
 
 export { fixed, dropping, sliding } from "modules/buffer";
@@ -52,7 +52,7 @@ export { EMPTY } from "modules/queue";
  * the transducer is attached.
  *
  * @callback ExceptionHandler
- * @memberof module:chanko/channels
+ * @memberof module:csp
  * @param {object} err The error object that was thrown to cause the error to
  *     have to be handled.
  * @return {*} A value decided by the handler that will be sent to a channel.
@@ -66,7 +66,7 @@ export { EMPTY } from "modules/queue";
  * this callback is ignored.
  *
  * @callback OpCallback
- * @memberof module:chanko/channels
+ * @memberof module:csp
  * @param {*} value Either the value received from the channel, or whether or
  * not a value was successfully sent.
  */
@@ -80,9 +80,9 @@ export { EMPTY } from "modules/queue";
  * return value from this callback is ignored.
  *
  * @callback SelectCallback
- * @memberof module:chanko/channels
- * @param {module:chanko/channels.SelectResult} data The value returned from the
- *     select operation.
+ * @memberof module:csp
+ * @param {module:csp.SelectResult} data The value returned from the select
+ *     operation.
  */
 
 /**
@@ -96,14 +96,13 @@ export { EMPTY } from "modules/queue";
  * their arguments. The arguments to the transducers themselves are other
  * transducers that are then composed into a single transducer, which is then
  * returned. These values need not concern a user of ths library; just pass a
- * transducer to `{@link module:chanko/channels.chan|chan}` or
- * `{@link module:chanko/channels.transChan|transChan}` and everything else will
- * be handled.
+ * transducer to `{@link module:csp.chan|chan}` or
+ * `{@link module:csp.transChan|transChan}` and everything else will be handled.
  *
  * @callback Transducer
- * @memberof module:chanko/channels
- * @param {module:chanko/channels.Transducer} xform A transducer to chain this
- *     transducer to.
- * @return {module:chanko/channels.Transducer} A new transducer consisting of
- *     the composition of this one and `xform`.
+ * @memberof module:csp
+ * @param {module:csp.Transducer} xform A transducer to chain this transducer
+ *     to.
+ * @return {module:csp.Transducer} A new transducer consisting of the
+ *     composition of this one and `xform`.
  */
