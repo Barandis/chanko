@@ -1,0 +1,17 @@
+{
+  "sourceType": "module",
+  "presets": [["@babel/preset-env", { "modules": false }]],
+  "plugins": [
+    "@babel/plugin-proposal-async-generator-functions",
+    "@babel/plugin-transform-runtime"
+  ],
+  "env": {
+    "test": {
+      "presets": [["@babel/preset-env", { "modules": "commonjs" }]],
+      "plugins": [
+        ["babel-plugin-webpack-alias-7", { "config": "webpack.dev.js" }],
+        "istanbul"
+      ]
+    }
+  }
+}
