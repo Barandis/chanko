@@ -36,7 +36,9 @@
     "lib",
     "src"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@chanko/xduce": "^0.1.0"
+  },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-babel",
     "all": true,

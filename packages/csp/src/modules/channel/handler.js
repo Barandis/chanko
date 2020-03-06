@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { protocols as p } from "modules/protocol";
+import { protocols as p } from "@chanko/xduce";
 import {
   queue,
   dequeue,
