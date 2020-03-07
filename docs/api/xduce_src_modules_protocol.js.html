@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>csp/src/index.js - Documentation</title>
+    <title>xduce/src/modules/protocol.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">csp/src/index.js</h1>
+    <h1 class="page-title">xduce/src/modules/protocol.js</h1>
     
 
     
@@ -52,106 +52,96 @@
  */
 
 /**
- * All of the public-facing Chanko functions are gathered here in one place to
- * be exported as a whole. This is a completely flat list of exports, as
- * inluding any object literals for export (which would be natural for buffers,
- * for example) would keep tree-shaking from working right.
+ * Protocols for iteration and reduction.
  *
- * @module csp
+ * The names for these protocols came from a discussion thread
+ * ({@link https://github.com/cognitect-labs/transducers-js/issues/20}) from a
+ * time when transducers were very much in the forefront. It's the closest thing
+ * there is to a standard, so it was adopted here.
+ *
+ * These are the same symbols as available in my transducer library. They are
+ * publicly available from there.
+ *
+ * @module xduce/protocol
+ * @private
  */
 
-export { fixed, dropping, sliding } from "modules/buffer";
-export {
-  CLOSED,
-  chan,
-  timedChan,
-  transChan,
-  send,
-  recv,
-  sendAsync,
-  recvAsync,
-  recvOrThrow,
-  close,
-  isClosed,
-  isBuffered,
-  isTimed,
-  select,
-  selectAsync,
-  value,
-  channel
-} from "modules/channel";
-export {
-  config,
-  SET_IMMEDIATE,
-  MESSAGE_CHANNEL,
-  SET_TIMEOUT
-} from "modules/dispatcher";
-export { go, sleep, join } from "modules/process";
-export { EMPTY } from "modules/queue";
+import { isFunction, isGeneratorFunction } from "modules/utils";
 
 /**
- * An error handling funciton. This is used to handle exceptions thrown in async
- * functions and in transducers. The return value of an exception handler is
- * typically sent to a channel; if the exception happened within an async
- * function, it will be sent to that function's output channel, and if the
- * excpetion happened in a transducer, it will be sent to the channel to which
- * the transducer is attached.
+ * The mapping of protocol names to their respective property key names. The
+ * values of this map will depend on whether symbols are available.
  *
- * @callback ExceptionHandler
- * @memberof module:csp
- * @param {object} err The error object that was thrown to cause the error to
- *     have to be handled.
- * @return {*} A value decided by the handler that will be sent to a channel.
+ * @typedef {object} ProtocolMap
+ * @memberof module:xduce
+ * @property {Symbol} init The `transducer/init` protocol. This is used
+ *     to mark functions that initialize a target collection before adding items
+ *     to it.
+ * @property {Symbol} step The `transducer/step` protocol. This is used
+ *     to mark functions that are used in the transducer's step process, where
+ *     objects are added to the target collection one at a time.
+ * @property {Symbol} result The `transducer/result` protocol. This is
+ *     used to mark functions that take the final result of the step process and
+ *     return the final form to be output. This is optional; if the transducer
+ *     does not want to transform the final result, it should just return the
+ *     result of its chained transducer's `result` function.
+ * @property {Symbol} reduced The `transducer/reduced` protocol. The
+ *     presence of this key on an object indicates that its transformation has
+ *     been completed. It is used internally to mark collections whose
+ *     transformations conclude before every object is iterated over (as in
+ *     `{@link xduce.take}` transducers.) It is of little use beyond transducer
+ *     authoring.
+ * @property {Symbol} value The `transducer/value` protocol. This is
+ *     used internally to mark properties that contain the value of a reduced
+ *     transformation. It is of little use beyond transducer authoring.
  */
 
 /**
- * A callback that's run when a non-blocking channel operation completes. The
- * value that this function receives is identical to what is returned by a
- * blocking call: the value received from the channel for a `recv`, or `true` or
- * `false` depending on the channel status for a `send`. Any return value from
- * this callback is ignored.
+ * The mapping of protocol names to their respective property key names.
  *
- * @callback OpCallback
- * @memberof module:csp
- * @param {*} value Either the value received from the channel, or whether or
- * not a value was successfully sent.
+ * @type {module:xduce.ProtocolMap}
+ * @memberof module:xduce
  */
+const protocols = Object.create(null, {
+  init: {
+    value: Symbol.for("transducer/init"),
+  },
+  step: {
+    value: Symbol.for("transducer/step"),
+  },
+  result: {
+    value: Symbol.for("transducer/result"),
+  },
+  reduced: {
+    value: Symbol.for("transducer/reduced"),
+  },
+  value: {
+    value: Symbol.for("transducer/value"),
+  },
+});
 
-/**
- * A callback that's run when a non-blocking `select` operation completes. The
- * value that this function receives is an object with two properties: the value
- * that the `select` operation completed with (either the value received from
- * the channel in a receive operation, or `true` or `false` in a send
- * operation), along with the channel where the operation actually happened. Any
- * return value from this callback is ignored.
- *
- * @callback SelectCallback
- * @memberof module:csp
- * @param {module:csp.SelectResult} data The value returned from the select
- *     operation.
- */
+function isImplemented(obj, protocol) {
+  if (obj == null) {
+    return false;
+  }
 
-/**
- * A function that transforms data and can be composed with other transducers
- * into a single transducer. The transducers themselves are provided by other
- * libraries; the only involvement of this librar is as a consumer of
- * transducers.
- *
- * Transducers work by having step functions that are known via protocol, and it
- * is these step functions that take a value at a time to be transformed as
- * their arguments. The arguments to the transducers themselves are other
- * transducers that are then composed into a single transducer, which is then
- * returned. These values need not concern a user of ths library; just pass a
- * transducer to `{@link module:csp.chan|chan}` or
- * `{@link module:csp.transChan|transChan}` and everything else will be handled.
- *
- * @callback Transducer
- * @memberof module:csp
- * @param {module:csp.Transducer} xform A transducer to chain this transducer
- *     to.
- * @return {module:csp.Transducer} A new transducer consisting of the
- *     composition of this one and `xform`.
- */
+  switch (protocol) {
+    case "iterator":
+      return (
+        isFunction(obj[Symbol.iterator]) ||
+        isGeneratorFunction(obj[Symbol.iterator])
+      );
+    case "asyncIterator":
+      return isGeneratorFunction(obj[Symbol.asyncIterator]);
+    case "reduced":
+    case "value":
+      return Object.getOwnPropertySymbols(obj).includes(protocols[protocol]);
+    default:
+      return isFunction(obj[protocols[protocol]]);
+  }
+}
+
+export { protocols, isImplemented };
 </code></pre>
         </article>
     </section>

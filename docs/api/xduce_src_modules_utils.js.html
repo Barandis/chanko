@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>csp/src/index.js - Documentation</title>
+    <title>xduce/src/modules/utils.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">csp/src/index.js</h1>
+    <h1 class="page-title">xduce/src/modules/utils.js</h1>
     
 
     
@@ -52,106 +52,139 @@
  */
 
 /**
- * All of the public-facing Chanko functions are gathered here in one place to
- * be exported as a whole. This is a completely flat list of exports, as
- * inluding any object literals for export (which would be natural for buffers,
- * for example) would keep tree-shaking from working right.
- *
- * @module csp
+ * A bunch of utility functions. These are all used by the library itself in
+ * places, but many of them are suitable for general use as well.
+ * ^
+ * @module utils
+ * @private
  */
 
-export { fixed, dropping, sliding } from "modules/buffer";
+/**
+ * `Object`'s `toString` is explicitly used throughout because it could be
+ * redefined in any subtype of `Object`.
+ *
+ * @function toString
+ * @private
+ */
+const toString = Object.prototype.toString;
+
+/**
+ * Determines whether a value is a function.
+ *
+ * @memberof module:xduce/common
+ * @param {*} x The value being tested to see if it is a function.
+ * @return {boolean} Either `true` if the test value is a function or `false` if
+ *     it is not.
+ * @private
+ */
+function isFunction(x) {
+  return toString.call(x) === "[object Function]";
+}
+
+/**
+ * Determines whether a value is a generator function.
+ *
+ * @memberof module:xduce/utils
+ * @param {*} x The value being tested to see if it is a generator function.
+ * @return {boolean} Either `true` if the test value is a generator function or
+ *     `false` if it is not.
+ * @private
+ */
+function isGeneratorFunction(x) {
+  return toString.call(x) === "[object GeneratorFunction]";
+}
+
+/**
+ * Determines whether a value is a plain object.
+ *
+ * This function returns `false` if the value is any other sort of built-in
+ * object (such as an array or a string). It also returns `false` for any object
+ * that is created by a constructor that is not `Object`'s constructor, meaning
+ * that "instances" of custom "classes" will return `false`. Therefore it's only
+ * going to return `true` for literal objects or those created with
+ * `Object.create()`.
+ *
+ * @memberof module:xduce/utils
+ * @param {*} x The value being tested to see if it is a plain object.
+ * @return {boolean} Either `true` if the test value is a plain object or
+ *     `false` if it is not.
+ */
+function isObject(x) {
+  // This check excludes built-in non-Object objects (such as Array and String).
+  // It also excludes objects created from ES2015 classes, but it does not
+  // exclude objects created with `new` on constructor functions (that happens
+  // below).
+  if (toString.call(x) !== "[object Object]") {
+    return false;
+  }
+
+  // Prototype-less objects (created with `Object.create(null))` pass
+  const proto = Object.getPrototypeOf(x);
+  if (proto === null) {
+    return true;
+  }
+
+  // Check to see whether the constructor of the tested object is the Object
+  // constructor. This is the only constructor that produces a "plain" object.
+  const ctor =
+    Object.prototype.hasOwnProperty.call(proto, "constructor") &amp;&amp;
+    proto.constructor;
+  return typeof ctor === "function" &amp;&amp; ctor === Object;
+}
+
+/**
+ * Determines whether a value is a number.
+ *
+ * This function will return `true` for any number literal or instance of
+ * `Number` except for `Infinity` or `NaN`. It will return `false` for strings
+ * that happen to also be numbers; the value must be an actual `Number` instance
+ * or number literal to return `true`.
+ *
+ * @memberof module:xduce/utils
+ * @param {*} x The value being tested to see if it is a number.
+ * @return {boolean} Either `true` if the test value is a finite number (not
+ *     including string representations of numbers) or `false` if it is not.
+ */
+function isNumber(x) {
+  return toString.call(x) === "[object Number]" &amp;&amp; isFinite(x);
+}
+
+/**
+ * Determines whether a value is a string.
+ *
+ * Literal strings will return `true`, as will instances of the `String` object.
+ *
+ * @memberof module:xduce/utils
+ * @param {*} x The value being tested to see if it is a string.
+ * @return {boolean} Either `true` if the test value is a string or `false` if
+ *    it is not.
+ */
+function isString(x) {
+  return toString.call(x) === "[object String]";
+}
+
+/**
+ * Determines whether a value is an array.
+ *
+ * This function merely delegates to `Array.isArray`. It is provided for
+ * consistency in calling style only.
+ *
+ * @function isArray
+ * @memberof module:xduce/utils
+ * @param {*} x The value being tested to see if it is an array.
+ * @return {boolean} Either `true` if the test value is an array or `false` if
+ *     it is not.
+ */
+const isArray = Array.isArray;
+
 export {
-  CLOSED,
-  chan,
-  timedChan,
-  transChan,
-  send,
-  recv,
-  sendAsync,
-  recvAsync,
-  recvOrThrow,
-  close,
-  isClosed,
-  isBuffered,
-  isTimed,
-  select,
-  selectAsync,
-  value,
-  channel
-} from "modules/channel";
-export {
-  config,
-  SET_IMMEDIATE,
-  MESSAGE_CHANNEL,
-  SET_TIMEOUT
-} from "modules/dispatcher";
-export { go, sleep, join } from "modules/process";
-export { EMPTY } from "modules/queue";
-
-/**
- * An error handling funciton. This is used to handle exceptions thrown in async
- * functions and in transducers. The return value of an exception handler is
- * typically sent to a channel; if the exception happened within an async
- * function, it will be sent to that function's output channel, and if the
- * excpetion happened in a transducer, it will be sent to the channel to which
- * the transducer is attached.
- *
- * @callback ExceptionHandler
- * @memberof module:csp
- * @param {object} err The error object that was thrown to cause the error to
- *     have to be handled.
- * @return {*} A value decided by the handler that will be sent to a channel.
- */
-
-/**
- * A callback that's run when a non-blocking channel operation completes. The
- * value that this function receives is identical to what is returned by a
- * blocking call: the value received from the channel for a `recv`, or `true` or
- * `false` depending on the channel status for a `send`. Any return value from
- * this callback is ignored.
- *
- * @callback OpCallback
- * @memberof module:csp
- * @param {*} value Either the value received from the channel, or whether or
- * not a value was successfully sent.
- */
-
-/**
- * A callback that's run when a non-blocking `select` operation completes. The
- * value that this function receives is an object with two properties: the value
- * that the `select` operation completed with (either the value received from
- * the channel in a receive operation, or `true` or `false` in a send
- * operation), along with the channel where the operation actually happened. Any
- * return value from this callback is ignored.
- *
- * @callback SelectCallback
- * @memberof module:csp
- * @param {module:csp.SelectResult} data The value returned from the select
- *     operation.
- */
-
-/**
- * A function that transforms data and can be composed with other transducers
- * into a single transducer. The transducers themselves are provided by other
- * libraries; the only involvement of this librar is as a consumer of
- * transducers.
- *
- * Transducers work by having step functions that are known via protocol, and it
- * is these step functions that take a value at a time to be transformed as
- * their arguments. The arguments to the transducers themselves are other
- * transducers that are then composed into a single transducer, which is then
- * returned. These values need not concern a user of ths library; just pass a
- * transducer to `{@link module:csp.chan|chan}` or
- * `{@link module:csp.transChan|transChan}` and everything else will be handled.
- *
- * @callback Transducer
- * @memberof module:csp
- * @param {module:csp.Transducer} xform A transducer to chain this transducer
- *     to.
- * @return {module:csp.Transducer} A new transducer consisting of the
- *     composition of this one and `xform`.
- */
+  isFunction,
+  isGeneratorFunction,
+  isObject,
+  isNumber,
+  isString,
+  isArray,
+};
 </code></pre>
         </article>
     </section>

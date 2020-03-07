@@ -20,7 +20,7 @@
  * @private
  */
 
-import { isFunction, isGeneratorFunction } from "modules/common";
+import { isFunction, isGeneratorFunction } from "modules/utils";
 
 /**
  * The mapping of protocol names to their respective property key names. The
@@ -75,13 +75,16 @@ const protocols = Object.create(null, {
 });
 
 function isImplemented(obj, protocol) {
-  if (!obj) {
+  if (obj == null) {
     return false;
   }
 
   switch (protocol) {
     case "iterator":
-      return isFunction(obj[Symbol.iterator] || obj.next);
+      return (
+        isFunction(obj[Symbol.iterator]) ||
+        isGeneratorFunction(obj[Symbol.iterator])
+      );
     case "asyncIterator":
       return isGeneratorFunction(obj[Symbol.asyncIterator]);
     case "reduced":

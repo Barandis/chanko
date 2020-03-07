@@ -26,7 +26,9 @@ describe("isImplemented", () => {
 
   it("correctly checks iterator", () => {
     const obj = {
-      next() {}
+      [Symbol.iterator]() {
+        return { next() {} };
+      }
     };
     expect(isImplemented([1, 2, 3], "iterator")).to.be.true;
     expect(isImplemented(obj, "iterator")).to.be.true;
@@ -66,5 +68,9 @@ describe("isImplemented", () => {
   it("correctly checks value", () => {
     expect(isImplemented(yes, "value")).to.be.true;
     expect(isImplemented("foo", "value")).to.be.false;
+  });
+
+  it("returns false if null value is sent", () => {
+    expect(isImplemented(null, "iterator")).to.be.false;
   });
 });
