@@ -248,6 +248,16 @@
 
 export { protocols } from "modules/protocol";
 export { iterator, property } from "modules/iteration";
+export {
+  complete,
+  uncomplete,
+  isCompleted,
+  ensureCompleted,
+  ensureUncompleted,
+  reduce,
+  toFunction,
+  toReducer
+} from "modules/reduction";
 
 /**
  * A generic iterator. This conforms to the `iterator` protocol in that it has
@@ -325,4 +335,49 @@ export { iterator, property } from "modules/iteration";
  *     object represents.
  * @property {*} v The value of the single-property object that this object
  *     represents.
+ */
+
+/**
+ * An init function, which provides a new, empty instance of a collection.
+ *
+ * @callback InitFunction
+ * @memberof module:xduce
+ * @returns {*} A new, empty instance of a collection.
+ */
+
+/**
+ * A step function, that reduces a collection and a new value to the
+ * collection with the value added.
+ *
+ * @callback StepFunction
+ * @memberof module:xduce
+ * @param {*} acc An accumulated value to which the new value is being added.
+ * @param {*} value The new value to be added to the accumulated value.
+ * @returns {*} The accumulated value with the new value integrated into it.
+ */
+
+/**
+ * A result function that optionally modifies the input collection and then
+ * returns it. This is used at the end of a reduction to afford a last chance
+ * for the transducer to modify the output value.
+ *
+ * @callback ResultFunction
+ * @memberof module:xduce
+ * @param {*} input The value to be modified before being output.
+ * @returns {*} The modified value to be output by a transducer.
+ */
+
+/**
+ * An object with all of the information necessary to reduce values into a
+ * particular kind of collection. These are passed to
+ * {@link module:xduce.reduce|reduce} and like functions.
+ *
+ * @typedef Reducer
+ * @memberof module:xduce
+ * @property {module:xduce.InitFunction} [Symbol.for("transducer/init")] The
+ *     reducer's init function.
+ * @property {module:xduce.StepFunction} Symbol.for("transducer/step") The
+ *     reducer's step function.
+ * @property {module:xduce.ResultFunction} Symbol.for("transducer/result") The
+ *     reducer's result function.
  */
