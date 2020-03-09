@@ -9,27 +9,28 @@
  * Functions dealing with the actual transformation of values and for choosing
  * the reducer during transduction.
  *
- * @module core/transformation
+ * @module xduce/transformation
  * @private
  */
 
-import { protocols as p, isImplemented } from "modules/protocol";
-import { iterator } from "modules/iteration";
 import {
+  protocols as p,
+  isImplemented,
+  iterator,
   isCompleted,
   toReducer,
   reduce,
-  ARRAY_REDUCER,
-  OBJECT_REDUCER,
-  STRING_REDUCER
-} from "modules/reduction";
-import { isFunction, isArray, isObject, isString } from "modules/utils";
+  isFunction,
+  isArray,
+  isObject,
+  isString
+} from "@chanko/core";
 
 /**
  * Creates an iterator that is also a transducer, transforming its collection
  * one element at a time. This is the actual output of the
- * {@link module:core.asIterator|asIterator} function, as well as the output of
- * the {@link module:core.sequence|sequence} function when the input is an
+ * {@link module:xduce.asIterator|asIterator} function, as well as the output of
+ * the {@link module:xduce.sequence|sequence} function when the input is an
  * iterator.
  *
  * The end user need not be concerned with the type of the output iterator in
@@ -48,8 +49,8 @@ import { isFunction, isArray, isObject, isString } from "modules/utils";
  * @param {module:core.TransducerFunction} xform A function that creates a
  *     transducer object that defines the transformation being done to the
  *     iterator's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function.
+ *     {@link module:xduce|xduce} module can produce a suitable transducer
+ *     function.
  * @return {module:core.Iterator} An iterator that will transform its input
  *     elements using the transducer function as its
  *     `{@link module:core.NextFunction|next}` function is called.
@@ -143,8 +144,8 @@ function transducingIterator(collection, xform) {
  * and in those cases it will *have* to be passed as a parameter.
  *
  * ```
- * import { protocols as p, transduce } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { map, transduce } from "@chanko/xduce";
+ * import { protocols as p } from "@chanko/core";
  *
  * const xform = map(x => x + 1);
  *
@@ -203,11 +204,11 @@ function transducingIterator(collection, xform) {
  * reduced into the collection normally.
  *
  * Of course, the examples are not really necessary - the same thing could be
- * accomplished using `{@link module:core.into|into}` without having to create
- * the reducers (strings and arrays passed to `{@link module:core.into|into}` as
- * targets know how to reduce themselves already).
+ * accomplished using `{@link module:xduce.into|into}` without having to create
+ * the reducers (strings and arrays passed to `{@link module:xduce.into|into}`
+ * as targets know how to reduce themselves already).
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Iterable} collection The input collection. The only
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
@@ -247,8 +248,7 @@ function transduce(collection, xform, reducer, init) {
  * the input collection into an array.
  *
  * ```
- * import { asArray } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { asArray, map } from "@chanko/xduce";
  *
  * const xform = map(x => x + 1);
  *
@@ -265,7 +265,7 @@ function transduce(collection, xform, reducer, init) {
  * console.log(result);   // -> [{ a: 1 }, { b: 2 }]
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Iterable} collection The input collection. The only
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
@@ -273,14 +273,14 @@ function transduce(collection, xform, reducer, init) {
  * @param {module:core.TransducerFunction} [xform] A function that creates a
  *     transducer object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function. If this isn't present, the input collection will
- *     simply be reduced into an array without transformation.
+ *     {@link module:xduce|xduce} module can produce a suitable transducer
+ *     function. If this isn't present, the input collection will simply be
+ *     reduced into an array without transformation.
  * @return {Array} An array containing all of the transformed values from the
  *     input collection elements.
  */
 function asArray(collection, xform) {
-  return transduce(collection, xform, ARRAY_REDUCER);
+  return transduce(collection, xform, toReducer([]));
 }
 
 /**
@@ -293,8 +293,7 @@ function asArray(collection, xform) {
  * will be used as keys for the values provided by the input collection.
  *
  * ```
- * import { asObject, kv } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { asObject, kv, map } from "@chanko/xduce";
  *
  * const fn = prop => {
  *   const { k, v } = kv(prop);
@@ -318,7 +317,7 @@ function asArray(collection, xform) {
  * console.log(result);   // -> { 0: "h", 1: "e", 2: "l", 3: "l", 4: "o" }
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Iterable} collection The input collection. The only
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
@@ -326,14 +325,14 @@ function asArray(collection, xform) {
  * @param {module:core.Tranducer} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function. If this isn't present, the input collection will
- *     simply be reduced into an object without transformation.
+ *     {@link module:xduce|xduce} module can produce a suitable transducer
+ *     function. If this isn't present, the input collection will simply be
+ *     reduced into an object without transformation.
  * @return {Object} An object containing all of the transformed values from the
  *     input collection elements.
  */
 function asObject(collection, xform) {
-  return transduce(collection, xform, OBJECT_REDUCER);
+  return transduce(collection, xform, toReducer({}));
 }
 
 /**
@@ -349,8 +348,7 @@ function asObject(collection, xform) {
  * pairs.
  *
  * ```
- * import { transduce, key } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { transduce, key, map } from "@chanko/xduce";
  *
  * const xform = map(x => x.toUpperCase());
  *
@@ -370,7 +368,7 @@ function asObject(collection, xform) {
  * console.log(result);   // -> "123"
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Iterable} collection The input collection. The only
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
@@ -385,7 +383,7 @@ function asObject(collection, xform) {
  *     input collection elements.
  */
 function asString(collection, xform) {
-  return transduce(collection, xform, STRING_REDUCER);
+  return transduce(collection, xform, toReducer(""));
 }
 
 /**
@@ -400,8 +398,7 @@ function asString(collection, xform) {
  * demonstration purposes only.)*
  *
  * ```
- * import { asIterator, asArray } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { asIterator, asArray, map } from "@chanko/xduce";
  *
  * const xform = map(x => x + 1);
  * function* five() {
@@ -423,7 +420,7 @@ function asString(collection, xform) {
  * console.log(asArray(result));   // -> [{ a: 1 }, { b: 2 }]
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Iterable} collection The input collection. The only
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
@@ -446,11 +443,11 @@ function asIterator(collection, xform) {
  * collection of the same type.
  *
  * This is the highest level of the three main transduction functions
- * (`sequence`, `{@link module:core.into|into}`, and
- * `{@link module:core.transduce|transduce}`). It creates a new collection of
+ * (`sequence`, `{@link module:xduce.into|into}`, and
+ * `{@link module:xduce.transduce|transduce}`). It creates a new collection of
  * the same type as the input collection and reduces the transformed elements
- * into it. Additionally, unlike `{@link module:core.into|into}` and
- * `{@link module:core.transduce|transduce}`, this function is capable of
+ * into it. Additionally, unlike `{@link module:xduce.into|into}` and
+ * `{@link module:xduce.transduce|transduce}`, this function is capable of
  * producing an iterator (as long as the input is an iterator).
  *
  * The input collection must not only implement the `iterator` protocol (as in
@@ -463,8 +460,7 @@ function asIterator(collection, xform) {
  * function cannot be used to convert a collection into a different type.
  *
  * ```
- * import { sequence } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { sequence, map } from "@chanko/xduce";
  *
  * const xform = map(x => x + 1);
  *
@@ -479,7 +475,7 @@ function asIterator(collection, xform) {
  * functions. Other examples are not possible with `sequence` because they have
  * different input and output collection types.
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.ReducibleIterable} collection The input collection. This
  *     must implement the `iterator`, `init`, `result`, and `step` protocols.
  *     Special support is provided for arrays, strings, objects, and iterators,
@@ -514,7 +510,7 @@ function sequence(collection, xform) {
  * Transforms the elements of the input collection and reduces them into the
  * target collection.
  *
- * This is much like `{@link module:core.transduce|transduce}`, except that
+ * This is much like `{@link module:xduce.transduce|transduce}`, except that
  * instead of explicitly providing a reducer (and perhaps an initial
  * collection), the target collection acts as a reducer itself. This requires
  * that the collection implement the `init`, `result`, and `step` transducer
@@ -525,8 +521,7 @@ function sequence(collection, xform) {
  * used to convert one kind of collection into another.
  *
  * ```
- * import { into } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { into, map } from "@chanko/xduce";
  *
  * const xform = map(x => x + 1);
  *
@@ -543,7 +538,7 @@ function sequence(collection, xform) {
  * console.log(result);   // -> "23456"
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {module:core.Reducible} target The collection into which all of the
  *     transformed input collection elements will be reduced. This collection
  *     must implement the `init`, `result`, and `step` protocol functions from
@@ -556,20 +551,20 @@ function sequence(collection, xform) {
  * @param {module:core.TransducerFunction} [xform] A function that creates a
  *     transducer object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} mnodule can produce a suitable
- *     transducer function. If this isn't present, the input collection will
- *     simply be reduced into the target collection without transformation.
+ *     {@link module:xduce|xduce} mnodule can produce a suitable transducer
+ *     function. If this isn't present, the input collection will simply be
+ *     reduced into the target collection without transformation.
  * @return {module:core.Reducible} The `target` collection, with all of the
  *     tranformed input collection elements reduced onto it.
  */
 function into(target, collection, xform) {
   switch (true) {
     case isArray(target):
-      return transduce(collection, xform, ARRAY_REDUCER, target);
+      return transduce(collection, xform, toReducer([]), target);
     case isObject(target):
-      return transduce(collection, xform, OBJECT_REDUCER, target);
+      return transduce(collection, xform, toReducer({}), target);
     case isString(target):
-      return transduce(collection, xform, STRING_REDUCER, target);
+      return transduce(collection, xform, toReducer(""), target);
     case isImplemented(target, "step"):
       return transduce(collection, xform, target, target);
     default:
@@ -581,7 +576,7 @@ function into(target, collection, xform) {
  * Composes two or more transducer functions into a single transducer function.
  *
  * Each function that takes a transducer function
- * (`{@link module:core.sequence|sequence}`, `{@link module:core.into|into}`,
+ * (`{@link module:xduce.sequence|sequence}`, `{@link module:xduce.into|into}`,
  * etc.) is only capable of accepting one of them. If there is a need to have
  * several transducers chained together, then use `compose` to create a
  * transducer function that does what all of them do.
@@ -605,12 +600,12 @@ function into(target, collection, xform) {
  * console.log(result);   // -> [3, 5, 7];
  * ```
  *
- * @memberof module:core
+ * @memberof module:xduce
  * @param {...module:core.TransducerFunction} fns One or more function that each
  *     create a transducer object that defines the transformation being done to
  *     a collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function.
+ *     {@link module:xduce|xduce} module can produce a suitable transducer
+ *     function.
  * @return {module:core.TransducerFunction} A transducer function that produces
  *     a transducer object that performs *all* of the transformations of the
  *     objects produced by the input transducer functions.

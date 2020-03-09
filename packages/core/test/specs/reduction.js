@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect, map, filter } from "test/helper";
+import { expect, map } from "test/helper";
 import _ from "lodash";
 
 import {
@@ -18,7 +18,6 @@ import {
   ARRAY_REDUCER
 } from "modules/reduction";
 import { protocols as p } from "modules/protocol";
-import { compose } from "modules/transformation";
 
 describe("Status marking functions", () => {
   context("isCompleted", () => {
@@ -132,10 +131,7 @@ describe("Integration with other libraries", () => {
     return acc;
   };
 
-  const xform = compose(
-    map(x => x + 1),
-    filter(x => x % 2 === 0)
-  );
+  const xform = map(x => x + 1);
   const reducerFn = toFunction(xform, arrayPush);
   const reducerObj = toFunction(xform, ARRAY_REDUCER);
 
@@ -143,15 +139,15 @@ describe("Integration with other libraries", () => {
     it("can make a function to use with Array's reduce", () => {
       const result1 = [1, 2, 3, 4, 5].reduce(reducerFn, []);
       const result2 = [1, 2, 3, 4, 5].reduce(reducerObj, []);
-      expect(result1).to.deep.equal([2, 4, 6]);
-      expect(result2).to.deep.equal([2, 4, 6]);
+      expect(result1).to.deep.equal([2, 3, 4, 5, 6]);
+      expect(result2).to.deep.equal([2, 3, 4, 5, 6]);
     });
 
     it("can make a function to use with lodash's reduce", () => {
       const result1 = _.reduce([1, 2, 3, 4, 5], reducerFn, []);
       const result2 = _.reduce([1, 2, 3, 4, 5], reducerObj, []);
-      expect(result1).to.deep.equal([2, 4, 6]);
-      expect(result2).to.deep.equal([2, 4, 6]);
+      expect(result1).to.deep.equal([2, 3, 4, 5, 6]);
+      expect(result2).to.deep.equal([2, 3, 4, 5, 6]);
     });
   });
 });

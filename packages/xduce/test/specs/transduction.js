@@ -19,6 +19,7 @@ import {
   naturals
 } from "test/helper";
 
+import { toReducer } from "@chanko/core";
 import { List, fromJS } from "immutable";
 
 import {
@@ -30,16 +31,8 @@ import {
   into,
   sequence,
   compose
-} from "modules/transformation";
-import {
-  ARRAY_REDUCER,
-  OBJECT_REDUCER,
-  STRING_REDUCER,
-  toReducer
-} from "modules/reduction";
-import { kv, value, key } from "modules/iteration";
-
-const IMMUTABLE_REDUCER = toReducer(List.prototype);
+} from "modules/transduction";
+import { kv, key, value } from "modules/utils";
 
 const addOne = x => x + 1;
 const ucaseObj = prop => {
@@ -53,22 +46,22 @@ const keyAndValue = x => ({ [x.toString()]: x });
 describe("Transduction functions", () => {
   context("transduce", () => {
     it("can map an array with an array reducer", () => {
-      const result = transduce(ARRAY_5, map(addOne), ARRAY_REDUCER);
+      const result = transduce(ARRAY_5, map(addOne), toReducer([]));
       expect(result).to.deep.equal([2, 3, 4, 5, 6]);
     });
 
     it("can map an object with an object reducer", () => {
-      const result = transduce(OBJECT_AB, map(ucaseObj), OBJECT_REDUCER);
+      const result = transduce(OBJECT_AB, map(ucaseObj), toReducer({}));
       expect(result).to.deep.equal({ A: 1, B: 2 });
     });
 
     it("can map a string with a string reducer", () => {
-      const result = transduce("hello", map(ucaseStr), STRING_REDUCER);
+      const result = transduce("hello", map(ucaseStr), toReducer(""));
       expect(result).to.equal("HELLO");
     });
 
     it("can map an immutable list after protocol application", () => {
-      const result = transduce(LIST_5, map(addOne), IMMUTABLE_REDUCER);
+      const result = transduce(LIST_5, map(addOne), toReducer(List.prototype));
       expect(result.toArray()).to.deep.equal([2, 3, 4, 5, 6]);
     });
 
@@ -106,11 +99,11 @@ describe("Transduction functions", () => {
     });
 
     it("returns null if given a null collection", () => {
-      expect(transduce(null, map(addOne), ARRAY_REDUCER)).to.be.null;
+      expect(transduce(null, map(addOne), toReducer([]))).to.be.null;
     });
 
     it("throws an error if given a non-reducible collection", () => {
-      const fn = () => transduce(new Date(), map(addOne), ARRAY_REDUCER);
+      const fn = () => transduce(new Date(), map(addOne), toReducer([]));
       expect(fn).to.throw();
     });
   });

@@ -246,8 +246,8 @@
  * @module core
  */
 
-export { protocols } from "modules/protocol";
-export { iterator, isIterable, kv, key, value } from "modules/iteration";
+export { protocols, isImplemented } from "modules/protocol";
+export { iterator, isIterable } from "modules/iteration";
 export {
   complete,
   uncomplete,
@@ -259,16 +259,6 @@ export {
   toReducer,
   toTransducer
 } from "modules/reduction";
-export {
-  transduce,
-  sequence,
-  into,
-  asArray,
-  asObject,
-  asString,
-  asIterator,
-  compose
-} from "modules/transformation";
 export {
   isArray,
   isFunction,

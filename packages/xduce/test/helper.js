@@ -16,7 +16,7 @@ import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 import { List } from "immutable";
 
-import { protocols as p } from "@chanko/core";
+import { protocols as p, toTransducer, ensureCompleted } from "@chanko/core";
 
 chai.use(sinonChai);
 
@@ -61,6 +61,37 @@ function expectWithin(value, expected, tolerance = 0.001) {
   expect(value).to.be.within(expected - tolerance, expected + tolerance);
 }
 
+function map(fn) {
+  return xform =>
+    toTransducer((acc, value) => xform[p.step](acc, fn(value)), xform);
+}
+
+function filter(fn) {
+  return xform =>
+    toTransducer(
+      (acc, value) => (fn(value) ? xform[p.step](acc, value) : acc),
+      xform
+    );
+}
+
+function take(n) {
+  return xform => {
+    let i = 0;
+    return toTransducer((acc, value) => {
+      let result = acc;
+
+      if (i < n) {
+        result = xform[p.step](acc, value);
+        if (i === n - 1) {
+          result = ensureCompleted(result);
+        }
+      }
+      i++;
+      return result;
+    }, xform);
+  };
+}
+
 export {
   expect,
   ARRAY_5,
@@ -70,5 +101,8 @@ export {
   five,
   naturals,
   expectIterator,
-  expectWithin
+  expectWithin,
+  map,
+  filter,
+  take
 };

@@ -7,29 +7,15 @@
 
 import {
   protocols as p,
-  sequence,
   isCompleted,
   complete,
   isIterable,
   reduce,
-  toTransducer,
-  isNumber,
-  isFunction
+  toTransducer
 } from "@chanko/core";
 
-function sameValueZero(a, b) {
-  return a === b || (isNaN(a) && isNaN(b));
-}
-
-function parseNumberArgs(collection, n) {
-  return isNumber(collection) ? [null, collection] : [collection, n];
-}
-
-function parseFunctionArgs(collection, fn, ctx) {
-  return isFunction(collection)
-    ? [null, collection.bind(fn)]
-    : [collection, fn.bind(ctx)];
-}
+import { parseNumberArgs } from "modules/utils";
+import { sequence } from "modules/transduction";
 
 function identity(collection) {
   return collection
@@ -70,11 +56,4 @@ function repeat(collection, n) {
         }, xform);
 }
 
-export {
-  sameValueZero,
-  parseNumberArgs,
-  parseFunctionArgs,
-  identity,
-  flatten,
-  repeat
-};
+export { identity, flatten, repeat };

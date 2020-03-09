@@ -15,7 +15,7 @@
 
 import { isImplemented, protocols as p } from "modules/protocol";
 import { isString, isArray, isObject, isFunction } from "modules/utils";
-import { kv, iterator } from "modules/iteration";
+import { iterator } from "modules/iteration";
 
 /**
  * Returns an init function for a collection. This is a function that returns a
@@ -78,7 +78,7 @@ function step(collection) {
 
     case isString(collection):
       return (acc, input) => {
-        const value = isObject(input) ? kv(input).v : input;
+        const value = isObject(input) ? input[Object.keys(input)[0]] : input;
         return acc + value;
       };
 
@@ -100,8 +100,8 @@ function step(collection) {
           value = { [max + 1]: input };
         }
 
-        const { k, v } = kv(value);
-        acc[k] = v;
+        const k = Object.keys(value)[0];
+        acc[k] = value[k];
         return acc;
       };
 

@@ -15,12 +15,14 @@ import {
   expectIterator
 } from "test/helper";
 
-import { sequence, transduce, toReducer, compose, into } from "@chanko/core";
+import { toReducer } from "@chanko/core";
 
 import { List } from "immutable";
 
-import { identity, flatten, repeat } from "modules/core";
+import { identity, flatten, repeat } from "modules/basic";
 import { take } from "modules/take";
+
+import { sequence, transduce, compose, into } from "modules/transduction";
 
 describe("Core transducers", () => {
   context("identity", () => {
