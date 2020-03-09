@@ -79,4 +79,16 @@ function value(obj) {
   return kv(obj).v;
 }
 
-export { sameValueZero, parseNumberArgs, parseFunctionArgs, kv, key, value };
+function complement(fn) {
+  return (...args) => !fn(...args);
+}
+
+export {
+  sameValueZero,
+  parseNumberArgs,
+  parseFunctionArgs,
+  kv,
+  key,
+  value,
+  complement
+};
