@@ -1,11 +1,11 @@
-# `@chanko/xduce`
+# `@chanko/core`
 
 > TODO: description
 
 ## Usage
 
 ```
-const xduce = require('@chanko/xduce');
+const core = require('@chanko/core');
 
 // TODO: DEMONSTRATE API
 ```

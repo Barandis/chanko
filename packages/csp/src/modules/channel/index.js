@@ -52,7 +52,7 @@ import {
 } from "./handler";
 import { DEFAULT, select, selectAsync, value, channel } from "./select";
 import { add, fixed, isBuffer } from "modules/buffer";
-import { protocols as p } from "@chanko/xduce-tools";
+import { protocols as p } from "@chanko/core";
 
 /**
  * A handler function for exceptions that are thrown by a transducer while
@@ -272,7 +272,7 @@ function parseArgs(buffer, options, defaultOptions) {
  *     `{@link module:csp.FixedBuffer|FixedBuffer}`.
  * @param {Object} [options] A set of options for configuring the channel's
  *     queue.
- * @param {module:xduce-tools.TransducerFunction} [options.transducer] A
+ * @param {module:core.TransducerFunction} [options.transducer] A
  *     transducer to run each value through before putting it onto the channel.
  *     This function should expect one parameter (another transducer that it's
  *     chained to) and return an object that conforms to the transducer
@@ -363,7 +363,7 @@ function timedChan(delay = 0) {
  * size 1. This is the equivalent of `chan(1, { transducer, handler })`.
  *
  * @memberof module:csp
- * @param {module:xduce-tools.TransducerFunction} transducer The transducer used
+ * @param {module:core.TransducerFunction} transducer The transducer used
  *     to transform values on the new channel.
  * @param {module:csp.ExceptionHandler} [handler] An exception handler called
  *     with the error object as its only argument when an error happens inside a

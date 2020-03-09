@@ -9,7 +9,7 @@ import { expect } from "test/helper";
 
 import { transChan, send, recv, CLOSED, chan, close } from "modules/channel";
 import { go, join } from "modules/process";
-import { protocols as p } from "@chanko/xduce-tools";
+import { protocols as p } from "@chanko/core";
 
 import { compose, transducers as t } from "xduce";
 

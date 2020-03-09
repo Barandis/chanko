@@ -1,8 +1,8 @@
 {
-  "name": "@chanko/xduce-tools",
+  "name": "@chanko/core",
   "version": "0.1.0",
-  "description": "JavaScript transduction engine",
-  "main": "lib/chanko-xduce-tools.js",
+  "description": "Core engine for Javascript transducers",
+  "main": "lib/chanko-core.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",
