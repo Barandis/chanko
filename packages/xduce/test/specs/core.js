@@ -15,10 +15,18 @@ import {
   expectIterator
 } from "test/helper";
 
-import { sequence, transduce, toReducer } from "@chanko/xduce";
+import {
+  sequence,
+  transduce,
+  toReducer,
+  compose,
+  into
+} from "@chanko/xduce-tools";
+
 import { List } from "immutable";
 
 import { identity, flatten, repeat } from "modules/core";
+import { take } from "modules/take";
 
 describe("Core transducers", () => {
   context("identity", () => {
@@ -103,11 +111,20 @@ describe("Core transducers", () => {
       expect(result).to.deep.equal(ARRAY_5);
     });
 
-    // it("works in compisition with a completing transducer", () => {
-    //   const xform = compose(take(2), flatten());
-    //   const result = into([], [[1, 2], [3, 4], [5, 6], [7, 8]], xform);
-    //   expect(result).to.deep.equal([1, 2, 3, 4]);
-    // });
+    it("works in composition with a completing transducer", () => {
+      const xform = compose(take(2), flatten());
+      const result = into(
+        [],
+        [
+          [1, 2],
+          [3, 4],
+          [5, 6],
+          [7, 8]
+        ],
+        xform
+      );
+      expect(result).to.deep.equal([1, 2, 3, 4]);
+    });
 
     it("passes init calls to the next transducer", () => {
       const reducer = flatten()(toReducer([]));
@@ -148,11 +165,11 @@ describe("Core transducers", () => {
       expect(result.toArray()).to.deep.equal([1, 1, 2, 2, 3, 3, 4, 4, 5, 5]);
     });
 
-    // it("works when composed with a completing transducer", () => {
-    //   const xform = compose(repeat(3), take(5));
-    //   const result = sequence(ARRAY_5, xform);
-    //   expect(result).to.deep.equal([1, 1, 1, 2, 2]);
-    // });
+    it("works when composed with a completing transducer", () => {
+      const xform = compose(repeat(3), take(5));
+      const result = sequence(ARRAY_5, xform);
+      expect(result).to.deep.equal([1, 1, 1, 2, 2]);
+    });
 
     it("can create a transducer function", () => {
       const result = sequence(ARRAY_5, repeat(2));

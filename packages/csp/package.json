@@ -54,6 +54,6 @@
     "maintained node versions"
   ],
   "dependencies": {
-    "@chanko/xduce": "^0.1.0"
+    "@chanko/xduce-tools": "^0.1.0"
   }
 }

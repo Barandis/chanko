@@ -11,7 +11,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "lib"),
-    library: "transducers",
+    library: "xduceTools",
     libraryTarget: "umd",
     globalObject: "this",
   },

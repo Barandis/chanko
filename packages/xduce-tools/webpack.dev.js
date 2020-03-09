@@ -12,6 +12,6 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "inline-source-map",
   output: {
-    filename: "chanko-transducers.js",
+    filename: "chanko-xduce-tools.js",
   },
 });

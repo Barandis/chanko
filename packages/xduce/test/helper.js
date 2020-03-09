@@ -5,12 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
+/**
+ * Copyright (c) 2020 Thomas J. Otterson
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 import { List } from "immutable";
 
-import { protocols as p } from "modules/protocol";
-import { ensureCompleted, toTransducer } from "modules/reduction";
+import { protocols as p } from "@chanko/xduce-tools";
 
 chai.use(sinonChai);
 
@@ -55,37 +61,6 @@ function expectWithin(value, expected, tolerance = 0.001) {
   expect(value).to.be.within(expected - tolerance, expected + tolerance);
 }
 
-function map(fn) {
-  return xform =>
-    toTransducer((acc, value) => xform[p.step](acc, fn(value)), xform);
-}
-
-function filter(fn) {
-  return xform =>
-    toTransducer(
-      (acc, value) => (fn(value) ? xform[p.step](acc, value) : acc),
-      xform
-    );
-}
-
-function take(n) {
-  return xform => {
-    let i = 0;
-    return toTransducer((acc, value) => {
-      let result = acc;
-
-      if (i < n) {
-        result = xform[p.step](acc, value);
-        if (i === n - 1) {
-          result = ensureCompleted(result);
-        }
-      }
-      i++;
-      return result;
-    }, xform);
-  };
-}
-
 export {
   expect,
   ARRAY_5,
@@ -95,8 +70,5 @@ export {
   five,
   naturals,
   expectIterator,
-  expectWithin,
-  map,
-  filter,
-  take
+  expectWithin
 };

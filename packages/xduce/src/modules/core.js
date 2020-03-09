@@ -13,11 +13,22 @@ import {
   isIterable,
   reduce,
   toTransducer,
-  isNumber
-} from "@chanko/xduce";
+  isNumber,
+  isFunction
+} from "@chanko/xduce-tools";
 
 function sameValueZero(a, b) {
   return a === b || (isNaN(a) && isNaN(b));
+}
+
+function parseNumberArgs(collection, n) {
+  return isNumber(collection) ? [null, collection] : [collection, n];
+}
+
+function parseFunctionArgs(collection, fn, ctx) {
+  return isFunction(collection)
+    ? [null, collection.bind(fn)]
+    : [collection, fn.bind(ctx)];
 }
 
 function identity(collection) {
@@ -43,9 +54,7 @@ function flatten(collection) {
 }
 
 function repeat(collection, n) {
-  const [col, num] = isNumber(collection)
-    ? [null, collection]
-    : [collection, n];
+  const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, repeat(num))
     : xform =>
@@ -61,4 +70,11 @@ function repeat(collection, n) {
         }, xform);
 }
 
-export { sameValueZero, identity, flatten, repeat };
+export {
+  sameValueZero,
+  parseNumberArgs,
+  parseFunctionArgs,
+  identity,
+  flatten,
+  repeat
+};

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { protocols as p } from "@chanko/xduce";
+import { protocols as p } from "@chanko/xduce-tools";
 import {
   queue,
   dequeue,
@@ -208,9 +208,9 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:xduce.TransducerFunction} xform The transducer used to transform
- *     values sent to the channel. If no transformations are necessary, a
- *     passthrough transducer should be provided.
+ * @param {module:xduce-tools.TransducerFunction} xform The transducer used to
+ *     transform values sent to the channel. If no transformations are
+ *     necessary, a passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
  *     The timining mechanism is handled outside the channel, but this property
  *     is provided to be able to query whether that's the case.

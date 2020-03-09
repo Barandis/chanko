@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const transducers = require('@chanko/xduce');
+const xduce = require('@chanko/xduce');
 
 // TODO: DEMONSTRATE API
 ```

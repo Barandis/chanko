@@ -6,6 +6,7 @@
     "include": [
       "packages/csp/src",
       "packages/ops/src",
+      "packages/xduce-tools/src",
       "packages/xduce/src"
     ]
   },

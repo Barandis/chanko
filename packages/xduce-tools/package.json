@@ -1,8 +1,8 @@
 {
-  "name": "@chanko/transducers",
+  "name": "@chanko/xduce-tools",
   "version": "0.1.0",
-  "description": "A collection of pre-build transducer functions",
-  "main": "lib/chanko-transducers.js",
+  "description": "JavaScript transduction engine",
+  "main": "lib/chanko-xduce-tools.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",
@@ -15,10 +15,10 @@
     "upload": "npm run cover -s && cat ./coverage/lcov.info | coveralls"
   },
   "keywords": [
-    "csp",
     "transducer",
+    "transduce",
     "transformation",
-    "xduce"
+    "channels"
   ],
   "author": "Thomas Otterson <tjotterson@gmail.com>",
   "repository": {
@@ -33,6 +33,7 @@
     "lib",
     "src"
   ],
+  "dependencies": {},
   "nyc": {
     "extends": "@istanbuljs/nyc-config-babel",
     "all": true,
@@ -49,8 +50,5 @@
     "not ie 11",
     "not ie_mob 11",
     "maintained node versions"
-  ],
-  "dependencies": {
-    "@chanko/xduce": "^0.1.0"
-  }
+  ]
 }

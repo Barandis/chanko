@@ -1,1 +1,1 @@
-# @chanko/operations: Multi-channel operations for @chanko/channels
+# @chanko/ops: Multi-channel operations for @chanko/csp
