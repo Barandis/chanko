@@ -269,6 +269,14 @@ export {
   asIterator,
   compose
 } from "modules/transformation";
+export {
+  isArray,
+  isFunction,
+  isGeneratorFunction,
+  isNumber,
+  isObject,
+  isString
+} from "modules/utils";
 
 /**
  * An iterable as defined by JavaScript.
