@@ -3781,7 +3781,7 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:xduce.Transducer} xform The transducer used to transform
+ * @param {module:xduce.TransducerFunction} xform The transducer used to transform
  *     values sent to the channel. If no transformations are necessary, a
  *     passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
@@ -4505,7 +4505,7 @@ function parseArgs(buffer, options, defaultOptions) {
  *     `{@link module:csp.FixedBuffer|FixedBuffer}`.
  * @param {Object} [options] A set of options for configuring the channel's
  *     queue.
- * @param {module:xduce.Transducer} [options.transducer] A transducer to run
+ * @param {module:xduce.TransducerFunction} [options.transducer] A transducer to run
  *     each value through before putting it onto the channel. This function
  *     should expect one parameter (another transducer that it's chained to) and
  *     return an object that conforms to the transducer protocol. If a
@@ -4606,7 +4606,7 @@ function timedChan(delay = 0) {
  * size 1. This is the equivalent of `chan(1, { transducer, handler })`.
  *
  * @memberof module:csp
- * @param {module:xduce.Transducer} transducer The transducer used to transform
+ * @param {module:xduce.TransducerFunction} transducer The transducer used to transform
  *     values on the new channel.
  * @param {module:csp.ExceptionHandler} [handler] An exception handler called
  *     with the error object as its only argument when an error happens inside a

@@ -1,8 +1,8 @@
 {
-  "name": "@chanko/csp",
+  "name": "@chanko/transducers",
   "version": "0.1.0",
-  "description": "CSP channels and processes for JavaScript",
-  "main": "lib/chanko-csp.js",
+  "description": "A collection of pre-build transducer functions",
+  "main": "lib/chanko-transducers.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",
@@ -16,12 +16,9 @@
   },
   "keywords": [
     "csp",
-    "channel",
-    "async",
-    "concurrent",
-    "go",
-    "chan",
-    "process"
+    "transducer",
+    "transformation",
+    "xduce"
   ],
   "author": "Thomas Otterson <tjotterson@gmail.com>",
   "repository": {

@@ -51,9 +51,6 @@
     "webpack-merge": "^4.2.2",
     "xduce": "^2.0.2"
   },
-  "dependencies": {
-    "@chanko/csp": "file:packages/csp"
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

@@ -607,9 +607,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @callback Transducer
  * @memberof module:xduce
- * @param {module:xduce.Transducer} xform A transducer to chain this transducer
+ * @param {module:xduce.TransducerFunction} xform A transducer to chain this transducer
  *     to.
- * @return {module:xduce.Transducer} A new transducer consisting of the
+ * @return {module:xduce.TransducerFunction} A new transducer consisting of the
  *     composition of this one and `xform`.
  */
 
@@ -1520,7 +1520,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @param {module:xduce.Iterable} collection the input collection that the
  *     produced iterator will be iterating over.
- * @param {module:xduce.Transducer} xform A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} xform A function that creates a transducer
  *     object that defines the transformation being done to the iterator's
  *     elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
@@ -1698,7 +1698,7 @@ function transducingIterator(collection, xform) {
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
  *     can also be used.
- * @param {module:xduce.Transducer} [xform] A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
@@ -1757,7 +1757,7 @@ function transduce(collection, xform, reducer, init) {
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
  *     can also be used.
- * @param {module:xduce.Transducer} [xform] A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
@@ -1864,7 +1864,7 @@ function asObject(collection, xform) {
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
  *     can also be used.
- * @param {module:xduce.Transducer} [xform] A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
@@ -1918,7 +1918,7 @@ function asString(collection, xform) {
  *     requirement of this collection is that it implement the `iterable`
  *     protocol. Special support is provided by the library for objects, so they
  *     can also be used.
- * @param {module:xduce.Transducer} [xform] A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
@@ -1975,7 +1975,7 @@ function asIterator(collection, xform) {
  *     must implement the `iterator`, `init`, `result`, and `step` protocols.
  *     Special support is provided for arrays, strings, objects, and iterators,
  *     so they do not have to implement any protocols.
- * @param {module:xduce.Transducer} xform A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} xform A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:xduce.transducers|transducers} module can produce a
@@ -2050,7 +2050,7 @@ function sequence(collection, xform) {
  *     requirement of this collection is that it implement the `iterator`
  *     protocol. Special support is provided by the library for objects, to they
  *     can also be used.
- * @param {module:xduce.Transducer} [xform] A function that creates a transducer
+ * @param {module:xduce.TransducerFunction} [xform] A function that creates a transducer
  *     object that defines the transformation being done to the input
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} mnodule can produce a suitable
@@ -2108,12 +2108,12 @@ function into(target, collection, xform) {
  * ```
  *
  * @memberof module:xduce
- * @param {...module:xduce.Transducer} fns One or more function that each create
+ * @param {...module:xduce.TransducerFunction} fns One or more function that each create
  *     a transducer object that defines the transformation being done to a
  *     collection's elements. Any of the transducers in the
  *     {@link module:transducers|transducers} module can produce a suitable
  *     transducer function.
- * @return {module:xduce.Transducer} A transducer function that produces a
+ * @return {module:xduce.TransducerFunction} A transducer function that produces a
  *     transducer object that performs *all* of the transformations of the
  *     objects produced by the input transducer functions.
  */

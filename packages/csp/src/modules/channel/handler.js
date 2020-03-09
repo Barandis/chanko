@@ -208,7 +208,7 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:xduce.Transducer} xform The transducer used to transform
+ * @param {module:xduce.TransducerFunction} xform The transducer used to transform
  *     values sent to the channel. If no transformations are necessary, a
  *     passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
