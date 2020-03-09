@@ -184,11 +184,11 @@ function iterator(value, sortFn = null) {
  * because not all functions work well with
  * {@link module:core.iterator|iterator}.
  *
+ * @memberof module:core
  * @param {*} value The value to test for iterability.
  * @return {boolean} Either `true` if the value is iterable
  *     (`{@link module:core.iterator}` will return an iterator for it) or
  *     `false` if it is not.
- * @private
  */
 function isIterable(value) {
   return isImplemented(value, "iterator") || isObject(value);
