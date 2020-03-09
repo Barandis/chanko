@@ -84,25 +84,3 @@ export { EMPTY } from "modules/queue";
  * @param {module:csp.SelectResult} data The value returned from the select
  *     operation.
  */
-
-/**
- * A function that transforms data and can be composed with other transducers
- * into a single transducer. The transducers themselves are provided by other
- * libraries; the only involvement of this librar is as a consumer of
- * transducers.
- *
- * Transducers work by having step functions that are known via protocol, and it
- * is these step functions that take a value at a time to be transformed as
- * their arguments. The arguments to the transducers themselves are other
- * transducers that are then composed into a single transducer, which is then
- * returned. These values need not concern a user of ths library; just pass a
- * transducer to `{@link module:csp.chan|chan}` or
- * `{@link module:csp.transChan|transChan}` and everything else will be handled.
- *
- * @callback Transducer
- * @memberof module:csp
- * @param {module:csp.Transducer} xform A transducer to chain this transducer
- *     to.
- * @return {module:csp.Transducer} A new transducer consisting of the
- *     composition of this one and `xform`.
- */

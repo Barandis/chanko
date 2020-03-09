@@ -270,11 +270,39 @@ export {
 } from "modules/transformation";
 
 /**
+ * An iterable as defined by JavaScript.
+ *
+ * @typedef JsIterable
+ * @memberof module:xduce
+ * @property {module:xduce.JsIterableFunction} Symbol.iterator A function that
+ *     produces an iterator when called.
+ */
+
+/**
+ * A function that produces an iterator. This is the characteristic property of
+ * a JavaScript iterable.
+ *
+ * @callback JsIterableFunction
+ * @memberof module:xduce
+ * @returns {module:xduce.Iterator} An iterator over the
+ *     {@link module:xduce.JsIterable} that produced it.
+ */
+
+/**
+ * An iterable as defined by this library. Since it provides specific support
+ * for objects, this type is merely a normal JavaScript iterable *or* a plain
+ * object.
+ *
+ * @typedef {(Object|module:xduce.JsIterable)} Iterable
+ * @memberof module:xduce
+ */
+
+/**
  * A generic iterator. This conforms to the `iterator` protocol in that it has
  * a `{@link module:xduce.NextFunction|next}` function that produces
  * {@link module:xduce.NextValue|`iterator`-compatible objects}.
  *
- * @typedef {object} Iterator
+ * @typedef Iterator
  * @memberof module:xduce
  * @property {module:xduce.NextFunction} next A function that, when called,
  *     returns the next iterator value.
@@ -390,4 +418,63 @@ export {
  *     reducer's step function.
  * @property {module:xduce.ResultFunction} Symbol.for("transducer/result") The
  *     reducer's result function.
+ */
+
+/**
+ * A collection that can have values reduced into it. Since this library
+ * provides explicit support for arrays, objects, and strings, those three are
+ * added to the {@link module:xduce.Reducer} type to define this.
+ *
+ * @typedef {(Array|String|Object|module:xduce.Reducer)} Reducible
+ * @memberof module:xduce
+ */
+
+/**
+ * A collection that supports not only the regular iteraion over its contents,
+ * but also reduction of values into it. It is an intersection type combining
+ * {@link module:xduce.Iterable|Iterable} and
+ * {@link module:xduce.Reducible|Reducible}.
+ *
+ * @typedef ExplicitIterableReducible
+ * @memberof module:xduce
+ * @property {module:xduce.JsIterableFunction} Symbol.iterator A function that
+ *     produces an iterator when called.
+ * @property {module:xduce.InitFunction} [Symbol.for("transducer/init")] The
+ *     collection's init function.
+ * @property {module:xduce.StepFunction} Symbol.for("transducer/step") The
+ *     collection's step function.
+ * @property {module:xduce.ResultFunction} Symbol.for("transducer/result") The
+ *     collection's result function.
+ */
+
+/**
+ * The actual type used by reducible collections in this library. It takes the
+ * property-based definition and adds built-in types that are specially
+ * supported by the library.
+ *
+ * @typedef {(Array|Object|String|module:xduce.ExplicitIterableReducible)}
+ *     IterableReducible
+ * @memberof module:xduce
+ */
+
+/**
+ * A function that transforms data and can be composed with other transducers
+ * into a single transducer. The transducers themselves are provided by other
+ * libraries; the only involvement of this librar is as a consumer of
+ * transducers.
+ *
+ * Transducers work by having step functions that are known via protocol, and it
+ * is these step functions that take a value at a time to be transformed as
+ * their arguments. The arguments to the transducers themselves are other
+ * transducers that are then composed into a single transducer, which is then
+ * returned. The values that are produced are seldom of consequence to the end
+ * user; these functions exist to be passed to other functions that deal with
+ * transducers.
+ *
+ * @callback Transducer
+ * @memberof module:xduce
+ * @param {module:xduce.Transducer} xform A transducer to chain this transducer
+ *     to.
+ * @return {module:xduce.Transducer} A new transducer consisting of the
+ *     composition of this one and `xform`.
  */
