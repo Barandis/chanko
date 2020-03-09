@@ -10,7 +10,7 @@
  * built on a small, efficient queue which is in turn backed by a JavaScript
  * array.
  *
- * @module buffer
+ * @module csp/buffer
  * @private
  */
 

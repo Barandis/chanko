@@ -272,12 +272,11 @@ function parseArgs(buffer, options, defaultOptions) {
  *     `{@link module:csp.FixedBuffer|FixedBuffer}`.
  * @param {Object} [options] A set of options for configuring the channel's
  *     queue.
- * @param {module:core.TransducerFunction} [options.transducer] A
- *     transducer to run each value through before putting it onto the channel.
- *     This function should expect one parameter (another transducer that it's
- *     chained to) and return an object that conforms to the transducer
- *     protocol. If a transducer is provided on an unbuffered channel, an error
- *     will be thrown.
+ * @param {module:core.TransducerFunction} [options.transducer] A transducer to
+ *     run each value through before putting it onto the channel. This function
+ *     should expect one parameter (another transducer that it's chained to) and
+ *     return an object that conforms to the transducer protocol. If a
+ *     transducer is provided on an unbuffered channel, an error will be thrown.
  * @param {module:csp.ExceptionHandler} [options.handler] An error handler that
  *     is run whenever an error occurs inside a transducer function. If that
  *     happens, this function is called with one parameter, which is the error
@@ -363,8 +362,8 @@ function timedChan(delay = 0) {
  * size 1. This is the equivalent of `chan(1, { transducer, handler })`.
  *
  * @memberof module:csp
- * @param {module:core.TransducerFunction} transducer The transducer used
- *     to transform values on the new channel.
+ * @param {module:core.TransducerFunction} transducer The transducer used to
+ *     transform values on the new channel.
  * @param {module:csp.ExceptionHandler} [handler] An exception handler called
  *     with the error object as its only argument when an error happens inside a
  *     transducer. If this is not provided, a default handler is used that

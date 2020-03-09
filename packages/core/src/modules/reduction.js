@@ -9,7 +9,7 @@
  * A set of functions related to the producing reducer objects, marking
  * completed objects, and performing general reduction operations.
  *
- * @module reduction
+ * @module core/reduction
  * @private
  */
 
@@ -28,7 +28,7 @@ import { kv, iterator } from "modules/iteration";
  *
  * @param {*} collection A collection to create an init function for. This can
  *     be anything that supports the iteration protocol or a plain object.
- * @return {module:xduce.InitFunction} A function that, when called, returns an
+ * @return {module:core.InitFunction} A function that, when called, returns an
  *     initial version of the provided collection. If the provided collection is
  *     not iterable, then `null` is returned.
  * @private
@@ -65,7 +65,7 @@ function init(collection) {
  * @param {*} collection A collection to create a step function for. This can be
  *     anything that supports the iteration protocol, a plain object, or a
  *     function.
- * @return {module:xduce.StepFunction} A reduction function for the provided
+ * @return {module:core.StepFunction} A reduction function for the provided
  *     collection that simply adds an element to the target collection without
  *     modifying it. If the provided collection is not iterable, `null` is
  *     returned.
@@ -124,7 +124,7 @@ function step(collection) {
  * @param {*} collection A collection to create a step function for. This can be
  *     anything that supports the iteration protocol, a plain object, or a
  *     function.
- * @return {module:xduce.ResultFunction} A function that, when given a reduced
+ * @return {module:core.ResultFunction} A function that, when given a reduced
  *     collection, produces the final output. If the provided collection is not
  *     iterable, `null` will be returned.
  * @private
@@ -181,7 +181,7 @@ function result(collection) {
  * console.log(sum);   // -> 55
  * ```
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} collection An iterable collection or a reducer function.
  * @return {object} An object containing protocol properties for init, step, and
  *     result. This object is suitable for use as a reducer object (one provided
@@ -200,7 +200,7 @@ function toReducer(collection) {
 /**
  * A reducer object for arrays.
  *
- * @type {module:xduce.Reducer}
+ * @type {module:core.Reducer}
  * @private
  */
 const ARRAY_REDUCER = toReducer([]);
@@ -208,7 +208,7 @@ const ARRAY_REDUCER = toReducer([]);
 /**
  * A reducer object for objects.
  *
- * @type {module:xduce.Reducer}
+ * @type {module:core.Reducer}
  * @private
  */
 const OBJECT_REDUCER = toReducer({});
@@ -216,7 +216,7 @@ const OBJECT_REDUCER = toReducer({});
 /**
  * A reducer object for strings.
  *
- * @type {module:xduce.Reducer}
+ * @type {module:core.Reducer}
  * @private
  */
 const STRING_REDUCER = toReducer("");
@@ -224,31 +224,31 @@ const STRING_REDUCER = toReducer("");
 /**
  * Creates a transducer from a function and a transducer to chain it to.
  *
- * This is in most respects just like {@link module:xduce.toReducer|toReducer},
+ * This is in most respects just like {@link module:core.toReducer|toReducer},
  * with two notable differences. One is that it requires a transducer to chain
  * to, and it does the chaining as a part of creating the new transducer. The
  * other is that it includes a usable `init` function, where passing a function
- * to {@link module:xduce.toReducer|toReducer} would create an init function
- * that throws an error if it's called.
+ * to {@link module:core.toReducer|toReducer} would create an init function that
+ * throws an error if it's called.
  *
  * This function applies the given function as the `step` function of the
  * returned transducer, and the `init` and `result` functions simply call the
  * same functions in the next transducer down the chain. This is precisely what
  * *most* transducers want...`init` and `result` functions are normally handled
- * by the reducer at the end of the transducer chain...but in the rare case
- * when `init` or `result` must do more than this, the transducer must be
- * created manually.
+ * by the reducer at the end of the transducer chain...but in the rare case when
+ * `init` or `result` must do more than this, the transducer must be created
+ * manually.
  *
  * This function does not automatically chain the `step` function to the next
  * one down the line, as that can be done in any number of different ways. Thus
  * the function itself should call the `step` function in `xform` in whatever
  * way is appropriate.
  *
- * @memberof module:xduce
- * @param {module:xduce.StepFunction} fn The step function for the transducer.
- * @param {module:xduce.Transducer} xform The next transducer object in the
+ * @memberof module:core
+ * @param {module:core.StepFunction} fn The step function for the transducer.
+ * @param {module:core.Transducer} xform The next transducer object in the
  *     chain.
- * @returns {module:xduce.Transducer} A new transducer, chaining the supplied
+ * @returns {module:core.Transducer} A new transducer, chaining the supplied
  *     function to the supplied transducer.
  */
 function toTransducer(fn, xform) {
@@ -273,22 +273,22 @@ function toTransducer(fn, xform) {
  * Lodash's `_.reduce`. It requires both a transformer and a reducer because
  * reduction functions for those libraries must know how to do both. The reducer
  * can be a standard reducer object like the ones sent
- * to`{@link module:xduce.transduce|transduce}` or
- * `{@link module:xduce.reduce|reduce}`, or it can be a plain function that
- * takes two parameters and returns the result of reducing the second parameter
- * into the first.
+ * to`{@link module:core.transduce|transduce}` or
+ * `{@link module:core.reduce|reduce}`, or it can be a plain function that takes
+ * two parameters and returns the result of reducing the second parameter into
+ * the first.
  *
  * If there is no need for a transformation, then pass in the
  * `{@link module:transducers.identity|identity}` transducer.
  *
- * @memberof module:xduce
- * @param {module:xduce.Reducer} xform A transducer object whose step
- *     function will become the returned reduction function.
- * @param {(module:xduce.StepFunction|module:xduce.Reducer)} reducer A
- *     reducer that knows how to reduce values into an output collection. This
- *     can either be a reducing function or a transducer object whose `step`
+ * @memberof module:core
+ * @param {module:core.Reducer} xform A transducer object whose step function
+ *     will become the returned reduction function.
+ * @param {(module:core.StepFunction|module:core.Reducer)} reducer A reducer
+ *     that knows how to reduce values into an output collection. This can
+ *     either be a reducing function or a transducer object whose `step`
  *     function knows how to perform this reduction.
- * @returns {module:xduce.StepFunction} A function that handles both the
+ * @returns {module:core.StepFunction} A function that handles both the
  *     transformation and the reduction of a value onto a target function.
  */
 function toFunction(xform, reducer) {
@@ -305,7 +305,7 @@ function toFunction(xform, reducer) {
  * isn't usable without being uncompleted first; and third any type of value
  * (including `undefined`) may be marked as complete.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to be completed.
  * @return {*} A completed version of the provided value. This reduction is
  *     achieved by wrapping the value in a marker object.
@@ -324,7 +324,7 @@ function complete(value) {
  * already marked as complete. If it is not, `undefined` will be returned
  * instead of the value.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to be uncompleted.
  * @return {*} An uncompleted version of the provided value. If the value was
  *     not complete in the first place, `undefined` will be returned instead.
@@ -336,7 +336,7 @@ function uncomplete(value) {
 /**
  * Determines whether a value is marked as complete.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to test for its complete status.
  * @return {boolean} Either `true` if the value is complete, or `false` if it is
  *     not.
@@ -349,12 +349,11 @@ function isCompleted(value) {
  * Makes sure that a value is marked as complete; if it is not, it will be
  * marked as complete.
  *
- * This differs from {@link module:xduce.complete|complete} in that
- * if the value is already complete, this function won't complete it again.
- * Therefore thus function can't be used to make a value complete multiple
- * times.
+ * This differs from {@link module:core.complete|complete} in that if the value
+ * is already complete, this function won't complete it again. Therefore thus
+ * function can't be used to make a value complete multiple times.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to be completed.
  * @return {*} If the value is already complete, then the value is simply
  *     returned. Otherwise, a completed version of the value is returned.
@@ -370,7 +369,7 @@ function ensureCompleted(value) {
  * it isn't, the value itself is returned. It's meant to be used when the
  * completed status is uncertain.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The complete value to be uncompleted.
  * @return {*} If the value is already uncompleted, the value is simply
  *     returned. Otherwise an uncompleted version of the value is returned.
@@ -401,16 +400,16 @@ function ensureUncompleted(value) {
  * between collection types can occur.
  *
  * The normal course of operation will be to call
- * {@link module:xduce.transduce|transduce} instead, as that function makes it
+ * {@link module:core.transduce|transduce} instead, as that function makes it
  * easy to combine transformations with reductions and can optionally figure out
  * the initial collection itself.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} collection The input collection. The only requirement of this
  *     collection is that it implement the `iterable` protocol. Special support
  *     is provided by the library for objects, so they can be used as well.
- * @param {module:xduce.Reducer} reducer An object that implements the `step`
- *     and `result` protocols. This object must know how to produce an output
+ * @param {module:core.Reducer} reducer An object that implements the `step` and
+ *     `result` protocols. This object must know how to produce an output
  *     collection through those protocol functions.
  * @param {*} init a collection of the same type as the output collection. It
  *     need not be empty; if it is not, the existing elements are retained as

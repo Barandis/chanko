@@ -9,7 +9,7 @@
  * A bunch of utility functions. These are all used by the library itself in
  * places, but many of them are suitable for general use as well.
  * ^
- * @module xduce/utils
+ * @module core/utils
  * @private
  */
 
@@ -25,7 +25,7 @@ const toString = Object.prototype.toString;
 /**
  * Determines whether a value is a function.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is a function.
  * @return {boolean} Either `true` if the test value is a function or `false` if
  *     it is not.
@@ -38,7 +38,7 @@ function isFunction(x) {
 /**
  * Determines whether a value is a generator function.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is a generator function.
  * @return {boolean} Either `true` if the test value is a generator function or
  *     `false` if it is not.
@@ -58,7 +58,7 @@ function isGeneratorFunction(x) {
  * going to return `true` for literal objects or those created with
  * `Object.create()`.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is a plain object.
  * @return {boolean} Either `true` if the test value is a plain object or
  *     `false` if it is not.
@@ -94,7 +94,7 @@ function isObject(x) {
  * that happen to also be numbers; the value must be an actual `Number` instance
  * or number literal to return `true`.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is a number.
  * @return {boolean} Either `true` if the test value is a finite number (not
  *     including string representations of numbers) or `false` if it is not.
@@ -108,7 +108,7 @@ function isNumber(x) {
  *
  * Literal strings will return `true`, as will instances of the `String` object.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is a string.
  * @return {boolean} Either `true` if the test value is a string or `false` if
  *    it is not.
@@ -124,7 +124,7 @@ function isString(x) {
  * consistency in calling style only.
  *
  * @function isArray
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} x The value being tested to see if it is an array.
  * @return {boolean} Either `true` if the test value is an array or `false` if
  *     it is not.

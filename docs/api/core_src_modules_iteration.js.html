@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>xduce/src/modules/iteration.js - Documentation</title>
+    <title>core/src/modules/iteration.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -29,12 +29,12 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-ops.html">ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untapAll">untapAll</a></li></ul></li><li><a href="module-xduce.html">xduce</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-xduce.html#.asArray">asArray</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asIterator">asIterator</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asObject">asObject</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asString">asString</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.complete">complete</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.compose">compose</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.ensureCompleted">ensureCompleted</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.ensureUncompleted">ensureUncompleted</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.into">into</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.isCompleted">isCompleted</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.iterator">iterator</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.key">key</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.kv">kv</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.sequence">sequence</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.toFunction">toFunction</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.toReducer">toReducer</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.transduce">transduce</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.uncomplete">uncomplete</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.value">value</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-core.html">core</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-core.html#.asArray">asArray</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.asIterator">asIterator</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.asObject">asObject</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.asString">asString</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.complete">complete</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.compose">compose</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.ensureCompleted">ensureCompleted</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.ensureUncompleted">ensureUncompleted</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.into">into</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.isArray">isArray</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.isCompleted">isCompleted</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.isNumber">isNumber</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.isObject">isObject</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.isString">isString</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.iterator">iterator</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.key">key</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.kv">kv</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.sequence">sequence</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.toFunction">toFunction</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.toReducer">toReducer</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.toTransducer">toTransducer</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.transduce">transduce</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.uncomplete">uncomplete</a></li><li data-type='method' style='display: none;'><a href="module-core.html#.value">value</a></li></ul></li><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-ops.html">ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-ops.html#.untapAll">untapAll</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">xduce/src/modules/iteration.js</h1>
+    <h1 class="page-title">core/src/modules/iteration.js</h1>
     
 
     
@@ -51,6 +51,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+/**
+ * Functions to help with iteration over iterable objects and plain objects.
+ * 
+ * @module core/iteration
+ * @private
+ */
+
 import { isImplemented } from "modules/protocol";
 import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
 
@@ -58,13 +65,13 @@ import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
  * Creates an iterator over an object.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
  * @param {object} obj The object being iterated over.
- * @param {module:xduce.SortFunction} [sortFn] An optional function used to sort
+ * @param {module:core.SortFunction} [sortFn] An optional function used to sort
  *     the object keys before iteration. If it isn't provided, the keys will be
  *     sorted in the same order as `Object.keys(obj)` would sort them.
- * @returns {module:xduce.Iterator} An iterator over the properties of `obj`.
+ * @returns {module:core.Iterator} An iterator over the properties of `obj`.
  * @private
  */
 function objectIterator(obj, sortFn) {
@@ -83,9 +90,9 @@ function objectIterator(obj, sortFn) {
 }
 
 /**
- * A convenience function that returns the first key and value in an object as
- * a two-property object, one property for the key and one for the value. This
- * is intended to work with the values provided by an object iterator, as the
+ * A convenience function that returns the first key and value in an object as a
+ * two-property object, one property for the key and one for the value. This is
+ * intended to work with the values provided by an object iterator, as the
  * syntax of objects doesn't work very nicely with single-property objects.
  *
  * ```
@@ -105,9 +112,9 @@ function objectIterator(obj, sortFn) {
  * console.log(property(value));   // -> { k: "b", v: 3 }
  * ```
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first property is returned.
- * @return {module:xduce.PropertyObject} The property as a two-property object.
+ * @return {module:core.PropertyObject} The property as a two-property object.
  */
 function kv(obj) {
   const key = Object.keys(obj)[0];
@@ -119,7 +126,7 @@ function kv(obj) {
  * object. This is meant for use with object iterators to more conveniently
  * access parts of the single-property objects that they emit.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first key is returned.
  * @return {(String|Symbol)} The key of the object's first property.
  */
@@ -132,7 +139,7 @@ function key(obj) {
  * object. This is meant for use with object iterators to more conveniently
  * access parts of the single-property objects that they emit.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first value is returned.
  * @return {*} The value of the object's first property.
  */
@@ -144,10 +151,10 @@ function value(obj) {
  * Creates an iterator over a function.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
- * @param {module:xduce.IterableFunction} fn The function to iterate over.
- * @returns {module:xduce.Iterator} An iterator over the return values of `fn`.
+ * @param {module:core.IterableFunction} fn The function to iterate over.
+ * @returns {module:core.Iterator} An iterator over the return values of `fn`.
  * @private
  */
 function functionIterator(fn) {
@@ -251,12 +258,12 @@ function functionIterator(fn) {
  * If the provided value is not actually iterable (or an object or a function),
  * `null` is returned in place of the iterator.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to create an iterator over.
- * @param {module:xduce.SortFunction} [sortFn] An optional sort function for
+ * @param {module:core.SortFunction} [sortFn] An optional sort function for
  *     sorting the keys of an object before iteration. It is ignored if `value`
  *     isn't a plain object.
- * @returns {module:xduce.Iterator} An iterator over `value`.
+ * @returns {module:core.Iterator} An iterator over `value`.
  */
 function iterator(value, sortFn = null) {
   switch (true) {
@@ -277,13 +284,13 @@ function iterator(value, sortFn = null) {
  * means to this library. In other words, values implementing the `iterable`
  * protocol and plain objects return `true`, while everything else returns
  * `false`. This does not return `true` for functions even though
- * {@link module:xduce.iterator|iterator} can produce an iterator for them,
+ * {@link module:core.iterator|iterator} can produce an iterator for them,
  * because not all functions work well with
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
  * @param {*} value The value to test for iterability.
  * @return {boolean} Either `true` if the value is iterable
- *     (`{@link module:xduce.iterator}` will return an iterator for it) or
+ *     (`{@link module:core.iterator}` will return an iterator for it) or
  *     `false` if it is not.
  * @private
  */
@@ -306,7 +313,7 @@ export { iterator, isIterable, kv, key, value };
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 09 2020 10:10:45 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 09 2020 16:04:32 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

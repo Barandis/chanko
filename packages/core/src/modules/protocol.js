@@ -16,7 +16,7 @@
  * These are the same symbols as available in my transducer library. They are
  * publicly available from there.
  *
- * @module xduce/protocol
+ * @module core/protocol
  * @private
  */
 
@@ -27,7 +27,7 @@ import { isFunction, isGeneratorFunction } from "modules/utils";
  * values of this map will depend on whether symbols are available.
  *
  * @typedef {object} ProtocolMap
- * @memberof module:xduce
+ * @memberof module:core
  * @property {Symbol} init The `transducer/init` protocol. This is used
  *     to mark functions that initialize a target collection before adding items
  *     to it.
@@ -53,8 +53,8 @@ import { isFunction, isGeneratorFunction } from "modules/utils";
 /**
  * The mapping of protocol names to their respective property key names.
  *
- * @type {module:xduce.ProtocolMap}
- * @memberof module:xduce
+ * @type {module:core.ProtocolMap}
+ * @memberof module:core
  */
 const protocols = Object.create(null, {
   init: {

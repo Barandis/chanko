@@ -5,6 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+/**
+ * Functions to help with iteration over iterable objects and plain objects.
+ *
+ * @module core/iteration
+ * @private
+ */
+
 import { isImplemented } from "modules/protocol";
 import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
 
@@ -12,13 +19,13 @@ import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
  * Creates an iterator over an object.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
  * @param {object} obj The object being iterated over.
- * @param {module:xduce.SortFunction} [sortFn] An optional function used to sort
+ * @param {module:core.SortFunction} [sortFn] An optional function used to sort
  *     the object keys before iteration. If it isn't provided, the keys will be
  *     sorted in the same order as `Object.keys(obj)` would sort them.
- * @returns {module:xduce.Iterator} An iterator over the properties of `obj`.
+ * @returns {module:core.Iterator} An iterator over the properties of `obj`.
  * @private
  */
 function objectIterator(obj, sortFn) {
@@ -37,9 +44,9 @@ function objectIterator(obj, sortFn) {
 }
 
 /**
- * A convenience function that returns the first key and value in an object as
- * a two-property object, one property for the key and one for the value. This
- * is intended to work with the values provided by an object iterator, as the
+ * A convenience function that returns the first key and value in an object as a
+ * two-property object, one property for the key and one for the value. This is
+ * intended to work with the values provided by an object iterator, as the
  * syntax of objects doesn't work very nicely with single-property objects.
  *
  * ```
@@ -59,9 +66,9 @@ function objectIterator(obj, sortFn) {
  * console.log(property(value));   // -> { k: "b", v: 3 }
  * ```
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first property is returned.
- * @return {module:xduce.PropertyObject} The property as a two-property object.
+ * @return {module:core.PropertyObject} The property as a two-property object.
  */
 function kv(obj) {
   const key = Object.keys(obj)[0];
@@ -73,7 +80,7 @@ function kv(obj) {
  * object. This is meant for use with object iterators to more conveniently
  * access parts of the single-property objects that they emit.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first key is returned.
  * @return {(String|Symbol)} The key of the object's first property.
  */
@@ -86,7 +93,7 @@ function key(obj) {
  * object. This is meant for use with object iterators to more conveniently
  * access parts of the single-property objects that they emit.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {object} obj The object whose first value is returned.
  * @return {*} The value of the object's first property.
  */
@@ -98,10 +105,10 @@ function value(obj) {
  * Creates an iterator over a function.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
- * @param {module:xduce.IterableFunction} fn The function to iterate over.
- * @returns {module:xduce.Iterator} An iterator over the return values of `fn`.
+ * @param {module:core.IterableFunction} fn The function to iterate over.
+ * @returns {module:core.Iterator} An iterator over the return values of `fn`.
  * @private
  */
 function functionIterator(fn) {
@@ -205,12 +212,12 @@ function functionIterator(fn) {
  * If the provided value is not actually iterable (or an object or a function),
  * `null` is returned in place of the iterator.
  *
- * @memberof module:xduce
+ * @memberof module:core
  * @param {*} value The value to create an iterator over.
- * @param {module:xduce.SortFunction} [sortFn] An optional sort function for
+ * @param {module:core.SortFunction} [sortFn] An optional sort function for
  *     sorting the keys of an object before iteration. It is ignored if `value`
  *     isn't a plain object.
- * @returns {module:xduce.Iterator} An iterator over `value`.
+ * @returns {module:core.Iterator} An iterator over `value`.
  */
 function iterator(value, sortFn = null) {
   switch (true) {
@@ -231,13 +238,13 @@ function iterator(value, sortFn = null) {
  * means to this library. In other words, values implementing the `iterable`
  * protocol and plain objects return `true`, while everything else returns
  * `false`. This does not return `true` for functions even though
- * {@link module:xduce.iterator|iterator} can produce an iterator for them,
+ * {@link module:core.iterator|iterator} can produce an iterator for them,
  * because not all functions work well with
- * {@link module:xduce.iterator|iterator}.
+ * {@link module:core.iterator|iterator}.
  *
  * @param {*} value The value to test for iterability.
  * @return {boolean} Either `true` if the value is iterable
- *     (`{@link module:xduce.iterator}` will return an iterator for it) or
+ *     (`{@link module:core.iterator}` will return an iterator for it) or
  *     `false` if it is not.
  * @private
  */
