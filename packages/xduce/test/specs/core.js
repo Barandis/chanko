@@ -15,13 +15,7 @@ import {
   expectIterator
 } from "test/helper";
 
-import {
-  sequence,
-  transduce,
-  toReducer,
-  compose,
-  into
-} from "@chanko/xduce-tools";
+import { sequence, transduce, toReducer, compose, into } from "@chanko/core";
 
 import { List } from "immutable";
 

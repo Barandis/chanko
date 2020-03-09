@@ -15,7 +15,7 @@ import {
   toTransducer,
   isNumber,
   isFunction
-} from "@chanko/xduce-tools";
+} from "@chanko/core";
 
 function sameValueZero(a, b) {
   return a === b || (isNaN(a) && isNaN(b));
