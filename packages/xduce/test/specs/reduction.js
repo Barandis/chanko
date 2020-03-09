@@ -5,16 +5,20 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { expect } from "test/helper";
+import { expect, map, filter } from "test/helper";
+import _ from "lodash";
 
 import {
   isCompleted,
   complete,
   uncomplete,
   ensureCompleted,
-  ensureUncompleted
+  ensureUncompleted,
+  toFunction,
+  ARRAY_REDUCER
 } from "modules/reduction";
 import { protocols as p } from "modules/protocol";
+import { compose } from "modules/transformation";
 
 describe("Status marking functions", () => {
   context("isCompleted", () => {
@@ -118,6 +122,36 @@ describe("Status marking functions", () => {
     it("will return the value if it isn't completed", () => {
       const value = 1729;
       expect(ensureUncompleted(value)).to.equal(value);
+    });
+  });
+});
+
+describe("Integration with other libraries", () => {
+  const arrayPush = (acc, value) => {
+    acc.push(value);
+    return acc;
+  };
+
+  const xform = compose(
+    map(x => x + 1),
+    filter(x => x % 2 === 0)
+  );
+  const reducerFn = toFunction(xform, arrayPush);
+  const reducerObj = toFunction(xform, ARRAY_REDUCER);
+
+  context("toFunction", () => {
+    it("can make a function to use with Array's reduce", () => {
+      const result1 = [1, 2, 3, 4, 5].reduce(reducerFn, []);
+      const result2 = [1, 2, 3, 4, 5].reduce(reducerObj, []);
+      expect(result1).to.deep.equal([2, 4, 6]);
+      expect(result2).to.deep.equal([2, 4, 6]);
+    });
+
+    it("can make a function to use with lodash's reduce", () => {
+      const result1 = _.reduce([1, 2, 3, 4, 5], reducerFn, []);
+      const result2 = _.reduce([1, 2, 3, 4, 5], reducerObj, []);
+      expect(result1).to.deep.equal([2, 4, 6]);
+      expect(result2).to.deep.equal([2, 4, 6]);
     });
   });
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@chanko/channel-ops",
+  "name": "@chanko/ops",
   "version": "0.1.0",
   "description": "Multi-channel operations for @chanko/channels",
   "main": "lib/chanko-ops.js",

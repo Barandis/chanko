@@ -63,9 +63,35 @@ function objectIterator(obj, sortFn) {
  * @param {object} obj The object whose first property is returned.
  * @return {module:xduce.PropertyObject} The property as a two-property object.
  */
-function property(obj) {
+function kv(obj) {
   const key = Object.keys(obj)[0];
   return { k: key, v: obj[key] };
+}
+
+/**
+ * A convenience function that returns the key of the first property of an
+ * object. This is meant for use with object iterators to more conveniently
+ * access parts of the single-property objects that they emit.
+ *
+ * @memberof module:xduce
+ * @param {object} obj The object whose first key is returned.
+ * @return {(String|Symbol)} The key of the object's first property.
+ */
+function key(obj) {
+  return kv(obj).k;
+}
+
+/**
+ * A convenience function that returns the value of the first property of an
+ * object. This is meant for use with object iterators to more conveniently
+ * access parts of the single-property objects that they emit.
+ *
+ * @memberof module:xduce
+ * @param {object} obj The object whose first value is returned.
+ * @return {*} The value of the object's first property.
+ */
+function value(obj) {
+  return kv(obj).v;
 }
 
 /**
@@ -219,4 +245,4 @@ function isIterable(value) {
   return isImplemented(value, "iterator") || isObject(value);
 }
 
-export { iterator, isIterable, property };
+export { iterator, isIterable, kv, key, value };

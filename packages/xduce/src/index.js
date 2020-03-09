@@ -247,7 +247,7 @@
  */
 
 export { protocols } from "modules/protocol";
-export { iterator, property } from "modules/iteration";
+export { iterator, kv, key, value } from "modules/iteration";
 export {
   complete,
   uncomplete,
@@ -258,6 +258,16 @@ export {
   toFunction,
   toReducer
 } from "modules/reduction";
+export {
+  transduce,
+  sequence,
+  into,
+  asArray,
+  asObject,
+  asString,
+  asIterator,
+  compose
+} from "modules/transformation";
 
 /**
  * A generic iterator. This conforms to the `iterator` protocol in that it has
@@ -284,7 +294,7 @@ export {
  * It indicates whether the iterator is complete and, if not, what the next
  * value is.
  *
- * @typedef NextValue
+ * @typedef {object} NextValue
  * @memberof module:xduce
  * @property {*} value The value that the iterator has provided.
  * @property {boolean} done Indicates whether the iterator has completed. If
@@ -329,7 +339,7 @@ export {
  * for the key and one for the value. This format is easier to use in
  * transformation functions.
  *
- * @typedef PropertyObject
+ * @typedef {object} PropertyObject
  * @memberof module:xduce
  * @property {(String|Symbol)} k The key of the single-property object that this
  *     object represents.

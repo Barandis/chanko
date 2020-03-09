@@ -6,7 +6,7 @@
  */
 
 import { expect, toArray, five, expectWithin } from "test/helper";
-import { iterator, isIterable, property } from "modules/iteration";
+import { iterator, isIterable, kv, key, value } from "modules/iteration";
 
 describe("Iteration", () => {
   context("iterator function", () => {
@@ -123,14 +123,36 @@ describe("Iteration", () => {
     });
   });
 
-  context("property", () => {
+  context("kv", () => {
     it("provides convenience in working with object iterators", () => {
       const obj = { c: 1, a: 2, b: 3 };
       const iter = iterator(obj);
 
-      expect(property(iter.next().value)).to.deep.equal({ k: "c", v: 1 });
-      expect(property(iter.next().value)).to.deep.equal({ k: "a", v: 2 });
-      expect(property(iter.next().value)).to.deep.equal({ k: "b", v: 3 });
+      expect(kv(iter.next().value)).to.deep.equal({ k: "c", v: 1 });
+      expect(kv(iter.next().value)).to.deep.equal({ k: "a", v: 2 });
+      expect(kv(iter.next().value)).to.deep.equal({ k: "b", v: 3 });
+    });
+  });
+
+  context("key", () => {
+    it("provides convenience in working with object iterators", () => {
+      const obj = { c: 1, a: 2, b: 3 };
+      const iter = iterator(obj);
+
+      expect(key(iter.next().value)).to.equal("c");
+      expect(key(iter.next().value)).to.equal("a");
+      expect(key(iter.next().value)).to.equal("b");
+    });
+  });
+
+  context("value", () => {
+    it("provides convenience in working with object iterators", () => {
+      const obj = { c: 1, a: 2, b: 3 };
+      const iter = iterator(obj);
+
+      expect(value(iter.next().value)).to.equal(1);
+      expect(value(iter.next().value)).to.equal(2);
+      expect(value(iter.next().value)).to.equal(3);
     });
   });
 });
