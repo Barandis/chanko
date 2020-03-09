@@ -10,7 +10,7 @@ import sinonChai from "sinon-chai";
 import { List } from "immutable";
 
 import { protocols as p } from "modules/protocol";
-import { ensureCompleted } from "modules/reduction";
+import { ensureCompleted, toTransducer } from "modules/reduction";
 
 chai.use(sinonChai);
 
@@ -55,48 +55,23 @@ function expectWithin(value, expected, tolerance = 0.001) {
   expect(value).to.be.within(expected - tolerance, expected + tolerance);
 }
 
-function mapTransducer(fn, xform) {
-  return {
-    [p.init]() {
-      return xform[p.init]();
-    },
-    [p.step](acc, value) {
-      return xform[p.step](acc, fn(value));
-    },
-    [p.result](value) {
-      return xform[p.result](value);
-    }
-  };
-}
 function map(fn) {
-  return xform => mapTransducer(fn, xform);
+  return xform =>
+    toTransducer((acc, value) => xform[p.step](acc, fn(value)), xform);
 }
 
-function filterTransducer(fn, xform) {
-  return {
-    [p.init]() {
-      return xform[p.init]();
-    },
-    [p.step](acc, value) {
-      return fn(value) ? xform[p.step](acc, value) : acc;
-    },
-    [p.result](value) {
-      return xform[p.result](value);
-    }
-  };
-}
 function filter(fn) {
-  return xform => filterTransducer(fn, xform);
+  return xform =>
+    toTransducer(
+      (acc, value) => (fn(value) ? xform[p.step](acc, value) : acc),
+      xform
+    );
 }
 
-function takeTransducer(n, xform) {
-  let i = 0;
-
-  return {
-    [p.init]() {
-      return xform[p.init]();
-    },
-    [p.step](acc, value) {
+function take(n) {
+  return xform => {
+    let i = 0;
+    return toTransducer((acc, value) => {
       let result = acc;
 
       if (i < n) {
@@ -107,14 +82,8 @@ function takeTransducer(n, xform) {
       }
       i++;
       return result;
-    },
-    [p.result](value) {
-      return xform[p.result](value);
-    }
+    }, xform);
   };
-}
-function take(n) {
-  return xform => takeTransducer(n, xform);
 }
 
 export {

@@ -247,7 +247,7 @@
  */
 
 export { protocols } from "modules/protocol";
-export { iterator, kv, key, value } from "modules/iteration";
+export { iterator, isIterable, kv, key, value } from "modules/iteration";
 export {
   complete,
   uncomplete,
@@ -256,7 +256,8 @@ export {
   ensureUncompleted,
   reduce,
   toFunction,
-  toReducer
+  toReducer,
+  toTransducer
 } from "modules/reduction";
 export {
   transduce,
@@ -473,8 +474,24 @@ export {
  *
  * @callback Transducer
  * @memberof module:xduce
- * @param {module:xduce.Transducer} xform A transducer to chain this transducer
- *     to.
- * @return {module:xduce.Transducer} A new transducer consisting of the
+ * @param {module:xduce.TransducerFunction} xform A transducer to chain this
+ *     transducer to.
+ * @return {module:xduce.TransducerFunction} A new transducer consisting of the
  *     composition of this one and `xform`.
+ */
+
+/**
+ * An object containing all of the necessary function properties for
+ * transforming data and then reducing it into an output value. This is the
+ * same as {@link module:xduce.Reducer|Reducer} except that the `init` property
+ * is not optional.
+ *
+ * @typedef Transducer
+ * @memberof module:xduce
+ * @property {module:xduce.InitFunction} Symbol.for("transducer/init") The
+ *     transducer's init function.
+ * @property {module:xduce.StepFunction} Symbol.for("transducer/step") The
+ *     transducer's step function.
+ * @property {module:xduce.ResultFunction} Symbol.for("transducer/result") The
+ *     transducer's result function.
  */

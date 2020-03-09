@@ -222,6 +222,50 @@ const OBJECT_REDUCER = toReducer({});
 const STRING_REDUCER = toReducer("");
 
 /**
+ * Creates a transducer from a function and a transducer to chain it to.
+ *
+ * This is in most respects just like {@link module:xduce.toReducer|toReducer},
+ * with two notable differences. One is that it requires a transducer to chain
+ * to, and it does the chaining as a part of creating the new transducer. The
+ * other is that it includes a usable `init` function, where passing a function
+ * to {@link module:xduce.toReducer|toReducer} would create an init function
+ * that throws an error if it's called.
+ *
+ * This function applies the given function as the `step` function of the
+ * returned transducer, and the `init` and `result` functions simply call the
+ * same functions in the next transducer down the chain. This is precisely what
+ * *most* transducers want...`init` and `result` functions are normally handled
+ * by the reducer at the end of the transducer chain...but in the rare case
+ * when `init` or `result` must do more than this, the transducer must be
+ * created manually.
+ *
+ * This function does not automatically chain the `step` function to the next
+ * one down the line, as that can be done in any number of different ways. Thus
+ * the function itself should call the `step` function in `xform` in whatever
+ * way is appropriate.
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.StepFunction} fn The step function for the transducer.
+ * @param {module:xduce.Transducer} xform The next transducer object in the
+ *     chain.
+ * @returns {module:xduce.Transducer} A new transducer, chaining the supplied
+ *     function to the supplied transducer.
+ */
+function toTransducer(fn, xform) {
+  return {
+    [p.init]() {
+      return xform[p.init]();
+    },
+
+    [p.step]: fn,
+
+    [p.result](value) {
+      return xform[p.result](value);
+    }
+  };
+}
+
+/**
  * Creates a reduction function from a transducer and a reducer.
  *
  * This produces a function that's suitable for being passed into other
@@ -407,6 +451,7 @@ export {
   ARRAY_REDUCER,
   OBJECT_REDUCER,
   STRING_REDUCER,
+  toTransducer,
   toFunction,
   complete,
   uncomplete,
