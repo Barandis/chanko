@@ -47,23 +47,18 @@ function parseNumberArgs(collection, n) {
 }
 
 /**
- * Parses arguments for transducers that take functions. The three arguments are
- * a collection, a function, and a context object, where only the function is
- * required. This function works out which exist and returns a collection
- * (which may be `null`) and a function which is already bound to its context
- * object (if it exists).
+ * Parses arguments for transducers that take functions. The two arguments are a
+ * collection and a function, but the collection is optional. This function
+ * works out which exist and returns a collection (which may be `null`) and a
+ * function.
  *
  * @param {*} [collection] An optional collection that the transducer will act
  *     upon.
  * @param {Function} fn A function meant to act via the transducer.
- * @param {Object} [ctx] An optional context object to which the function is
- *     bound.
  * @private
  */
-function parseFunctionArgs(collection, fn, ctx) {
-  return isFunction(collection)
-    ? [null, collection.bind(fn)]
-    : [collection, fn.bind(ctx)];
+function parseFunctionArgs(collection, fn) {
+  return isFunction(collection) ? [null, collection] : [collection, fn];
 }
 
 /**

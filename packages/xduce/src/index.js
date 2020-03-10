@@ -21,4 +21,5 @@ export {
   compose
 } from "modules/transduction";
 export { identity, flatten, repeat } from "modules/basic";
+export { map, flatMap } from "modules/map";
 export { take, takeWhile, takeNth } from "modules/take";

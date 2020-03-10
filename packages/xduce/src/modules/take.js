@@ -31,8 +31,8 @@ function take(collection, n) {
       };
 }
 
-function takeWhile(collection, fn, ctx) {
-  const [col, func] = parseFunctionArgs(collection, fn, ctx);
+function takeWhile(collection, fn) {
+  const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, takeWhile(func))
     : xform =>

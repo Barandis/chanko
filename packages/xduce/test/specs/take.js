@@ -113,14 +113,6 @@ describe("Taking transducers", () => {
       expect(result).to.deep.equal([1, 2, 3]);
     });
 
-    it("can accept a context object", () => {
-      const ctx = { fn: lt4 };
-      const fn = function(x) {
-        return this.fn(x);
-      };
-      expect(takeWhile(ARRAY_5, fn, ctx)).to.deep.equal([1, 2, 3]);
-    });
-
     it("passes init calls to the next transducer", () => {
       const reducer = takeWhile(lt4)(toReducer([]));
       const result = transduce(ARRAY_5, null, reducer);
