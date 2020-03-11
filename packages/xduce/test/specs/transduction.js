@@ -9,13 +9,10 @@
 import {
   expect,
   ARRAY_5,
-  map,
   OBJECT_AB,
   LIST_5,
   five,
   expectIterator,
-  filter,
-  take,
   naturals
 } from "test/helper";
 
@@ -33,6 +30,9 @@ import {
   compose
 } from "modules/transduction";
 import { kv, key, value } from "modules/utils";
+import { map } from "modules/map";
+import { filter } from "modules/filter";
+import { take } from "modules/take";
 
 const addOne = x => x + 1;
 const ucaseObj = prop => {
