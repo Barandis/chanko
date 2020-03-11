@@ -19,6 +19,7 @@ import {
   iterator,
   isCompleted,
   toReducer,
+  toFunction,
   reduce,
   isFunction,
   isArray,
@@ -623,5 +624,7 @@ export {
   asObject,
   asString,
   asIterator,
-  compose
+  compose,
+  toReducer,
+  toFunction
 };

@@ -18,7 +18,9 @@ export {
   asObject,
   asString,
   asIterator,
-  compose
+  compose,
+  toReducer,
+  toFunction
 } from "modules/transduction";
 export { identity, flatten, repeat } from "modules/basic";
 export { drop, dropWhile } from "modules/drop";

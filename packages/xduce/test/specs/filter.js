@@ -15,11 +15,9 @@ import {
   naturals
 } from "test/helper";
 
-import { toReducer } from "@chanko/core";
-
 import { value } from "modules/utils";
 import { filter, reject } from "modules/filter";
-import { sequence, transduce } from "modules/transduction";
+import { sequence, transduce, toReducer } from "modules/transduction";
 
 const even = x => x % 2 === 0;
 const evenValue = obj => value(obj) % 2 === 0;

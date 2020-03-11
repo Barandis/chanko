@@ -15,10 +15,9 @@ import {
   naturals
 } from "test/helper";
 
-import { toReducer } from "@chanko/core";
 import { drop, dropWhile } from "modules/drop";
 import { value, complement } from "modules/utils";
-import { sequence, transduce } from "modules/transduction";
+import { sequence, transduce, toReducer } from "modules/transduction";
 
 const lt4 = x => x < 4;
 const lt4Value = obj => value(obj) < 4;

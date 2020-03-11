@@ -16,7 +16,6 @@ import {
   naturals
 } from "test/helper";
 
-import { toReducer } from "@chanko/core";
 import { List, fromJS } from "immutable";
 
 import {
@@ -27,7 +26,8 @@ import {
   asIterator,
   into,
   sequence,
-  compose
+  compose,
+  toReducer
 } from "modules/transduction";
 import { kv, key, value } from "modules/utils";
 import { map } from "modules/map";

@@ -15,11 +15,10 @@ import {
   LIST_5
 } from "test/helper";
 
-import { toReducer } from "@chanko/core";
 import { List } from "immutable";
 
 import { take, takeWhile, takeNth } from "modules/take";
-import { sequence, transduce } from "modules/transduction";
+import { sequence, transduce, toReducer } from "modules/transduction";
 import { value, complement } from "modules/utils";
 
 const lt4 = x => x < 4;

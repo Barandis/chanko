@@ -16,11 +16,10 @@ import {
 } from "test/helper";
 
 import { List } from "immutable";
-import { toReducer } from "@chanko/core";
 
 import { key, value, kv } from "modules/utils";
 import { map, flatMap } from "modules/map";
-import { sequence, transduce } from "modules/transduction";
+import { sequence, transduce, toReducer } from "modules/transduction";
 
 const add1 = x => x + 1;
 const ucaseKey = obj => ({ [key(obj).toUpperCase()]: value(obj) + 1 });
