@@ -117,15 +117,9 @@ function transducingIterator(collection, xform) {
     }
   }
 
-  // The resulting object is an iterator, so to satisfy the iterable protocol we
-  // just return that object itself
-  function sIterator() {
-    return result;
-  }
-
   // The `result` name is hoisted and used in functions further up, so we have
   // to retain that name and can't just return the object without naming it
-  const result = { items, next, step, [Symbol.iterator]: sIterator };
+  const result = { items, next, step };
   return result;
 }
 
