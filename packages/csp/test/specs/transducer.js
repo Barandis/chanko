@@ -7,10 +7,31 @@
 
 import { expect } from "test/helper";
 
+import {
+  identity,
+  flatten,
+  repeat,
+  map,
+  flatMap,
+  filter,
+  reject,
+  take,
+  takeWhile,
+  takeNth,
+  drop,
+  dropWhile,
+  unique,
+  uniqueBy,
+  uniqueWith,
+  distinct,
+  distinctBy,
+  distinctWith,
+  chunk,
+  chunkBy
+} from "@chanko/xduce";
+
 import { chan, transChan, recv, send, close, CLOSED } from "modules/channel";
 import { go, join } from "modules/process";
-
-import { transducers as t } from "xduce";
 
 const add1 = x => x + 1;
 const even = x => x % 2 === 0;
@@ -56,18 +77,18 @@ function expectChannel(channel, expected) {
 
 describe("Transducers on channels", () => {
   it("cannot be used on an unbuffered channel", () => {
-    expect(() => chan(0, { transducer: t.map(add1) })).to.throw();
+    expect(() => chan(0, { transducer: map(add1) })).to.throw();
   });
 
   it("works with identity", async () => {
-    const ch = transChan(t.identity());
+    const ch = transChan(identity());
     const p1 = fillChannel(ch, 10);
     const p2 = expectChannel(ch, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     return join(p1, p2);
   });
 
   it("works with flatten", async () => {
-    const ch = transChan(t.flatten());
+    const ch = transChan(flatten());
     const p1 = fillChannelWith(ch, [
       [1, 2],
       [2, 3],
@@ -80,91 +101,84 @@ describe("Transducers on channels", () => {
   });
 
   it("works with repeat", async () => {
-    const ch = transChan(t.repeat(3));
+    const ch = transChan(repeat(3));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]);
     return join(p1, p2);
   });
 
   it("works with map", async () => {
-    const ch = transChan(t.map(add1));
+    const ch = transChan(map(add1));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [2, 3, 4, 5, 6]);
     return join(p1, p2);
   });
 
   it("works with flatMap", async () => {
-    const ch = transChan(t.flatMap(x => [x, x + 1]));
+    const ch = transChan(flatMap(x => [x, x + 1]));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [1, 2, 2, 3, 3, 4, 4, 5, 5, 6]);
     return join(p1, p2);
   });
 
   it("works with filter", async () => {
-    const ch = transChan(t.filter(even));
+    const ch = transChan(filter(even));
     const p1 = fillChannel(ch, 10);
     const p2 = expectChannel(ch, [2, 4, 6, 8, 10]);
     return join(p1, p2);
   });
 
   it("works with reject", async () => {
-    const ch = transChan(t.reject(even));
+    const ch = transChan(reject(even));
     const p1 = fillChannel(ch, 10);
     const p2 = expectChannel(ch, [1, 3, 5, 7, 9]);
     return join(p1, p2);
   });
 
-  it("works with compact", async () => {
-    const ch = transChan(t.compact());
-    const p1 = fillChannelWith(ch, [1, 0, 2, null, 3, undefined, 4, "", 5]);
-    const p2 = expectChannel(ch, [1, 2, 3, 4, 5]);
-    return join(p1, p2);
-  });
-
   it("works with take", async () => {
-    const ch = transChan(t.take(3));
+    const ch = transChan(take(3));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [1, 2, 3, CLOSED, CLOSED]);
     return join(p1, p2);
   });
 
   it("works with takeWhile", async () => {
-    const ch = transChan(t.takeWhile(lt4));
+    const ch = transChan(takeWhile(lt4));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [1, 2, 3, CLOSED, CLOSED]);
     return join(p1, p2);
   });
 
   it("works with takeNth", async () => {
-    const ch = transChan(t.takeNth(3));
+    const ch = transChan(takeNth(3));
     const p1 = fillChannel(ch, 10);
     const p2 = expectChannel(ch, [1, 4, 7, 10]);
     return join(p1, p2);
   });
 
   it("works with drop", async () => {
-    const ch = transChan(t.drop(3));
+    const ch = transChan(drop(3));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [4, 5]);
     return join(p1, p2);
   });
 
   it("works with dropWhile", async () => {
-    const ch = transChan(t.dropWhile(lt4));
+    const ch = transChan(dropWhile(lt4));
     const p1 = fillChannel(ch, 5);
     const p2 = expectChannel(ch, [4, 5]);
     return join(p1, p2);
   });
 
   it("works with unique", async () => {
-    const ch = transChan(t.unique());
+    const ch = transChan(unique());
     const p1 = fillChannelWith(ch, [1, 1, 2, 3, 3, 3, 4, 5, 3, 1, 5]);
     const p2 = expectChannel(ch, [1, 2, 3, 4, 5]);
     return join(p1, p2);
   });
 
   it("works with uniqueBy", async () => {
-    const ch = transChan(t.uniqueBy(xprop));
+    const ch = transChan(uniqueBy(xprop));
     const array = [
       { x: 1, y: 1 },
       { x: 1, y: 2 },
@@ -191,7 +205,7 @@ describe("Transducers on channels", () => {
   });
 
   it("works with uniqueWith", async () => {
-    const ch = transChan(t.uniqueWith(magComp));
+    const ch = transChan(uniqueWith(magComp));
     const p1 = fillChannelWith(ch, [
       6,
       42,
@@ -208,14 +222,14 @@ describe("Transducers on channels", () => {
   });
 
   it("works with distinct", async () => {
-    const ch = transChan(t.distinct());
+    const ch = transChan(distinct());
     const p1 = fillChannelWith(ch, [1, 1, 2, 3, 3, 3, 4, 5, 3, 1, 5]);
     const p2 = expectChannel(ch, [1, 2, 3, 4, 5, 3, 1, 5]);
     return join(p1, p2);
   });
 
   it("works with distinctBy", async () => {
-    const ch = transChan(t.distinctBy(xprop));
+    const ch = transChan(distinctBy(xprop));
     const array = [
       { x: 1, y: 1 },
       { x: 1, y: 2 },
@@ -245,7 +259,7 @@ describe("Transducers on channels", () => {
   });
 
   it("works with distinctWith", async () => {
-    const ch = transChan(t.distinctWith(magComp));
+    const ch = transChan(distinctWith(magComp));
     const p1 = fillChannelWith(ch, [
       6,
       42,
@@ -262,7 +276,7 @@ describe("Transducers on channels", () => {
   });
 
   it("works with chunk", async () => {
-    const ch = transChan(t.chunk(3));
+    const ch = transChan(chunk(3));
     const p1 = fillChannel(ch, 8, true);
     const p2 = expectChannel(ch, [
       [1, 2, 3],
@@ -273,7 +287,7 @@ describe("Transducers on channels", () => {
   });
 
   it("works with chunkBy", () => {
-    const ch = transChan(t.chunkBy(even));
+    const ch = transChan(chunkBy(even));
     const p1 = fillChannelWith(ch, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34], true);
     const p2 = expectChannel(ch, [
       [0],

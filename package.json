@@ -48,8 +48,7 @@
     "sinon-chai": "^3.4.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-merge": "^4.2.2",
-    "xduce": "^2.0.2"
+    "webpack-merge": "^4.2.2"
   },
   "config": {
     "commitizen": {

@@ -21,7 +21,7 @@ import {
 import { fixed, dropping, sliding } from "modules/buffer";
 import { go, sleep, join } from "modules/process";
 
-import { transducers as t } from "xduce";
+import { map } from "@chanko/xduce";
 
 describe("Channel creation", () => {
   context("chan", () => {
@@ -32,11 +32,11 @@ describe("Channel creation", () => {
       expect(isTimed(chan(fixed(3)))).to.be.false;
       expect(isTimed(chan(dropping(3)))).to.be.false;
       expect(isTimed(chan(sliding(3)))).to.be.false;
-      expect(isTimed(chan({ transducer: t.map(x => x) }))).to.be.false;
+      expect(isTimed(chan({ transducer: map(x => x) }))).to.be.false;
       expect(
         isTimed(
           chan({
-            transducer: t.map(x => x),
+            transducer: map(x => x),
             handler: e => {
               throw e;
             }

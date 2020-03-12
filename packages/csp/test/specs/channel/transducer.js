@@ -11,17 +11,17 @@ import { transChan, send, recv, CLOSED, chan, close } from "modules/channel";
 import { go, join } from "modules/process";
 import { protocols as p } from "modules/protocol";
 
-import { compose, transducers as t } from "xduce";
+import { compose, filter, map, take, flatten } from "@chanko/xduce";
 
 describe("Transducer channels", () => {
   const even = x => x % 2 === 0;
 
   it("cannot be created with an unbuffered channel", () => {
-    expect(() => chan(0, { transducer: t.filter(even) })).to.throw();
+    expect(() => chan(0, { transducer: filter(even) })).to.throw();
   });
 
   it("modifies values on the channel before they're received", async () => {
-    const ch = transChan(t.map(x => x + 1));
+    const ch = transChan(map(x => x + 1));
 
     const p1 = go(async () => {
       await send(ch, 1);
@@ -35,7 +35,7 @@ describe("Transducer channels", () => {
   });
 
   it("accepts transducers removing values", async () => {
-    const ch = transChan(t.filter(even));
+    const ch = transChan(filter(even));
 
     const p1 = go(async () => {
       await send(ch, 1);
@@ -52,7 +52,7 @@ describe("Transducer channels", () => {
   });
 
   it("closes the channel if the transducer reduces early", async () => {
-    const ch = chan(3, { transducer: t.take(2) });
+    const ch = chan(3, { transducer: take(2) });
 
     const p1 = go(async () => {
       await send(ch, 1);
@@ -71,9 +71,9 @@ describe("Transducer channels", () => {
 
   it("handles composed transducers", async () => {
     const xform = compose(
-      t.map(x => x * 3),
-      t.filter(even),
-      t.take(3)
+      map(x => x * 3),
+      filter(even),
+      take(3)
     );
     const ch = chan(10, { transducer: xform });
 
@@ -94,7 +94,7 @@ describe("Transducer channels", () => {
   });
 
   it("closes the channel even if another receiver is active", async () => {
-    const ch = chan(10, { transducer: compose(t.flatten(), t.take(3)) });
+    const ch = chan(10, { transducer: compose(flatten(), take(3)) });
     const out = chan();
     const ctrl = chan();
 
