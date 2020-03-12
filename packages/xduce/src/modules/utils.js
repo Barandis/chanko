@@ -13,7 +13,7 @@
  * @private
  */
 
-import { isNumber, isFunction } from "@chanko/core";
+import { isNumber, isFunction } from "@chanko/xduce-tools";
 
 /**
  * Determines equality by the SameValueZero method, which defines that `NaN`
@@ -86,7 +86,7 @@ function parseFunctionArgs(collection, fn) {
  *
  * @memberof module:xduce
  * @param {object} obj The object whose first property is returned.
- * @return {module:core.PropertyObject} The property as a two-property object.
+ * @return {module:xduce-tools.PropertyObject} The property as a two-property object.
  */
 function kv(obj) {
   const key = Object.keys(obj)[0];

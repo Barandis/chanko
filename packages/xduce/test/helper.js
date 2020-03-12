@@ -16,7 +16,7 @@ import chai, { expect } from "chai";
 import sinonChai from "sinon-chai";
 import { List } from "immutable";
 
-import { protocols as p } from "@chanko/core";
+import { protocols as p } from "@chanko/xduce-tools";
 
 chai.use(sinonChai);
 

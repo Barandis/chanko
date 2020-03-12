@@ -5,7 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { protocols as p, toTransducer, ensureCompleted } from "@chanko/core";
+import {
+  protocols as p,
+  toTransducer,
+  ensureCompleted
+} from "@chanko/xduce-tools";
 
 import { parseNumberArgs, parseFunctionArgs } from "modules/utils";
 import { sequence } from "modules/transduction";

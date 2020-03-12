@@ -12,7 +12,7 @@ import {
   isIterable,
   reduce,
   toTransducer
-} from "@chanko/core";
+} from "@chanko/xduce-tools";
 
 import { parseNumberArgs } from "modules/utils";
 import { sequence } from "modules/transduction";
