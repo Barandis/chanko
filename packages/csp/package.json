@@ -53,7 +53,5 @@
     "not ie_mob 11",
     "maintained node versions"
   ],
-  "dependencies": {
-    "@chanko/core": "^0.1.0"
-  }
+  "dependencies": {}
 }

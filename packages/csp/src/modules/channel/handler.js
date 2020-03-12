@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { protocols as p } from "@chanko/core";
+import { protocols as p } from "modules/protocol";
 import {
   queue,
   dequeue,

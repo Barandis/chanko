@@ -52,7 +52,7 @@ import {
 } from "./handler";
 import { DEFAULT, select, selectAsync, value, channel } from "./select";
 import { add, fixed, isBuffer } from "modules/buffer";
-import { protocols as p } from "@chanko/core";
+import { protocols as p } from "modules/protocol";
 
 /**
  * A handler function for exceptions that are thrown by a transducer while
