@@ -77,36 +77,36 @@ function step(collection) {
       return collection[p.step];
 
     case isString(collection):
-      return (acc, input) => {
-        const value = isObject(input) ? input[Object.keys(input)[0]] : input;
-        return acc + value;
+      return (acc, value) => {
+        const v = isObject(value) ? value[Object.keys(value)[0]] : value;
+        return acc + v;
       };
 
     case isArray(collection):
-      return (acc, input) => {
-        acc.push(input);
+      return (acc, value) => {
+        acc.push(value);
         return acc;
       };
 
     case isObject(collection):
-      return (acc, input) => {
-        let value = input;
+      return (acc, value) => {
+        let v = value;
 
-        if (!isObject(input)) {
+        if (!isObject(value)) {
           // if the input isn't an object, turn it into an object with a
           // numerical key one greater than the max key already in the
           // accumulator
           const max = Object.keys(acc).reduce((a, b) => Math.max(a, b), -1);
-          value = { [max + 1]: input };
+          v = { [max + 1]: value };
         }
 
-        const k = Object.keys(value)[0];
-        acc[k] = value[k];
+        const k = Object.keys(v)[0];
+        acc[k] = v[k];
         return acc;
       };
 
     case isFunction(collection):
-      return (acc, input) => collection(acc, input);
+      return (acc, value) => collection(acc, value);
 
     default:
       return null;

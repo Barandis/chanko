@@ -53,7 +53,7 @@ module.exports = {
     "no-unmodified-loop-condition": [ERROR],
     "no-useless-call": [ERROR],
     "no-useless-escape": [ERROR],
-    "no-void": [ERROR],
+    "no-void": [OFF], // voids are pretty useful in some scenarios
     "no-with": [ERROR],
     "wrap-iife": [OFF],
     yoda: [ERROR],
