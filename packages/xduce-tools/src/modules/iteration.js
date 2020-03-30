@@ -8,8 +8,7 @@
 /**
  * Functions to help with iteration over iterable objects and plain objects.
  *
- * @module core/iteration
- * @private
+ * @module xduce-tools/iteration
  */
 
 import { isImplemented } from "modules/protocol";
@@ -22,18 +21,12 @@ import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
  * {@link module:xduce-tools.iterator|iterator}.
  *
  * @param {object} obj The object being iterated over.
- * @param {module:xduce-tools.SortFunction} [sortFn] An optional function used to sort
- *     the object keys before iteration. If it isn't provided, the keys will be
- *     sorted in the same order as `Object.keys(obj)` would sort them.
- * @returns {module:xduce-tools.Iterator} An iterator over the properties of `obj`.
- * @private
+ * @returns {module:xduce-tools.XduceIterator} An iterator over the properties
+ *     of `obj`.
  */
-function objectIterator(obj, sortFn) {
+function objectIterator(obj) {
   return (function*() {
-    const keys =
-      typeof sortFn === "function"
-        ? Object.keys(obj).sort(sortFn)
-        : Object.keys(obj);
+    const keys = Object.keys(obj);
     let index = 0;
 
     while (index < keys.length) {
@@ -156,12 +149,9 @@ function functionIterator(fn) {
  *
  * @memberof module:xduce-tools
  * @param {*} value The value to create an iterator over.
- * @param {module:xduce-tools.SortFunction} [sortFn] An optional sort function for
- *     sorting the keys of an object before iteration. It is ignored if `value`
- *     isn't a plain object.
  * @returns {module:xduce-tools.Iterator} An iterator over `value`.
  */
-function iterator(value, sortFn = null) {
+function iterator(value) {
   switch (true) {
     case isFunction(value[Symbol.iterator]):
     case isGeneratorFunction(value[Symbol.iterator]):
@@ -169,7 +159,7 @@ function iterator(value, sortFn = null) {
     case isFunction(value):
       return functionIterator(value);
     case isObject(value):
-      return objectIterator(value, sortFn);
+      return objectIterator(value);
     default:
       return null;
   }

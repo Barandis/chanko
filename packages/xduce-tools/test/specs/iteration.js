@@ -47,7 +47,6 @@ describe("Iteration", () => {
     });
 
     context("over plain objects", () => {
-      const reverse = (a, b) => (a < b ? 1 : b < a ? -1 : 0);
       const obj = { c: 1, a: 2, b: 3 };
 
       it("produces key-value pairs in insertion order by default", () => {
@@ -55,14 +54,6 @@ describe("Iteration", () => {
           { c: 1 },
           { a: 2 },
           { b: 3 }
-        ]);
-      });
-
-      it("can produce key-value pairs sorted by function", () => {
-        expect(toArray(iterator(obj, reverse))).to.deep.equal([
-          { c: 1 },
-          { b: 3 },
-          { a: 2 }
         ]);
       });
     });

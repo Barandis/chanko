@@ -30,3 +30,9 @@ export { filter, reject } from "modules/filter";
 export { map, flatMap } from "modules/map";
 export { take, takeWhile, takeNth } from "modules/take";
 export { unique, uniqueBy, uniqueWith } from "modules/unique";
+
+/**
+ *
+ *
+ * @callback
+ */

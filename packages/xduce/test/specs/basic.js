@@ -131,6 +131,11 @@ describe("Core transducers", () => {
       const result = transduce([[1, 2], 3, 4, [5]], null, reducer);
       expect(result).to.deep.equal(ARRAY_5);
     });
+
+    it("flattens one level", () => {
+      const input = [[1, 2], [3, [4, 5]], 6, [7]];
+      expect(flatten(input)).to.deep.equal([1, 2, 3, [4, 5], 6, 7]);
+    });
   });
 
   context("repeat", () => {

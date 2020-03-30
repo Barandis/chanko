@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>csp/src/modules/protocol.js - Documentation</title>
+    <title>xduce/src/modules/basic.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">csp/src/modules/protocol.js</h1>
+    <h1 class="page-title">xduce/src/modules/basic.js</h1>
     
 
     
@@ -51,59 +51,145 @@
  * https://opensource.org/licenses/MIT
  */
 
-/**
- * The mapping of protocol names to their respective property key names. The
- * values of this map will depend on whether symbols are available.
- *
- * @typedef {object} ProtocolMap
- * @memberof module:core
- * @property {Symbol} init The `transducer/init` protocol. This is used
- *     to mark functions that initialize a target collection before adding items
- *     to it.
- * @property {Symbol} step The `transducer/step` protocol. This is used
- *     to mark functions that are used in the transducer's step process, where
- *     objects are added to the target collection one at a time.
- * @property {Symbol} result The `transducer/result` protocol. This is
- *     used to mark functions that take the final result of the step process and
- *     return the final form to be output. This is optional; if the transducer
- *     does not want to transform the final result, it should just return the
- *     result of its chained transducer's `result` function.
- * @property {Symbol} reduced The `transducer/reduced` protocol. The
- *     presence of this key on an object indicates that its transformation has
- *     been completed. It is used internally to mark collections whose
- *     transformations conclude before every object is iterated over (as in
- *     `{@link xduce.take}` transducers.) It is of little use beyond transducer
- *     authoring.
- * @property {Symbol} value The `transducer/value` protocol. This is
- *     used internally to mark properties that contain the value of a reduced
- *     transformation. It is of little use beyond transducer authoring.
- */
+import {
+  protocols as p,
+  isCompleted,
+  complete,
+  isIterable,
+  reduce,
+  toTransducer
+} from "@chanko/xduce-tools";
+
+import { parseNumberArgs } from "modules/utils";
+import { sequence } from "modules/transduction";
 
 /**
- * The mapping of protocol names to their respective property key names.
+ * Returns exactly the same collection sent to it.
  *
- * @type {module:csp.ProtocolMap}
- * @memberof module:csp
+ * This is generally a function used when a transducer function is required but
+ * there is no desire to do an actual transformation. The "transformation"
+ * implemented here is to pass each element through exactly as it is.
+ *
+ * If no collection is provided, a function is returned that can be passed to
+ * `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * const result = identity([1, 2, 3, 4, 5]);
+ * console.log(result);   // -> [1, 2, 3, 4, 5]
+ * ```
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type with all of the elements of the input collection untouched. If
+ *     no collection is supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
  */
-const protocols = Object.create(null, {
-  init: {
-    value: Symbol.for("transducer/init")
-  },
-  step: {
-    value: Symbol.for("transducer/step")
-  },
-  result: {
-    value: Symbol.for("transducer/result")
-  },
-  reduced: {
-    value: Symbol.for("transducer/reduced")
-  },
-  value: {
-    value: Symbol.for("transducer/value")
-  }
-});
+function identity(collection) {
+  return collection
+    ? sequence(collection, identity())
+    : xform => toTransducer((acc, value) => xform[p.step](acc, value), xform);
+}
 
-export { protocols };
+/**
+ * Flattens a collection by merging elements in any sub-collection into the main
+ * collection.
+ *
+ * Elements of the main collection that are not collections themselves are not
+ * changed. It's fine to have a combination of the two, some elements that are
+ * collections and some that are not. If an element is a collection that
+ * contains other collections, those collections will *not* be flattened; the
+ * flattening only happens to one level.
+ *
+ * Since there aren't sub-collections in objects, strings, or iterators,
+ * `flatten` doesn't make sense with those types of collections.
+ *
+ * If no collection is provided, a function is returned that can be passed to
+ * `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * const result = flatten([[1, 2], [3, 4, 5], 6, [7]]);
+ * console.log(reuslt);   // -> [1, 2, 3, 4, 5, 6, 7]
+ * 
+ * const result = flatten([[1, 2], [3, [4, 5]], 6, [7]]);
+ * console.log(reuslt);   // -> [1, 2, 3, [4, 5], 6, 7]
+ * ```
+ *
+ * @memberof module:xduce.transducers
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type with all of the elements of the input collection flattened. If
+ *     no collection is supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
+ */
+function flatten(collection) {
+  return collection
+    ? sequence(collection, flatten())
+    : xform =>
+        toTransducer((acc, value) => {
+          const subXform = toTransducer((acc, value) => {
+            const v = xform[p.step](acc, value);
+            return isCompleted(v) ? complete(v) : v;
+          }, xform);
+
+          return isIterable(value)
+            ? reduce(value, subXform, acc)
+            : subXform[p.step](acc, value);
+        }, xform);
+}
+
+/**
+ * Repeats each element from the input collection `n` times in the output
+ * collection.
+ *
+ * These elements are put into the main output collection, not into
+ * subcollections. In other words, each input element creates `n` output
+ * elements.
+ *
+ * If no collection is provided, a function is returned that can be passed to
+ * `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * const result = repeat([1, 2, 3, 4, 5], 3);
+ * console.log(result);   // -> [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
+ * ```
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @param {number} n The number of times that each element from the input
+ *     collection should be repeated in the output collection.
+ * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type with all of the elements of the input collection repeated. If
+ *     no collection is supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
+ */
+function repeat(collection, n) {
+  const [col, num] = parseNumberArgs(collection, n);
+  return col
+    ? sequence(col, repeat(num))
+    : xform =>
+        toTransducer((acc, value) => {
+          let result = acc;
+          for (let i = 0; i &lt; num; i++) {
+            result = xform[p.step](result, value);
+            if (isCompleted(result)) {
+              break;
+            }
+          }
+          return result;
+        }, xform);
+}
+
+export { identity, flatten, repeat };
 </code></pre>
         </article>
     </section>
