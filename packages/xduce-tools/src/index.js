@@ -270,80 +270,22 @@ export {
 } from "modules/utils";
 
 /**
- * An iterable as defined by JavaScript.
+ * A standard JavaScript iterable. This object has a property named
+ * `[Symbol.iterator]` which provides an object that satisfies the
+ * {@link external:Iterator|Iterator} protocol.
  *
- * @typedef JsIterable
- * @memberof module:xduce-tools
- * @property {module:xduce-tools.JsIterableFunction} Symbol.iterator A function
- *     that produces an iterator when called.
+ * @external Iterable
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
  */
 
 /**
- * A function that produces an iterator. This is the characteristic property of
- * a JavaScript iterable.
+ * A standard JavaScript iterator. This object has a function property named
+ * `next` that, each time it's called, returns a new object with two
+ * properties: `value`, which contains the iterator's value at that point, and
+ * `done`, which is `false` until the iterator has had all of its values read.
  *
- * @callback JsIterableFunction
- * @memberof module:xduce-tools
- * @returns {module:xduce-tools.Iterator} An iterator over the
- *     {@link module:xduce-tools.JsIterable} that produced it.
- */
-
-/**
- * An iterable as defined by this library. Since it provides specific support
- * for objects, this type is merely a normal JavaScript iterable *or* a plain
- * object.
- *
- * @typedef {(Object|module:xduce-tools.JsIterable)} Iterable
- * @memberof module:xduce-tools
- */
-
-/**
- * A generic iterator. This conforms to the `iterator` protocol in that it has a
- * `{@link module:xduce-tools.NextFunction|next}` function that produces
- * {@link module:xduce-tools.NextValue|`iterator`-compatible objects}.
- *
- * @typedef Iterator
- * @memberof module:xduce-tools
- * @property {module:xduce-tools.NextFunction} next A function that, when
- *     called, returns the next iterator value.
- */
-
-/**
- * The function that satisfies the `iterator` protocol on an object. When
- * called, it returns the next value in the iterator.
- *
- * @callback NextFunction
- * @memberof module:xduce-tools
- * @returns {module:xduce-tools.NextValue} The next value in the iterator.
- */
-
-/**
- * The object returned by a call to
- * `{@link module:xduce-tools.NextFunction|next}`. It indicates whether the
- * iterator is complete and, if not, what the next value is.
- *
- * @typedef {object} NextValue
- * @memberof module:xduce-tools
- * @property {*} value The value that the iterator has provided.
- * @property {boolean} done Indicates whether the iterator has completed. If
- *     this is `true`, then `value` will be `undefined` and every subsequent
- *     call to `{@link module:xduce-tools.NextFunction|next}` will continue to
- *     produce the same value. If it's `false`, then `value` represents the net
- *     value in the iterator, and the next call to
- *     `{@link module:xduce-tools.NextFunction|next}` will continue to produce
- *     the next value.
- */
-
-/**
- * A sort function for the keys of an object. This conforms to the normal sort
- * function used in `Array.prototype.sort`.
- *
- * @callback SortFunction
- * @memberof module:xduce-tools
- * @property {*} a The first value to be sorted.
- * @property {*} b The second value to be sorted.
- * @returns {number} Either `-1` if `a > b`, `1` if `a < b`, or `0` if `a ===
- *     b`.
+ * @external Iterator
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
  */
 
 /**
@@ -351,146 +293,13 @@ export {
  *
  * @callback IterableFunction
  * @memberof module:xduce-tools
- * @param {number} [index] The number of times that
- *     `{@link module:xduce-tools.NextFunction|next}` has been called on the
- *     function's iterator. This will start at `0` for the first call to
- *     `{@link module:xduce-tools.NextFunction|next}` and increase by one for
- *     each subsequent call.
- * @param {*} [last] The return value of the function the last time
- *     `{@link module:xduce-tools.NextFunction|next}` was called on its
- *     iterator. For the first call, this is set to `undefined`.
- * @returns {*} The return value for that iteration.
- */
-
-/**
- * An object representation of a single-property object, but using one property
- * for the key and one for the value. This format is easier to use in
- * transformation functions.
- *
- * @typedef {object} PropertyObject
- * @memberof module:xduce-tools
- * @property {(String|Symbol)} k The key of the single-property object that this
- *     object represents.
- * @property {*} v The value of the single-property object that this object
- *     represents.
- */
-
-/**
- * An init function, which provides a new, empty instance of a collection.
- *
- * @callback InitFunction
- * @memberof module:xduce-tools
- * @returns {*} A new, empty instance of a collection.
- */
-
-/**
- * A step function, that reduces a collection and a new value to the collection
- * with the value added.
- *
- * @callback StepFunction
- * @memberof module:xduce-tools
- * @param {*} acc An accumulated value to which the new value is being added.
- * @param {*} value The new value to be added to the accumulated value.
- * @returns {*} The accumulated value with the new value integrated into it.
- */
-
-/**
- * A result function that optionally modifies the input collection and then
- * returns it. This is used at the end of a reduction to afford a last chance
- * for the transducer to modify the output value.
- *
- * @callback ResultFunction
- * @memberof module:xduce-tools
- * @param {*} input The value to be modified before being output.
- * @returns {*} The modified value to be output by a transducer.
- */
-
-/**
- * An object with all of the information necessary to reduce values into a
- * particular kind of collection. These are passed to
- * {@link module:xduce-tools.reduce|reduce} and like functions.
- *
- * @typedef Reducer
- * @memberof module:xduce-tools
- * @property {module:xduce-tools.InitFunction} [Symbol.for("transducer/init")]
- *     The reducer's init function.
- * @property {module:xduce-tools.StepFunction} Symbol.for("transducer/step") The
- *     reducer's step function.
- * @property {module:xduce-tools.ResultFunction} Symbol.for("transducer/result")
- *     The reducer's result function.
- */
-
-/**
- * A collection that can have values reduced into it. Since this library
- * provides explicit support for arrays, objects, and strings, those three are
- * added to the {@link module:xduce-tools.Reducer} type to define this.
- *
- * @typedef {(Array|String|Object|module:xduce-tools.Reducer)} Reducible
- * @memberof module:xduce-tools
- */
-
-/**
- * A collection that supports not only the regular iteraion over its contents,
- * but also reduction of values into it. It is an intersection type combining
- * {@link module:xduce-tools.Iterable|Iterable} and
- * {@link module:xduce-tools.Reducible|Reducible}.
- *
- * @typedef ExplicitIterableReducible
- * @memberof module:xduce-tools
- * @property {module:xduce-tools.JsIterableFunction} Symbol.iterator A function
- *     that produces an iterator when called.
- * @property {module:xduce-tools.InitFunction} [Symbol.for("transducer/init")]
- *     The collection's init function.
- * @property {module:xduce-tools.StepFunction} Symbol.for("transducer/step") The
- *     collection's step function.
- * @property {module:xduce-tools.ResultFunction} Symbol.for("transducer/result")
- *     The collection's result function.
- */
-
-/**
- * The actual type used by reducible collections in this library. It takes the
- * property-based definition and adds built-in types that are specially
- * supported by the library.
- *
- * @typedef {(Array|Object|String|module:xduce-tools.ExplicitIterableReducible)}
- *     IterableReducible
- * @memberof module:xduce-tools
- */
-
-/**
- * A function that transforms data and can be composed with other transducers
- * into a single transducer. The transducers themselves are provided by other
- * libraries; the only involvement of this librar is as a consumer of
- * transducers.
- *
- * Transducers work by having step functions that are known via protocol, and it
- * is these step functions that take a value at a time to be transformed as
- * their arguments. The arguments to the transducers themselves are other
- * transducers that are then composed into a single transducer, which is then
- * returned. The values that are produced are seldom of consequence to the end
- * user; these functions exist to be passed to other functions that deal with
- * transducers.
- *
- * @callback TransducerFunction
- * @memberof module:xduce-tools
- * @param {module:xduce-tools.TransducerFunction} xform A transducer to chain
- *     this transducer to.
- * @return {module:xduce-tools.TransducerFunction} A new transducer consisting
- *     of the composition of this one and `xform`.
- */
-
-/**
- * An object containing all of the necessary function properties for
- * transforming data and then reducing it into an output value. This is the same
- * as {@link module:xduce-tools.Reducer|Reducer} except that the `init` property
- * is not optional.
- *
- * @typedef Transducer
- * @memberof module:xduce-tools
- * @property {module:xduce-tools.InitFunction} Symbol.for("transducer/init") The
- *     transducer's init function.
- * @property {module:xduce-tools.StepFunction} Symbol.for("transducer/step") The
- *     transducer's step function.
- * @property {module:xduce-tools.ResultFunction} Symbol.for("transducer/result")
- *     The transducer's result function.
+ * @param {number} index The index for the iteration. This is `0` the first
+ *     time the function is called and increases by 1 for each call
+ *     thereafter.
+ * @param {*} last The return value of the function when it was called on the
+ *     previous iteration. If this is the first call to the function, then
+ *     this value will be `undefined`, meaning that the function can set a
+ *     default value for that first pass.
+ * @returns {*} The return value of the function, which will be the value for
+ *     that iteration.
  */

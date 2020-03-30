@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>xduce/src/index.js - Documentation</title>
+    <title>Iterator - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,57 +34,115 @@
 
 <div id="main">
     
-    <h1 class="page-title">xduce/src/index.js</h1>
+    <h1 class="page-title">Iterator</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Copyright (c) 2020 Thomas J. Otterson
- *
- * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
- */
+        <h2>
+        Iterator
+        </h2>
+        
+    
+</header>
 
-/**
- * @module xduce
- */
+<article>
+    
+        <div class="container-overview">
+        
+            
 
-export { kv, key, value, complement } from "modules/utils";
-export {
-  transduce,
-  sequence,
-  into,
-  asArray,
-  asObject,
-  asString,
-  asIterator,
-  compose,
-  toReducer,
-  toFunction
-} from "modules/transduction";
-export { identity, flatten, repeat } from "modules/basic";
-export { chunk, chunkBy } from "modules/chunk";
-export { distinct, distinctBy, distinctWith } from "modules/distinct";
-export { drop, dropWhile } from "modules/drop";
-export { filter, reject } from "modules/filter";
-export { map, flatMap } from "modules/map";
-export { take, takeWhile, takeNth } from "modules/take";
-export { unique, uniqueBy, uniqueWith } from "modules/unique";
+<dl class="details">
 
-/**
- *
- *
- * @callback
- */
-</code></pre>
-        </article>
-    </section>
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xduce-tools_src_index.js.html">xduce-tools/src/index.js</a>, <a href="xduce-tools_src_index.js.html#line281">line 281</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext"><p>A standard JavaScript iterator. This object has a function property named
+<code>next</code> that, each time it's called, returns a new object with two
+properties: <code>value</code>, which contains the iterator's value at that point, and
+<code>done</code>, which is <code>false</code> until the iterator has had all of its values read.</p></div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

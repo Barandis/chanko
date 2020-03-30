@@ -9,6 +9,7 @@
  * Functions to help with iteration over iterable objects and plain objects.
  *
  * @module xduce-tools/iteration
+ * @private
  */
 
 import { isImplemented } from "modules/protocol";
@@ -23,6 +24,7 @@ import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
  * @param {object} obj The object being iterated over.
  * @returns {module:xduce-tools.XduceIterator} An iterator over the properties
  *     of `obj`.
+ * @private
  */
 function objectIterator(obj) {
   return (function*() {
@@ -43,7 +45,8 @@ function objectIterator(obj) {
  * {@link module:xduce-tools.iterator|iterator}.
  *
  * @param {module:xduce-tools.IterableFunction} fn The function to iterate over.
- * @returns {module:xduce-tools.Iterator} An iterator over the return values of `fn`.
+ * @returns {module:xduce-tools.Iterator} An iterator over the return values of
+ *     `fn`.
  * @private
  */
 function functionIterator(fn) {
@@ -62,10 +65,14 @@ function functionIterator(fn) {
 }
 
 /**
- * Creates an iterator over the provided value.
+ * Creates an iterator over the provided value. The form of the iteration
+ * depends on what kind of value is being iterated over.
  *
- * For collections that implement the iterable protocol, it's as simple as
- * returning the iterator already defined for that collection.
+ * If the value is a collection implementing the [iterable protocol][1] (arrays,
+ * strings, generators, or a custom object supporting the protocol) then the
+ * produced iterator will be as expected: an object that implements the
+ * [iterator protocol][2] by providing a `next` function that returns each
+ * collection value in turn.
  *
  * ```
  * const iter = iterator([1, 2, 3]);
@@ -75,81 +82,66 @@ function functionIterator(fn) {
  * console.log(iter.next().done);    // -> true
  * ```
  *
- * Objects are specially supported to return an iterator as well, even though
- * they don't natively support the iterable protocol. The iterator's `next`
- * function provides single-property objects, one for each property in the
- * original object, ordered in the standard post-ES6 order for iterating over
- * object keys:
+ * Special support is provided for two types that are not normally iterable:
+ * objects and functions.
  *
- * 1. Keys that are integers, in ascending numerical order
- * 2. All other string keys, in the order in which they were added to the object
- * 3. All symbol keys, in the order in which they were added to the object
+ * Objects result in an iterator that produces a single-property object for
+ * every key/value pair in the supplied object. The [order of iteration][3] is
+ * the same as it is for objects post-ES2015:
  *
- * If a different order is needed, this function takes a second argument, a sort
- * function, that affects objects only. It is a standard function that would be
- * passed to `Array.prototype.sort` and sorts the keys accordingly.
+ * 1. String keys that are integer indices in ascending numerical order
+ * 2. All other string keys in the order in which they were added to the object
+ * 3. All symbol keys in the order in which they were added to the object
  *
  * ```
- * const alpha = (a, b) => (a < b ? -1 : b < a ? 1 : 0);
- * const obj = { c: 1, a: 2, b: 3 };
- *
- * const objIter = iterator(obj);
- * console.log(objIter.next().value);   // -> { c: 1 }
- * console.log(objIter.next().value);   // -> { a: 2 }
- * console.log(objIter.next().value);   // -> { b: 3 }
- *
- * const sortedIter = iterator(obj, alpha);
- * console.log(objIter.next().value);   // -> { a: 2 }
- * console.log(objIter.next().value);   // -> { b: 3 }
- * console.log(objIter.next().value);   // -> { c: 1 }
+ * const obj = {
+ *   [Symbol("first")]: true,
+ *   02: true,
+ *   10: true,
+ *   01: true,
+ *   2: true,
+ *   [Symbol("second")]: true
+ * };
+ * const iter = iterator(obj);
+ * console.log(iter.next().value);   // -> { '2': true }
+ * console.log(iter.next().value);   // -> { '10': true }
+ * console.log(iter.next().value);   // -> { '02': true }
+ * console.log(iter.next().value);   // -> { '01': true }
+ * console.log(iter.next().value);   // -> { [Symbol('first')]: true }
+ * console.log(iter.next().value);   // -> { [Symbol('second')]: true }
+ * console.log(iter.next().done);    // -> true
  * ```
  *
- * Additionally, there is special support for passing a function to this
- * function. The iterator returned runs that function for each call to `next`.
- * That function is provided two arguments: the index (starting at `0` for the
- * first call to `next` and increasing by 1 for each call to `next` after) and
- * the return value of the previous call to `next` (for the first call to
- * `next`, this will be `undefined`). The iteration will continue until the
- * first time the iterated function returns `undefined`; at that point the
- * iterator will terminate and return `{ done: true }` off subsequent `next`
- * calls.
+ * Functions are run each time the iterator's `next` method is called, and the
+ * return value of the function is supplied as the iterator's value at that
+ * point.
+ *
+ * This function is provided two arguments: the zero-based index of that
+ * iteration, and the value produced by the last invocation of the iterator. The
+ * last value is `undefined` on the first pass, but a default parameter on the
+ * function can define the first pass value to be whatever is needed.
  *
  * ```
- * const constIter = iterator(() => 6);
- * console.log(constIter.next().value);   // -> 6
- * console.log(constIter.next().value);   // -> 6
- * // This will continue forever, as long as `next` keeps getting called
- *
- * const indexIter = iterator(x => x * x);
- * console.log(indexIter.next().value);   // -> 0;
- * console.log(indexIter.next().value);   // -> 1;
- * console.log(indexIter.next().value);   // -> 4;
- * console.log(indexIter.next().value);   // -> 9;
- * // This will continue forever or until the numbers get too big for
- * // JavaScript to deal wtih
- *
- * // Using a default value for the `last` parameter, which sets its value
- * // for the first run when it is normally `undefined`
- * const lastIter = iterator((x, last = 1) => last * (x + 1)); // factorial!
- * console.log(lastIter.next().value);   // -> 1
- * console.log(lastIter.next().value);   // -> 2
- * console.log(lastIter.next().value);   // -> 6
- * console.log(lastIter.next().value);   // -> 24
- * // Again, runs forever, though factorials get big very quickly
- *
- * // Iterators terminate when the function returns `undefined`
- * const stopIter = iterator(x => x < 2 ? x : undefined);
- * console.log(stopIter.next().value);   // -> 0
- * console.log(stopIter.next().value);   // -> 1
- * console.log(stopIter.next().done);    // -> true
+ * const fn = (index, last = 1) => last * (index + 1);
+ * const iter = iterator(fn);
+ * console.log(iter.next().value);   // -> 1
+ * console.log(iter.next().value);   // -> 2
+ * console.log(iter.next().value);   // -> 6
+ * console.log(iter.next().value);   // -> 24
+ * console.log(iter.next().value);   // -> 120
  * ```
  *
- * If the provided value is not actually iterable (or an object or a function),
- * `null` is returned in place of the iterator.
+ * If the input value is neither iterable, object, or function, then the result
+ * will be `null`.
+ *
+ * [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
+ * [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
+ * [3]: https://2ality.com/2015/10/property-traversal-order-es6.html
  *
  * @memberof module:xduce-tools
- * @param {*} value The value to create an iterator over.
- * @returns {module:xduce-tools.Iterator} An iterator over `value`.
+ * @param {(object|module:xduce-tools.IterableFunction|external:Iterable)} value
+ *     The value to create an iterator over.
+ * @returns {external:Iterator} An iterator over `value`.
  */
 function iterator(value) {
   switch (true) {
@@ -170,8 +162,8 @@ function iterator(value) {
  * means to this library. In other words, values implementing the `iterable`
  * protocol and plain objects return `true`, while everything else returns
  * `false`. This does not return `true` for functions even though
- * {@link module:xduce-tools.iterator|iterator} can produce an iterator for them,
- * because not all functions work well with
+ * {@link module:xduce-tools.iterator|iterator} can produce an iterator for
+ * them, because not all functions work well with
  * {@link module:xduce-tools.iterator|iterator}.
  *
  * @memberof module:xduce-tools
