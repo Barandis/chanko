@@ -13,7 +13,7 @@
  * @private
  */
 
-import { isNumber, isFunction } from "@chanko/xduce-tools";
+import { isNumber, isFunction } from "@chanko/xdcore";
 
 /**
  * Determines equality by the SameValueZero method, which defines that `NaN`

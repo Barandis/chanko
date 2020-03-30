@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { protocols as p, ensureUncompleted } from "@chanko/xduce-tools";
+import { protocols as p, ensureUncompleted } from "@chanko/xdcore";
 import {
   parseNumberArgs,
   parseFunctionArgs,

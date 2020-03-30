@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>csp-ops/src/modules/conversion.js - Documentation</title>
+    <title>xdcore/src/modules/iteration.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">csp-ops/src/modules/conversion.js</h1>
+    <h1 class="page-title">xdcore/src/modules/iteration.js</h1>
     
 
     
@@ -52,185 +52,177 @@
  */
 
 /**
- * A set of channel utilities for converting channels into other kinds of data,
- * and vice versa.
+ * Functions to help with iteration over iterable objects and plain objects.
  *
- * @module ops/conversion
+ * @module xduce-tools/iteration
  * @private
  */
 
-import { go, chan, send, sendAsync, close } from "@chanko/csp";
+import { isImplemented } from "modules/protocol";
+import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
 
 /**
- * Creates a single value from a channel by running its values through a
- * reducing function.
+ * Creates an iterator over an object.
  *
- * For every value put onto the input channel, the reducing function is called
- * with two parameters: the accumulator that holds the result of the reduction
- * so far, and the new input value. The initial value of the accumulator is the
- * third parameter to `reduce`. The reduction is not complete until the input
- * channel closes.
+ * Details about this function are included in the documentation for
+ * {@link module:xduce-tools.iterator|iterator}.
  *
- * This function returns a channel. When the final reduced value is produced, it
- * is put onto this channel, and when that value is taken from it, the channel
- * is closed.
- *
- * ```
- * import { go, chan, send, recv, close } from "@csp";
- * import { reduce } from "@ops";
- *
- * const input = chan();
- * const output = reduce((acc, value) => acc + value, input, 0);
- *
- * go(async () => {
- *   await send(input, 1);
- *   await send(input, 2);
- *   await send(input, 3);
- *   close(input);
- * });
- *
- * go(async () => {
- *   const result = await recv(output);
- *   console.log(output);                  // -> 6
- * });
- *
- * ```
- *
- * Note that the input channel *must* be closed at some point, or no value will
- * ever appear on the output channel. The closing of the channel is what
- * signifies that the reduction should be completed.
- *
- * @memberof module:csp-ops
- * @param {module:csp-ops.Reducer} fn The reducer function responsible for turning
- *     the series of channel values into a single output value.
- * @param {module:csp.Channel} channel The channel whose values are being
- *     reduced into a single output value.
- * @param {*} init The initial value to feed into the reducer function for the
- *     first reduction step.
- * @return {module:csp.Channel} A channel that will, when the input channel
- *     closes, have the reduced value put into it. When this value is taken, the
- *     channel will automatically close.
+ * @param {object} obj The object being iterated over.
+ * @returns {module:xduce-tools.XduceIterator} An iterator over the properties
+ *     of `obj`.
+ * @private
  */
-function reduce(fn, channel, init) {
-  const output = chan();
+function objectIterator(obj) {
+  return (function*() {
+    const keys = Object.keys(obj);
+    let index = 0;
 
-  go(async () => {
-    let acc = init;
-    for await (const value of channel) {
-      acc = fn(acc, value);
+    while (index &lt; keys.length) {
+      const k = keys[index++];
+      yield { [k]: obj[k] };
     }
-    sendAsync(output, acc, () => close(output));
-  });
-
-  return output;
+  })();
 }
 
 /**
- * Sends all values from an iterable to the supplied channel.
+ * Creates an iterator over a function.
  *
- * If no channel is passed to this function, a new channel is created. In
- * effect, this directly converts an iterable into a channel with the same
- * values on it.
+ * Details about this function are included in the documentation for
+ * {@link module:xduce-tools.iterator|iterator}.
  *
- * The channel is closed after the final iterable value is sent to it.
- *
- * This function will convert any JavaScript object that implements the iterable
- * protocol. In other words, if it works in a `for...of` statement, it will work
- * here.
- *
- * ```
- * import { go, chan, recv, isClosed } from "@csp";
- * import { toChannel } from "@ops";
- *
- * const input = [1, 2, 3];
- * const output = toChannel(input);
- *
- * go(async () => {
- *   console.log(await recv(output));     // -> 1
- *   console.log(await recv(output));     // -> 2
- *   console.log(await recv(output));     // -> 3
- *   console.log(isClosed(output));       // -> true
- * });
- * ```
- *
- * @memberof module:csp-ops
- * @param {iterable} iterable The iterable containing the values to be sent to
- *     the channel.
- * @param {module:csp.Channel} [channel] The channel onto which to put all of
- *     the array elements. If this is not present, a new channel will be
- *     created.
- * @return {module:csp.Channel} the channel onto which the array elements are
- *     put. This is the same as the input channel, but if no input channel is
- *     specified, this will be a new channel. It will close when the final value
- *     is taken from it.
+ * @param {module:xduce-tools.IterableFunction} fn The function to iterate over.
+ * @returns {module:xduce-tools.Iterator} An iterator over the return values of
+ *     `fn`.
+ * @private
  */
-function toChannel(iterable, channel = chan(iterable.length)) {
-  go(async () => {
-    for (const item of iterable) {
-      await send(channel, item);
+function functionIterator(fn) {
+  return (function*() {
+    let current;
+    let index = 0;
+
+    for (;;) {
+      current = fn(index++, current);
+      if (typeof current === "undefined") {
+        break;
+      }
+      yield current;
     }
-    close(channel);
-  });
-
-  return channel;
+  })();
 }
 
 /**
- * Receives all of the values from a channel and pushes them into an array.
+ * Creates an iterator over the provided value. The form of the iteration
+ * depends on what kind of value is being iterated over.
  *
- * If no array is passed to this function, a new (empty) one is created. In
- * effect, this directly converts a channel into an array with the same values.
- * Either way, this operation cannot complete until the input channel is closed.
- *
- * This function returns a channel. When the final array is produced, it is sent
- * to this channel, and when that value is received from it, the channel is
- * closed.
+ * If the value is a collection implementing the [iterable protocol][1] (arrays,
+ * strings, generators, or a custom object supporting the protocol) then the
+ * produced iterator will be as expected: an object that implements the
+ * [iterator protocol][2] by providing a `next` function that returns each
+ * collection value in turn.
  *
  * ```
- * import { go, chan, send, recv, close } from "@csp";
- * import { toArray } from "@ops";
- *
- * const input = chan();
- * const output = toArray(input);
- *
- * go(async () => {
- *   await send(input, 1);
- *   await send(input, 2);
- *   await send(input, 3);
- *   close(input);
- * });
- *
- * go(async () => {
- *   const result = await recv(output);
- *   console.log(result);                     // -> [1, 2, 3]
- * });
+ * const iter = iterator([1, 2, 3]);
+ * console.log(iter.next().value);   // -> 1
+ * console.log(iter.next().value);   // -> 2
+ * console.log(iter.next().value);   // -> 3
+ * console.log(iter.next().done);    // -> true
  * ```
  *
- * Note that the input channel *must* be closed at some point, or no value will
- * ever appear on the output channel. The closing of the channel is what
- * signifies that all of the values needed to make the array are now available.
+ * Special support is provided for two types that are not normally iterable:
+ * objects and functions.
  *
- * @memberof module:csp-ops
- * @param {module:csp.Channel} channel The channel from which values are
- *     received to put into the array.
- * @param {array} [array] The array to put the channel values into. If this is
- *     not present, a new, empty array will be created.
- * @return {module:csp.Channel} A channel that will, when the input channel
- *     closes, have the array of channel values put onto it. When this array is
- *     received, the channel will automatically close.
+ * Objects result in an iterator that produces a single-property object for
+ * every key/value pair in the supplied object. The [order of iteration][3] is
+ * the same as it is for objects post-ES2015:
+ *
+ * 1. String keys that are integer indices in ascending numerical order
+ * 2. All other string keys in the order in which they were added to the object
+ * 3. All symbol keys in the order in which they were added to the object
+ *
+ * ```
+ * const obj = {
+ *   [Symbol("first")]: true,
+ *   02: true,
+ *   10: true,
+ *   01: true,
+ *   2: true,
+ *   [Symbol("second")]: true
+ * };
+ * const iter = iterator(obj);
+ * console.log(iter.next().value);   // -> { '2': true }
+ * console.log(iter.next().value);   // -> { '10': true }
+ * console.log(iter.next().value);   // -> { '02': true }
+ * console.log(iter.next().value);   // -> { '01': true }
+ * console.log(iter.next().value);   // -> { [Symbol('first')]: true }
+ * console.log(iter.next().value);   // -> { [Symbol('second')]: true }
+ * console.log(iter.next().done);    // -> true
+ * ```
+ *
+ * Functions are run each time the iterator's `next` method is called, and the
+ * return value of the function is supplied as the iterator's value at that
+ * point.
+ *
+ * This function is provided two arguments: the zero-based index of that
+ * iteration, and the value produced by the last invocation of the iterator. The
+ * last value is `undefined` on the first pass, but a default parameter on the
+ * function can define the first pass value to be whatever is needed.
+ *
+ * ```
+ * const fn = (index, last = 1) => last * (index + 1);
+ * const iter = iterator(fn);
+ * console.log(iter.next().value);   // -> 1
+ * console.log(iter.next().value);   // -> 2
+ * console.log(iter.next().value);   // -> 6
+ * console.log(iter.next().value);   // -> 24
+ * console.log(iter.next().value);   // -> 120
+ * ```
+ *
+ * If the input value is neither iterable, object, or function, then the result
+ * will be `null`.
+ *
+ * [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
+ * [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
+ * [3]: https://2ality.com/2015/10/property-traversal-order-es6.html
+ *
+ * @memberof module:xduce-tools
+ * @param {(object|module:xduce-tools.IterableFunction|external:Iterable)} value
+ *     The value to create an iterator over.
+ * @returns {external:Iterator} An iterator over `value`.
  */
-function toArray(channel, array = []) {
-  return reduce(
-    (acc, input) => {
-      acc.push(input);
-      return acc;
-    },
-    channel,
-    array
-  );
+function iterator(value) {
+  switch (true) {
+    case isFunction(value[Symbol.iterator]):
+    case isGeneratorFunction(value[Symbol.iterator]):
+      return value[Symbol.iterator]();
+    case isFunction(value):
+      return functionIterator(value);
+    case isObject(value):
+      return objectIterator(value);
+    default:
+      return null;
+  }
 }
 
-export { reduce, toChannel, toArray };
+/**
+ * Determines whether the passed object is iterable, in terms of what 'iterable'
+ * means to this library. In other words, values implementing the `iterable`
+ * protocol and plain objects return `true`, while everything else returns
+ * `false`. This does not return `true` for functions even though
+ * {@link module:xduce-tools.iterator|iterator} can produce an iterator for
+ * them, because not all functions work well with
+ * {@link module:xduce-tools.iterator|iterator}.
+ *
+ * @memberof module:xduce-tools
+ * @param {*} value The value to test for iterability.
+ * @return {boolean} Either `true` if the value is iterable
+ *     (`{@link module:xduce-tools.iterator}` will return an iterator for it) or
+ *     `false` if it is not.
+ */
+function isIterable(value) {
+  return isImplemented(value, "iterator") || isObject(value);
+}
+
+export { iterator, isIterable };
 </code></pre>
         </article>
     </section>
@@ -245,7 +237,7 @@ export { reduce, toChannel, toArray };
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 30 2020 17:57:40 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 30 2020 18:46:23 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

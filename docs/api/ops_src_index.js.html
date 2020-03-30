@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>xduce-tools/src/modules/protocol.js - Documentation</title>
+    <title>ops/src/index.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">xduce-tools/src/modules/protocol.js</h1>
+    <h1 class="page-title">ops/src/index.js</h1>
     
 
     
@@ -52,96 +52,62 @@
  */
 
 /**
- * Protocols for iteration and reduction.
+ * A set of utility functions that give one or more channels some extra
+ * functionality. Each of these accept one or more {@link module:csp.Channel}
+ * objects and then combine or manipulate them in (hopefully) useful ways, such
+ * as merging them, splitting them, reducing values they receive to a single
+ * value, or throttling them so that they only produce one result in a given
+ * time period.
  *
- * The names for these protocols came from a discussion thread
- * ({@link https://github.com/cognitect-labs/transducers-js/issues/20}) from a
- * time when transducers were very much in the forefront. It's the closest thing
- * there is to a standard, so it was adopted here.
- *
- * These are the same symbols as available in my transducer library. They are
- * publicly available from there.
- *
- * @module core/protocol
- * @private
+ * @module csp-ops
  */
 
-import { isFunction, isGeneratorFunction } from "modules/utils";
+export {
+  map,
+  merge,
+  partition,
+  pipe,
+  split,
+  tap,
+  untap,
+  untapAll
+} from "modules/flow";
+export { reduce, toChannel, toArray } from "modules/conversion";
+export { debounce, throttle } from "modules/timing";
 
 /**
- * The mapping of protocol names to their respective property key names. The
- * values of this map will depend on whether symbols are available.
+ * A function that takes a single value and, depending on whether that value
+ * meets the function's criteria for passing, returns `true` or `false`.
  *
- * @typedef {object} ProtocolMap
- * @memberof module:xduce-tools
- * @property {Symbol} init The `transducer/init` protocol. This is used
- *     to mark functions that initialize a target collection before adding items
- *     to it.
- * @property {Symbol} step The `transducer/step` protocol. This is used
- *     to mark functions that are used in the transducer's step process, where
- *     objects are added to the target collection one at a time.
- * @property {Symbol} result The `transducer/result` protocol. This is
- *     used to mark functions that take the final result of the step process and
- *     return the final form to be output. This is optional; if the transducer
- *     does not want to transform the final result, it should just return the
- *     result of its chained transducer's `result` function.
- * @property {Symbol} reduced The `transducer/reduced` protocol. The
- *     presence of this key on an object indicates that its transformation has
- *     been completed. It is used internally to mark collections whose
- *     transformations conclude before every object is iterated over (as in
- *     `{@link xduce.take}` transducers.) It is of little use beyond transducer
- *     authoring.
- * @property {Symbol} value The `transducer/value` protocol. This is
- *     used internally to mark properties that contain the value of a reduced
- *     transformation. It is of little use beyond transducer authoring.
+ * @callback Predicate
+ * @memberof module:ops
+ * @param {*} value The value to test. Whether or not the value passes the test
+ *     depends on the criteria established by the predicate.
+ * @return {boolean} Either `true` if the value passes or `false` if it doesn't.
  */
 
 /**
- * The mapping of protocol names to their respective property key names.
+ * A function that maps its input(s) to an output value. It takes a variable
+ * number of input values and calculates an output value from them.
  *
- * @type {module:xduce-tools.ProtocolMap}
- * @memberof module:xduce-tools
+ * @callback Mapper
+ * @memberof module:ops
+ * @param {...*} values The input values.
+ * @return {*} An output value calculated from the input values.
  */
-const protocols = Object.create(null, {
-  init: {
-    value: Symbol.for("transducer/init")
-  },
-  step: {
-    value: Symbol.for("transducer/step")
-  },
-  result: {
-    value: Symbol.for("transducer/result")
-  },
-  reduced: {
-    value: Symbol.for("transducer/reduced")
-  },
-  value: {
-    value: Symbol.for("transducer/value")
-  }
-});
 
-function isImplemented(obj, protocol) {
-  if (obj == null) {
-    return false;
-  }
-
-  switch (protocol) {
-    case "iterator":
-      return (
-        isFunction(obj[Symbol.iterator]) ||
-        isGeneratorFunction(obj[Symbol.iterator])
-      );
-    case "asyncIterator":
-      return isGeneratorFunction(obj[Symbol.asyncIterator]);
-    case "reduced":
-    case "value":
-      return Object.getOwnPropertySymbols(obj).includes(protocols[protocol]);
-    default:
-      return isFunction(obj[protocols[protocol]]);
-  }
-}
-
-export { protocols, isImplemented };
+/**
+ * A function that integrates one of its values into the other. It's used for
+ * reducing channel values into a single value.
+ *
+ * @callback Reducer
+ * @memberof module:ops
+ * @param {*} acc The current accumulated value.
+ * @param {*} value The new value that needs to be integrated into the
+ *     accumulated value.
+ * @return {*} A new accumulated value, resulting from integrating `value` into
+ *     the original accumulated value.
+ */
 </code></pre>
         </article>
     </section>
@@ -156,7 +122,7 @@ export { protocols, isImplemented };
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 30 2020 17:57:40 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 30 2020 18:46:23 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

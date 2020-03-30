@@ -5,9 +5,9 @@
   "source": {
     "include": [
       "packages/csp/src",
-      "packages/csp-ops/src",
+      "packages/ops/src",
       "packages/xduce/src",
-      "packages/xduce-tools/src"
+      "packages/xdcore/src"
     ]
   },
   "plugins": [

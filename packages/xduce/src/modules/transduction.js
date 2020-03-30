@@ -25,7 +25,7 @@ import {
   isArray,
   isObject,
   isString
-} from "@chanko/xduce-tools";
+} from "@chanko/xdcore";
 
 /**
  * Creates an iterator that is also a transducer, transforming its collection

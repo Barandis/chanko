@@ -1,8 +1,8 @@
 {
-  "name": "@chanko/xduce-tools",
+  "name": "@chanko/xdcore",
   "version": "0.1.0",
   "description": "Tools for writing running Javascript transducers",
-  "main": "lib/chanko-xduce-tools.js",
+  "main": "lib/chanko-xdcore.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",

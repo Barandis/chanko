@@ -1,8 +1,8 @@
 {
-  "name": "@chanko/csp-ops",
+  "name": "@chanko/ops",
   "version": "0.1.0",
   "description": "Multi-channel operations for @chanko/channels",
-  "main": "lib/chanko-csp-ops.js",
+  "main": "lib/chanko-ops.js",
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && npm run bundle:dev && npm run bundle:prod",

@@ -12,6 +12,6 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "inline-source-map",
   output: {
-    filename: "chanko-csp-ops.js",
+    filename: "chanko-ops.js",
   },
 });
