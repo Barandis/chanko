@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>xdcore - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-csp.html">csp</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp.html#.chan">chan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.channel">channel</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.close">close</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.config">config</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.dropping">dropping</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.fixed">fixed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.go">go</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isBuffered">isBuffered</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isClosed">isClosed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.isTimed">isTimed</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.join">join</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recv">recv</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvAsync">recvAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.recvOrThrow">recvOrThrow</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.select">select</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.selectAsync">selectAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.send">send</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sendAsync">sendAsync</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sleep">sleep</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.sliding">sliding</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.timedChan">timedChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.transChan">transChan</a></li><li data-type='method' style='display: none;'><a href="module-csp.html#.value">value</a></li></ul></li><li><a href="module-csp-ops.html">csp-ops</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.debounce">debounce</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.map">map</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.merge">merge</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.partition">partition</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.pipe">pipe</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.reduce">reduce</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.split">split</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.tap">tap</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.throttle">throttle</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.toArray">toArray</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.toChannel">toChannel</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.untap">untap</a></li><li data-type='method' style='display: none;'><a href="module-csp-ops.html#.untapAll">untapAll</a></li></ul></li><li><a href="module-xdcore.html">xdcore</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-xdcore.html#.isIterable">isIterable</a></li><li data-type='method' style='display: none;'><a href="module-xdcore.html#.iterator">iterator</a></li></ul></li><li><a href="module-xduce.html">xduce</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-xduce.html#.asArray">asArray</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asIterator">asIterator</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asObject">asObject</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.asString">asString</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.complement">complement</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.compose">compose</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.identity">identity</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.into">into</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.key">key</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.kv">kv</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.repeat">repeat</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.sequence">sequence</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.transduce">transduce</a></li><li data-type='method' style='display: none;'><a href="module-xduce.html#.value">value</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-Iterable.html">Iterable</a></li><li><a href="external-Iterator.html">Iterator</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">xdcore</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description usertext"><p>The central module for the transducer engine.</p>
+<p>All of the functions in this module deal directly with transducers. But
+first, let's talk about the protocols that are going to be referred to
+throughout many of the function discussions.</p>
+<h2>Protocols</h2>
+<p>One of the key selling points for transducers is that the same transducer can
+be used on any type of collection. Rather than having to write a new <code>map</code>
+function (for example) for every kind of collection - one for an array, one
+for a string, one for an iterator, etc. - there is a single <code>map</code> transducer
+that will work with all of them, and potentially with <em>any</em> kind of
+collection. This is possible implementing <em>protocols</em> on the collections.</p>
+<p>A protocol in JavaScript is much like an interface in languages like Java and
+C#. It is a commitment to providing a certain functionality under a certain
+name. ES2015 has seen the introduction of an <code>iterator</code> protocol, for
+example, and language support for it (the new <code>for...of</code> loop can work with
+any object that correctly implements the <code>iterator</code> protocol).</p>
+<p>To support transduction, Xduce expects collections to implement four
+protocols.</p>
+<ul>
+<li><code>iterator</code>: a function that returns an iterator (this one is built in to
+ES6 JavaScript)</li>
+<li><code>transducer/init</code>: a function that returns a new, empty instance of the
+output collection</li>
+<li><code>transducer/step</code>: a function that takes an accumulator (the result of the
+reduction so far) and the next input value, and then returns the
+accumulator with the next input value added to it</li>
+<li><code>transducer/result</code>: a function that takes the reduced collection and
+returns the final output collection</li>
+</ul>
+<p><code>iterator</code> is the built-in JavaScript protocol. When called, it is expected
+to return an iterator over the implementing collection. This iterator is an
+object that has a <code>next</code> function. Each call to <code>next</code> is expected to return
+an object with <code>value</code> and <code>done</code> properties, which respectively hold the
+next value of the iterator and a boolean to indicate whether the iteration
+has reached its end. (This is a simplified explanation; see
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators">this MDN page</a>
+for more detailed information.)</p>
+<p><code>transducer/init</code> (referred to from now on as <code>init</code>) should be a function
+that takes no parameters and returns a new, empty instance of the output
+collection. This is the function that defines how to create a new collection
+of the correct type.</p>
+<p><code>transducer/step</code> (referred to from now on as <code>step</code>) should be a function
+that takes two parameters. These parameters are the result of the reduction
+so far (and so is a collection of the output type) and the next value from
+the input collection. It must return the new reduction result, with the next
+value incorporated into it. This is the function that defines how reduce a
+value onto the collection.</p>
+<p><code>transducer/result</code> (referred to from now on as <code>result</code>) should be a
+function that takes one parameter, which is the fully reduced collection. It
+should return the final output collection. This affords a chance to make any
+last-minute adjustments to the reduced collection before returning it.</p>
+<p>Arrays, strings, and objects are all given support for all of these
+protocols. Other collections will have to provide their own (though it should
+be noted that since <code>iterator</code> is built-in, many third-party collections will
+already implement this protocol). As an example, let's add transducer support
+to a third-party collection, the <code>Immutable.List</code> collection from
+<a href="https://facebook.github.io/immutable-js/">immutable-js</a>.</p>
+<pre class="prettyprint source"><code>Immutable.List.prototype[protocols.init] = () => Immutable.List().asMutable();
+Immutable.List.prototype[protocols.step] = (acc, input) => acc.push(input);
+Immutable.List.prototype[protocols.result] = (value) => value.asImmutable();
+</code></pre>
+<p><code>Immutable.List</code> already implements <code>iterator</code>, so we don't have to do it
+ourselves.</p>
+<p>The <code>init</code> function returns an empty mutable list. This is important for
+immutable-js because its default lists are immutable, and immutable lists
+mean that a new list has to be created with every reduction step. It would
+work fine, but it's quite inefficient.</p>
+<p>The <code>step</code> function adds the next value to the already-created list.
+<code>Immutable.List</code> provides a <code>push</code> function that works like an array's
+<code>push</code>, except that it returns the new list with the value pushed onto it.
+This is perfect for our <code>step</code> function.</p>
+<p>The <code>result</code> function converts the now-finished mutable list into an
+immutable one, which is what's going to be expected if we're transducing
+something into an <code>Immutable.List</code>. In most cases, <code>result</code> doesn't have to
+do any work, but since we're creating an intermediate representation of our
+collection type here, this lets us create the collection that we actually
+want to output. (Without <code>result</code>, we would have to use immutable lists all
+the way through, creating a new one with each <code>step</code> function, since we
+wouldn't be able to make this converstion at the end.)</p>
+<p>With those protocols implemented on the prototype, <code>Immutable.List</code>
+collections can now support any transduction we can offer.</p>
+<h3>Protocols</h3>
+<p>After talking a lot about protocols and showing how they're properties added
+to an object, it's probably pretty obvious that there's been no mention of
+what the actual names of those properties are. That's what
+<code><a href="module-xduce-tools.html#.protocols">protocols</a></code> is for.</p>
+<p>The best way to use these keys can be seen in the immutable-js example above.
+Instead of worrying about the name of the key for the <code>init</code> protocol, the
+value of <code>protocols.init</code> is used.</p>
+<p><code><a href="module-xduce-tools.html#.protocols">protocols</a></code> defines these protocol
+property names.</p>
+<ul>
+<li><code>init</code></li>
+<li><code>step</code></li>
+<li><code>result</code></li>
+<li><code>reduced</code>: used internally to mark a collection as already reduced</li>
+<li><code>value</code>: used internally to provide the actual value of a reduced
+collection</li>
+</ul>
+<p>The final two values don't have a lot of use outside the library unless
+you're writing your own transducers.</p>
+<h2>How Objects Are Treated</h2>
+<p>Objects bear some thought because regularly, they aren't candidates for
+iteration (and therefore for transduction in general). They don't have a very
+straightforward idea of order, and they have <em>two</em> pieces of data (key and
+value) for every element instead of one. Yet it's undeniable that at least
+for most transformations, being able to apply them to objects would be quite
+handy.</p>
+<p>For that reason, special support is provided end-to-end for objects.</p>
+<h3>Object iteration</h3>
+<p>Iterating over an object will produce one object per property of the original
+object. An order is imposed; by default, this order the same as the ordering
+of keys in post-ES6 Javascript:</p>
+<ol>
+<li>Keys that are integers, in ascending numerical order</li>
+<li>All other string keys, in the order in which they were added to the object</li>
+<li>All symbol keys, in the order in which they were added to the object</li>
+</ol>
+<p>The <code>iterator</code> function can be passed a
+sorting function that can sort keys in any other way.</p>
+<p>The result of the iteration, is a set of objects each with a single property,
+one for each enumerable own property on the original object. The standard
+ordering for objects (from ES6 onward) is as follows:</p>
+<h3>Transforming objects</h3>
+<p>While iterating over objects in this way is straightforward, the syntax of
+objects makes it ugly to transform them in this form. Here's an example of a
+transformation function that makes the object's keys upper-case and adds one
+to each of the values:</p>
+<pre class="prettyprint source"><code>function transform(obj) {
+  const key = Object.keys(obj)[0];
+  const value = obj[key];
+  return { [key.toUpperCase()]: value + 1 };
+}
+</code></pre>
+<p>A helper function named <code>property</code> can
+improve this by handling the boilerplate.</p>
+<pre class="prettyprint source"><code>function improvedTransform(obj) {
+  const {k, v} = property(obj);
+  return { [k.toUpperCase()]: v + 1 };
+}
+</code></pre>
+<h3>Reducing objects</h3>
+<p>The built-in reducers (for arrays, objects, strings, and iterators)
+understand these single-property objects and reduce them in the proper manner
+without any further work.</p>
+<p>That's it for object-object reduction. Converting between objects and other
+types is another matter.</p>
+<p>Every transducer function except for
+<code>sequence</code> is capable of turning an
+object into a different type of collection, turning a different type of
+collection into an object, or both. Objects are different because they're the
+only &quot;collections&quot; that have two different pieces of data per element.
+Because of this, we have to have a strategy on how to move from one to
+another.</p>
+<p>Transducing an object into a different type is generally pretty easy. If an
+object is converted into an array, for instance, the array elements will each
+be single-property objects, one per property of the original object.</p>
+<p>Strings are a different story, since encoding a single-property object to a
+string isn't possible (because every &quot;element&quot; of a string has to be a single
+character). Strings that are produced from objects will instead just be the
+object values, concatenated. Because objects are iterated in a particular
+order, this conversion will always produce the same string, but except in
+some very specific cases there really isn't a lot of use for this conversion.</p>
+<pre class="prettyprint source"><code>const obj = {a: 1, b: 2};
+
+let result = asArray(obj);
+// result = [{a: 1}, {b: 2}]
+
+result = asIterator(obj);
+// result is an iterator with two values: {a: 1} and {b: 2}
+
+result = into(Immutable.List(), obj)
+// result is an immutable list with two elements: {a: 1} and {b: 2}
+
+result = asString(obj);
+// result is '12'
+</code></pre>
+<p>The opposite conversion depends on the values inside the collections. If
+those values are objects, then the result is an object with all of the
+objects combined (if more than one has the same key, the last one is the one
+that's kept). Otherwise, keys are created for each of the elements, starting
+with <code>0</code> and increasing from there.</p>
+<p>This means that converting an object to any non-string collection and back
+produces the original object.</p>
+<pre class="prettyprint source"><code>let result = asObject([{a: 1}, {b: 2}]);
+// result = {a: 1, b: 2}
+
+result = asObject([1, 2, 3]);
+// result = {0: 1, 1: 2, 2: 3}
+
+result = asObject('hello');
+// result = {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
+</code></pre></div>
+            
+
+            
+                
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isIterable"><span class="type-signature">(static) </span>isIterable<span class="signature">(value)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line173">line 173</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Determines whether the passed object is iterable, in terms of what 'iterable'
+means to this library. In other words, values implementing the <code>iterable</code>
+protocol and plain objects return <code>true</code>, while everything else returns
+<code>false</code>. This does not return <code>true</code> for functions even though
+<a href="module-xdcore.html#.iterator">iterator</a> can produce an iterator for them,
+because not all functions work well with
+<a href="module-xdcore.html#.iterator">iterator</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to test for iterability.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> if the value is iterable
+(<code><a href="module-xdcore.html#.iterator">iterator</a></code> will return an iterator for
+it) or <code>false</code> if it is not.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".iterator"><span class="type-signature">(static) </span>iterator<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="external-Iterator.html">external:Iterator</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line144">line 144</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates an iterator over the provided value. The form of the iteration
+depends on what kind of value is being iterated over.</p>
+<p>If the value is a collection implementing the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol">iterable protocol</a> (arrays,
+strings, generators, or a custom object supporting the protocol) then the
+produced iterator will be as expected: an object that implements the
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol">iterator protocol</a> by providing a <code>next</code> function that returns each
+collection value in turn.</p>
+<pre class="prettyprint source"><code>const iter = iterator([1, 2, 3]);
+console.log(iter.next().value);   // -> 1
+console.log(iter.next().value);   // -> 2
+console.log(iter.next().value);   // -> 3
+console.log(iter.next().done);    // -> true
+</code></pre>
+<p>Special support is provided for two types that are not normally iterable:
+objects and functions.</p>
+<p>Objects result in an iterator that produces a single-property object for
+every key/value pair in the supplied object. The <a href="https://2ality.com/2015/10/property-traversal-order-es6.html">order of iteration</a> is
+the same as it is for objects post-ES2015:</p>
+<ol>
+<li>String keys that are integer indices in ascending numerical order</li>
+<li>All other string keys in the order in which they were added to the object</li>
+<li>All symbol keys in the order in which they were added to the object</li>
+</ol>
+<pre class="prettyprint source"><code>const obj = {
+  [Symbol(&quot;first&quot;)]: true,
+  02: true,
+  10: true,
+  01: true,
+  2: true,
+  [Symbol(&quot;second&quot;)]: true
+};
+const iter = iterator(obj);
+console.log(iter.next().value);   // -> { '2': true }
+console.log(iter.next().value);   // -> { '10': true }
+console.log(iter.next().value);   // -> { '02': true }
+console.log(iter.next().value);   // -> { '01': true }
+console.log(iter.next().value);   // -> { [Symbol('first')]: true }
+console.log(iter.next().value);   // -> { [Symbol('second')]: true }
+console.log(iter.next().done);    // -> true
+</code></pre>
+<p>Functions are run each time the iterator's <code>next</code> method is called, and the
+return value of the function is supplied as the iterator's value at that
+point.</p>
+<p>This function is provided two arguments: the zero-based index of that
+iteration, and the value produced by the last invocation of the iterator. The
+last value is <code>undefined</code> on the first pass, but a default parameter on the
+function can define the first pass value to be whatever is needed.</p>
+<pre class="prettyprint source"><code>const fn = (index, last = 1) => last * (index + 1);
+const iter = iterator(fn);
+console.log(iter.next().value);   // -> 1
+console.log(iter.next().value);   // -> 2
+console.log(iter.next().value);   // -> 6
+console.log(iter.next().value);   // -> 24
+console.log(iter.next().value);   // -> 120
+</code></pre>
+<p>If the input value is neither iterable, object, or function, then the result
+will be <code>null</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type"><a href="module-xdcore.html#.IterableFunction">module:xdcore.IterableFunction</a></span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to create an iterator over.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An iterator over <code>value</code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="external-Iterator.html">external:Iterator</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+
+    
+
+    <h4 class="name" id=".IterableFunction"><span class="type-signature"></span>IterableFunction<span class="signature">(index, last)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line291">line 291</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>A function that can have an iterator created for it.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index for the iteration. This is <code>0</code> the first
+time the function is called and increases by 1 for each call
+thereafter.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>last</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The return value of the function when it was called on the
+previous iteration. If this is the first call to the function, then
+this value will be <code>undefined</code>, meaning that the function can set a
+default value for that first pass.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The return value of the function, which will be the value for
+that iteration.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 30 2020 18:54:11 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

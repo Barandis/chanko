@@ -244,7 +244,7 @@
  * // result = {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
  * ```
  *
- * @module xduce-tools
+ * @module xdcore
  */
 
 export { protocols, isImplemented } from "modules/protocol";
@@ -292,7 +292,7 @@ export {
  * A function that can have an iterator created for it.
  *
  * @callback IterableFunction
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {number} index The index for the iteration. This is `0` the first
  *     time the function is called and increases by 1 for each call
  *     thereafter.

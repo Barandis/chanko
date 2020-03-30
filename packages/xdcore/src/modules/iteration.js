@@ -8,7 +8,7 @@
 /**
  * Functions to help with iteration over iterable objects and plain objects.
  *
- * @module xduce-tools/iteration
+ * @module xdcore/iteration
  * @private
  */
 
@@ -19,11 +19,10 @@ import { isFunction, isObject, isGeneratorFunction } from "modules/utils";
  * Creates an iterator over an object.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce-tools.iterator|iterator}.
+ * {@link module:xdcore.iterator|iterator}.
  *
  * @param {object} obj The object being iterated over.
- * @returns {module:xduce-tools.XduceIterator} An iterator over the properties
- *     of `obj`.
+ * @returns {external:Iterator} An iterator over the properties of `obj`.
  * @private
  */
 function objectIterator(obj) {
@@ -42,11 +41,10 @@ function objectIterator(obj) {
  * Creates an iterator over a function.
  *
  * Details about this function are included in the documentation for
- * {@link module:xduce-tools.iterator|iterator}.
+ * {@link module:xdcore.iterator|iterator}.
  *
- * @param {module:xduce-tools.IterableFunction} fn The function to iterate over.
- * @returns {module:xduce-tools.Iterator} An iterator over the return values of
- *     `fn`.
+ * @param {module:xdcore.IterableFunction} fn The function to iterate over.
+ * @returns {external:Iterator} An iterator over the return values of `fn`.
  * @private
  */
 function functionIterator(fn) {
@@ -138,8 +136,8 @@ function functionIterator(fn) {
  * [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
  * [3]: https://2ality.com/2015/10/property-traversal-order-es6.html
  *
- * @memberof module:xduce-tools
- * @param {(object|module:xduce-tools.IterableFunction|external:Iterable)} value
+ * @memberof module:xdcore
+ * @param {(object|module:xdcore.IterableFunction|external:Iterable)} value
  *     The value to create an iterator over.
  * @returns {external:Iterator} An iterator over `value`.
  */
@@ -162,15 +160,15 @@ function iterator(value) {
  * means to this library. In other words, values implementing the `iterable`
  * protocol and plain objects return `true`, while everything else returns
  * `false`. This does not return `true` for functions even though
- * {@link module:xduce-tools.iterator|iterator} can produce an iterator for
- * them, because not all functions work well with
- * {@link module:xduce-tools.iterator|iterator}.
+ * {@link module:xdcore.iterator|iterator} can produce an iterator for them,
+ * because not all functions work well with
+ * {@link module:xdcore.iterator|iterator}.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The value to test for iterability.
  * @return {boolean} Either `true` if the value is iterable
- *     (`{@link module:xduce-tools.iterator}` will return an iterator for it) or
- *     `false` if it is not.
+ *     (`{@link module:xdcore.iterator|iterator}` will return an iterator for
+ *     it) or `false` if it is not.
  */
 function isIterable(value) {
   return isImplemented(value, "iterator") || isObject(value);
