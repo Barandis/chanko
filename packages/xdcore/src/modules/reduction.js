@@ -300,6 +300,18 @@ function toFunction(transducer, reducer) {
 }
 
 /**
+ * A completed value. This is a wrapper around the actual value, which is
+ * retained as one of the properties, along with a marker property to show that
+ * this is a wrapped value.
+ *
+ * @typedef CompletedValue
+ * @memberof module:xdcore
+ * @property {boolean} Symbol.for("completed") A marker property to indicate
+ *     that this is, in fact, a wrapped completed value.
+ * @property {*} Symbol.for("value") The wrapped value.
+ */
+
+/**
  * Marks a value as complete.
  *
  * This is done by wrapping the value. This means three things: first, a
@@ -309,8 +321,8 @@ function toFunction(transducer, reducer) {
  *
  * @memberof module:xdcore
  * @param {*} value The value to be completed.
- * @return {*} A completed version of the provided value. This reduction is
- *     achieved by wrapping the value in a marker object.
+ * @return {module:xdcore.CompletedValue} A completed version of the provided
+ *     value. This effect is achieved by wrapping the value in a marker object.
  */
 function complete(value) {
   return {
@@ -326,7 +338,7 @@ function complete(value) {
  * already marked as complete. If it is not, `undefined` will be returned
  * instead of the value.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The value to be uncompleted.
  * @return {*} An uncompleted version of the provided value. If the value was
  *     not complete in the first place, `undefined` will be returned instead.
@@ -338,10 +350,10 @@ function uncomplete(value) {
 /**
  * Determines whether a value is marked as complete.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The value to test for its complete status.
- * @return {boolean} Either `true` if the value is complete, or `false` if it is
- *     not.
+ * @return {boolean} Either `true` if the value is completed, or `false` if it
+ *     is not.
  */
 function isCompleted(value) {
   return !!value?.[p.completed];
@@ -351,11 +363,11 @@ function isCompleted(value) {
  * Makes sure that a value is marked as complete; if it is not, it will be
  * marked as complete.
  *
- * This differs from {@link module:xduce-tools.complete|complete} in that if the value
- * is already complete, this function won't complete it again. Therefore thus
- * function can't be used to make a value complete multiple times.
+ * This differs from {@link module:xdcore.complete|complete} in that if the
+ * value is already complete, this function won't complete it again. Therefore
+ * thus function can't be used to make a value complete multiple times.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The value to be completed.
  * @return {*} If the value is already complete, then the value is simply
  *     returned. Otherwise, a completed version of the value is returned.
@@ -371,7 +383,7 @@ function ensureCompleted(value) {
  * it isn't, the value itself is returned. It's meant to be used when the
  * completed status is uncertain.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The complete value to be uncompleted.
  * @return {*} If the value is already uncompleted, the value is simply
  *     returned. Otherwise an uncompleted version of the value is returned.
@@ -402,17 +414,17 @@ function ensureUncompleted(value) {
  * between collection types can occur.
  *
  * The normal course of operation will be to call
- * {@link module:xduce-tools.transduce|transduce} instead, as that function makes it
+ * {@link module:xduce.transduce|transduce} instead, as that function makes it
  * easy to combine transformations with reductions and can optionally figure out
  * the initial collection itself.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} collection The input collection. The only requirement of this
  *     collection is that it implement the `iterable` protocol. Special support
  *     is provided by the library for objects, so they can be used as well.
- * @param {module:xduce-tools.Reducer} reducer An object that implements the `step` and
- *     `result` protocols. This object must know how to produce an output
- *     collection through those protocol functions.
+ * @param {module:xdcore.ReducerObject} reducer An object that implements the
+ *     `step` and `result` protocols. This object must know how to produce an
+ *     output collection through those protocol functions.
  * @param {*} init a collection of the same type as the output collection. It
  *     need not be empty; if it is not, the existing elements are retained as
  *     the input collection is reduced into it.
