@@ -9,7 +9,7 @@
  * A set of functions related to the producing reducer objects, marking
  * completed objects, and performing general reduction operations.
  *
- * @module core/reduction
+ * @module xdcore/reduction
  * @private
  */
 
@@ -26,9 +26,10 @@ import { iterator } from "modules/iteration";
  * In order to support the conversion of functions into reducers, function
  * support is also provided.
  *
- * @param {*} collection A collection to create an init function for. This can
- *     be anything that supports the iteration protocol or a plain object.
- * @return {module:xduce-tools.InitFunction} A function that, when called, returns an
+ * @param {(object|function|external:Iterable)} collection A collection to
+ *     create an init function for. This can be anything that supports the
+ *     iteration protocol or a plain object.
+ * @return {module:xdcore.InitFunction} A function that, when called, returns an
  *     initial version of the provided collection. If the provided collection is
  *     not iterable, then `null` is returned.
  * @private
@@ -62,10 +63,10 @@ function init(collection) {
  * In order to support the conversion of functions into reducers, function
  * support is also provided.
  *
- * @param {*} collection A collection to create a step function for. This can be
- *     anything that supports the iteration protocol, a plain object, or a
- *     function.
- * @return {module:xduce-tools.StepFunction} A reduction function for the provided
+ * @param {(object|function|external:Iterable)} collection A collection to
+ *     create a step function for. This can be anything that supports the
+ *     iteration protocol, a plain object, or a function.
+ * @return {module:xdcore.StepFunction} A reduction function for the provided
  *     collection that simply adds an element to the target collection without
  *     modifying it. If the provided collection is not iterable, `null` is
  *     returned.
@@ -121,10 +122,10 @@ function step(collection) {
  * In order to support the conversion of functions into reducers, function
  * support is also provided.
  *
- * @param {*} collection A collection to create a step function for. This can be
- *     anything that supports the iteration protocol, a plain object, or a
- *     function.
- * @return {module:xduce-tools.ResultFunction} A function that, when given a reduced
+ * @param {(object|function|external:Iterable)} collection A collection to
+ *     create a step function for. This can be anything that supports the
+ *     iteration protocol, a plain object, or a function.
+ * @return {module:xdcore.ResultFunction} A function that, when given a reduced
  *     collection, produces the final output. If the provided collection is not
  *     iterable, `null` will be returned.
  * @private
@@ -181,13 +182,14 @@ function result(collection) {
  * console.log(sum);   // -> 55
  * ```
  *
- * @memberof module:xduce-tools
- * @param {*} collection An iterable collection or a reducer function.
- * @return {object} An object containing protocol properties for init, step, and
- *     result. This object is suitable for use as a reducer object (one provided
- *     to `{@link xduce.reduce|reduce}` or `{@link xduce.transduce|transduce}`).
- *     If the provided collection is not iterable, all of the properties of this
- *     object will be `null`.
+ * @memberof module:xdcore
+ * @param {(object|function|external:Iterable)} collection An iterable
+ *     collection or a reducer function.
+ * @return {module:xdcore.ReducerObject} An object containing protocol
+ *     properties for `init`, `step`, and `result`. This object is suitable for
+ *     use as a reducer object (one provided to `{@link xduce.reduce|reduce}` or
+ *     `{@link xduce.transduce|transduce}`). If the provided collection is not
+ *     iterable, all of the properties of this object will be `null`.
  */
 function toReducer(collection) {
   return Object.freeze({
@@ -200,7 +202,7 @@ function toReducer(collection) {
 /**
  * A reducer object for arrays.
  *
- * @type {module:xduce-tools.Reducer}
+ * @type {module:xdcore.ReducerObject}
  * @private
  */
 const ARRAY_REDUCER = toReducer([]);
@@ -208,7 +210,7 @@ const ARRAY_REDUCER = toReducer([]);
 /**
  * A reducer object for objects.
  *
- * @type {module:xduce-tools.Reducer}
+ * @type {module:xdcore.ReducerObject}
  * @private
  */
 const OBJECT_REDUCER = toReducer({});
@@ -216,7 +218,7 @@ const OBJECT_REDUCER = toReducer({});
 /**
  * A reducer object for strings.
  *
- * @type {module:xduce-tools.Reducer}
+ * @type {module:xdcore.ReducerObject}
  * @private
  */
 const STRING_REDUCER = toReducer("");

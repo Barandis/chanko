@@ -303,3 +303,65 @@ export {
  * @returns {*} The return value of the function, which will be the value for
  *     that iteration.
  */
+
+/**
+ * A function that, when called, produces a new, empty collection of whatever
+ * type is being worked with.
+ *
+ * @callback InitFunction
+ * @memberof module:xdcore
+ * @returns {*} A new, empty representative of the collection.
+ */
+
+/**
+ * A function that accepts a collection and a new element of that collection and
+ * returns the collection with the new element added to it. This is used to
+ * build up a new collection (starting with whatever
+ * {@link module:xdcore.InitFunction|the init function} returns) piece by piece
+ * from its elements.
+ *
+ * It is up to the implementation whether the returned collection is a modified
+ * form of the original collection or whether it is a new collection altogether.
+ *
+ * @callback StepFunction
+ * @memberof module:xdcore
+ * @param {*} acc A collection, perhaps with some members already added to it.
+ * @param {*} value A new element to be added to that collection.
+ * @returns The original collection with the new value added to it.
+ */
+
+/**
+ * A function that accepts a fully reduced collection and returns that
+ * collection with any last-minute modifications that might need to be done to
+ * it.
+ *
+ * In most cases this function will simply return its argument, unmodified, but
+ * it does afford the transducer an opportunity to make any final modifications
+ * that might be necessary before the result is returned from the transduction
+ * process.
+ *
+ * @callback ResultFunction
+ * @memberof module:xdcore
+ * @param {*} value The fully reduced collection.
+ * @returns {*} The reduced collection with any implementation-dependent changes
+ *     that might be deemed necessary.
+ */
+
+/**
+ * An object that provides the information necessary to build and populate a new
+ * object of a reducible type. This information is used by the transduction
+ * engine to create a result from a reduction without having to have its own
+ * type-specific code; the creation, population, and finalization of the result
+ * are delegated instead to this reducer object.
+ *
+ * @typedef ReducerObject
+ * @property {module:xdcore.InitFunction} Symbol.for("transducer/init") A
+ *     function that can create a new, empty copy of the reducible type.
+ * @property {module:xdcore.StepFunction} Symbol.for("transducer/step") A
+ *     function that can accept a value of the reducible type and a new element
+ *     to be added to it and return the reducible with the new element
+ *     incorporated.
+ * @property {module:xdcore.ResultFunction} Symbol.for("transducer/result") A
+ *     function that accepts a value of the reducible type and returns the same
+ *     value with any final modifications that might be necessary for it.
+ */

@@ -16,18 +16,19 @@
  * These are the same symbols as available in my transducer library. They are
  * publicly available from there.
  *
- * @module core/protocol
+ * @module xdcore/protocol
  * @private
  */
 
 import { isFunction, isGeneratorFunction } from "modules/utils";
 
 /**
- * The mapping of protocol names to their respective property key names. The
- * values of this map will depend on whether symbols are available.
+ * The mapping of protocol names to their respective property key names. This
+ * mapping makes it easier to deal with these protocols as they can be looked
+ * up by string name rather than by more difficult-to-work-with symbols.
  *
  * @typedef {object} ProtocolMap
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @property {Symbol} init The `transducer/init` protocol. This is used
  *     to mark functions that initialize a target collection before adding items
  *     to it.
@@ -53,8 +54,8 @@ import { isFunction, isGeneratorFunction } from "modules/utils";
 /**
  * The mapping of protocol names to their respective property key names.
  *
- * @type {module:xduce-tools.ProtocolMap}
- * @memberof module:xduce-tools
+ * @type {module:xdcore.ProtocolMap}
+ * @memberof module:xdcore
  */
 const protocols = Object.create(null, {
   init: {
@@ -74,6 +75,29 @@ const protocols = Object.create(null, {
   }
 });
 
+/**
+ * Determines whether a particular protocol is implemented by a value. The
+ * possible values for `protocol` are the following, representing the two
+ * built-in iterator protocols and the five custom transducer protocols:
+ *
+ * * `iterator`
+ * * `asyncItrerator`
+ * * `init`
+ * * `step`
+ * * `result`
+ * * `reduced`
+ * * `value`
+ *
+ * Any of these will result in `true` if the object in question has a property
+ * that matches the one necessary to implement the protocol. Further, any of
+ * the properties other than `reduced` and `step` must be functions.
+ *
+ * @memberof module:xdcore
+ * @param {object} obj The object to check for protocol implementation.
+ * @param {string} protocol The name of the protocol to check for.
+ * @returns {boolean} Either `true` if the object supports the named protocol or
+ *     `false` if it does not.
+ */
 function isImplemented(obj, protocol) {
   if (obj == null) {
     return false;
