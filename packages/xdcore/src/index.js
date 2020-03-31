@@ -380,6 +380,9 @@ export {
  * A function that accepts a reducer object, which it then chains a transducer
  * object to. This is the primary way of creating composed transducer chains.
  *
+ * A transducer function basically encapsulates a transducer object and the
+ * ability to chain it to whatever reducer object is passed to it.
+ *
  * @callback TransducerFunction
  * @memberof module:xdcore
  * @param {module:xdcore.ReducerObject} reducer The reducer object (which may

@@ -307,14 +307,14 @@ function toFunction(transducer, reducer) {
  * isn't usable without being uncompleted first; and third any type of value
  * (including `undefined`) may be marked as complete.
  *
- * @memberof module:xduce-tools
+ * @memberof module:xdcore
  * @param {*} value The value to be completed.
  * @return {*} A completed version of the provided value. This reduction is
  *     achieved by wrapping the value in a marker object.
  */
 function complete(value) {
   return {
-    [p.reduced]: true,
+    [p.completed]: true,
     [p.value]: value
   };
 }
@@ -344,7 +344,7 @@ function uncomplete(value) {
  *     not.
  */
 function isCompleted(value) {
-  return !!value?.[p.reduced];
+  return !!value?.[p.completed];
 }
 
 /**

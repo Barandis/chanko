@@ -46,11 +46,11 @@ describe("Status marking functions", () => {
     });
 
     it("works on values implementing the reduced protocol", () => {
-      const obj = { [p.reduced]: true };
+      const obj = { [p.completed]: true };
       expect(isCompleted(obj)).to.be.true;
 
       const array = [];
-      array[p.reduced] = true;
+      array[p.completed] = true;
       expect(isCompleted(array)).to.be.true;
     });
   });

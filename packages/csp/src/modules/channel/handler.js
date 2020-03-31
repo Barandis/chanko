@@ -81,8 +81,8 @@ function isBox(obj) {
  *     it has not been.
  * @private
  */
-function isReduced(value) {
-  return !!value?.[p.reduced];
+function isCompleted(value) {
+  return !!value?.[p.completed];
 }
 
 /**
@@ -321,7 +321,7 @@ function handleSend(channel, value, handler) {
   // transducer's work is deferred until later when the buffer is not full.
   if (channel.buffer && !isFull(channel.buffer)) {
     handler.commit();
-    const done = isReduced(channel.xform[p.step](channel.buffer, value));
+    const done = isCompleted(channel.xform[p.step](channel.buffer, value));
 
     for (;;) {
       if (count(channel.buffer) === 0) {
@@ -441,7 +441,7 @@ function handleRecv(channel, handler) {
         if (callback) {
           dispatch(() => callback(true));
         }
-        if (isReduced(channel.xform[p.step](channel.buffer, sender.value))) {
+        if (isCompleted(channel.xform[p.step](channel.buffer, sender.value))) {
           close(channel);
         }
       }
