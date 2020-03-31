@@ -28,7 +28,7 @@ import { iterator } from "modules/iteration";
  *
  * @param {(object|function|external:Iterable)} collection A collection to
  *     create an init function for. This can be anything that supports the
- *     iteration protocol or a plain object.
+ *     iteratable protocol, a plain object, or a function.
  * @return {module:xdcore.InitFunction} A function that, when called, returns an
  *     initial version of the provided collection. If the provided collection is
  *     not iterable, then `null` is returned.
@@ -63,7 +63,7 @@ function init(collection) {
  * In order to support the conversion of functions into reducers, function
  * support is also provided.
  *
- * @param {(object|function|external:Iterable)} collection A collection to
+ * @param {(object|function|external:Iterable)}} collection A collection to
  *     create a step function for. This can be anything that supports the
  *     iteration protocol, a plain object, or a function.
  * @return {module:xdcore.StepFunction} A reduction function for the provided
@@ -122,7 +122,7 @@ function step(collection) {
  * In order to support the conversion of functions into reducers, function
  * support is also provided.
  *
- * @param {(object|function|external:Iterable)} collection A collection to
+ * @param {(object|function|external:Iterable)}} collection A collection to
  *     create a step function for. This can be anything that supports the
  *     iteration protocol, a plain object, or a function.
  * @return {module:xdcore.ResultFunction} A function that, when given a reduced
@@ -145,8 +145,8 @@ function result(collection) {
 }
 
 /**
- * Creates a reducer object from a function or from a built-in reducible type
- * (array, object, or string).
+ * Creates a reducer object from a function or from a reducible type (array,
+ * object, string, or object implementing the reducer protocols).
  *
  * To create a reducer for arrays, objects, or strings, simply pass an empty
  * version of that collection to this function (e.g., `toReducer([])`).
@@ -163,7 +163,7 @@ function result(collection) {
  * here is a reducer that will result in summing of the collection values.
  *
  * ```
- * import { toReducer, reduce } from "@chanko/xduce";
+ * import { toReducer, reduce } from "@chanko/xdcore";
  *
  * const sumReducer = toReducer((acc, input) => acc + input);
  * const sum = reduce([1, 2, 3, 4, 5], sumReducer, 0);
@@ -174,8 +174,8 @@ function result(collection) {
  * sum of the *squares* of the collection values.
  *
  * ```
- * import { toReducer, transduce } from "@chanko/xduce";
- * import { map } from "@chanko/transducers";
+ * import { toReducer } from "@chanko/xdcore";
+ * import { transduce, map } from "@chanko/xduce";
  *
  * const sumReducer = toReducer((acc, input) => acc + input);
  * const sum = transduce([1, 2, 3, 4, 5], map(x => x * x), sumReducer, 0);
@@ -183,13 +183,13 @@ function result(collection) {
  * ```
  *
  * @memberof module:xdcore
- * @param {(object|function|external:Iterable)} collection An iterable
- *     collection or a reducer function.
+ * @param {(array|object|function|module:xdcore.ReducerObject)} collection A
+ *     reducible collection or a reducer function.
  * @return {module:xdcore.ReducerObject} An object containing protocol
  *     properties for `init`, `step`, and `result`. This object is suitable for
- *     use as a reducer object (one provided to `{@link xduce.reduce|reduce}` or
- *     `{@link xduce.transduce|transduce}`). If the provided collection is not
- *     iterable, all of the properties of this object will be `null`.
+ *     use as a reducer object (one provided to
+ *     `{@link module:xdcore.reduce|reduce}`). If the provided collection is not
+ *     reducible, all of the properties of this object will be `null`.
  */
 function toReducer(collection) {
   return Object.freeze({
@@ -224,78 +224,78 @@ const OBJECT_REDUCER = toReducer({});
 const STRING_REDUCER = toReducer("");
 
 /**
- * Creates a transducer from a function and a transducer to chain it to.
+ * Creates a transducer object from a function and a reducer object.
  *
- * This is in most respects just like {@link module:xduce-tools.toReducer|toReducer},
- * with two notable differences. One is that it requires a transducer to chain
- * to, and it does the chaining as a part of creating the new transducer. The
- * other is that it includes a usable `init` function, where passing a function
- * to {@link module:xduce-tools.toReducer|toReducer} would create an init function that
- * throws an error if it's called.
+ * This is similar to {@link module:xdcore.toReducer|toReducer} except in two
+ * respects:
+ *
+ * 1. It only accepts a reducer function, not a reducer object
+ * 2. It chains to another reducer object
  *
  * This function applies the given function as the `step` function of the
  * returned transducer, and the `init` and `result` functions simply call the
- * same functions in the next transducer down the chain. This is precisely what
- * *most* transducers want...`init` and `result` functions are normally handled
- * by the reducer at the end of the transducer chain...but in the rare case when
- * `init` or `result` must do more than this, the transducer must be created
- * manually.
+ * same functions in the next reducer object. This is precisely what *most*
+ * transducers want; `init` and `result` functions are normally handled by the
+ * reducer at the end of the transducer chain. In the rare case when an `init`
+ * or `result` function must do more than simply chain, this function will not
+ * work. Generally the transducer object is created manually in that case.
  *
  * This function does not automatically chain the `step` function to the next
  * one down the line, as that can be done in any number of different ways. Thus
- * the function itself should call the `step` function in `xform` in whatever
+ * the function itself should call the `step` function in `reducer` in whatever
  * way is appropriate.
  *
- * @memberof module:xduce-tools
- * @param {module:xduce-tools.StepFunction} fn The step function for the transducer.
- * @param {module:xduce-tools.Transducer} xform The next transducer object in the
- *     chain.
- * @returns {module:xduce-tools.Transducer} A new transducer, chaining the supplied
- *     function to the supplied transducer.
+ * @memberof module:xdcore
+ * @param {module:xdcore.StepFunction} fn The step function for the transducer.
+ * @param {module:xdcore.ReducerObject} reducer The next transducer object in
+ *     the chain.
+ * @returns {module:xdcore.ReducerObject} A new transducer, chaining the
+ *     supplied function to the supplied transducer.
  */
-function toTransducer(fn, xform) {
+function toTransducer(fn, reducer) {
   return {
     [p.init]() {
-      return xform[p.init]();
+      return reducer[p.init]();
     },
 
     [p.step]: fn,
 
     [p.result](value) {
-      return xform[p.result](value);
+      return reducer[p.result](value);
     }
   };
 }
 
 /**
- * Creates a reduction function from a transducer and a reducer.
+ * Creates a reducer function from a transducer function and a reducer.
  *
  * This produces a function that's suitable for being passed into other
  * libraries' reduce functions, such as JavaScript's `Array.prototype.reduce` or
- * Lodash's `_.reduce`. It requires both a transformer and a reducer because
- * reduction functions for those libraries must know how to do both. The reducer
- * can be a standard reducer object like the ones sent
- * to`{@link module:xduce-tools.transduce|transduce}` or
- * `{@link module:xduce-tools.reduce|reduce}`, or it can be a plain function that takes
- * two parameters and returns the result of reducing the second parameter into
- * the first.
+ * Lodash's `_.reduce`. It requires both a transducer *and* a reducer because
+ * reduction functions for those libraries must know how to reduce as well as
+ * how to transform. The reducer can be a standard reducer object like the ones
+ * sent to `{@link module:xdcore.reduce|reduce}`, or it can be a plain function
+ * that takes two parameters and returns the result of reducing the second
+ * parameter into the first (i.e., a reducer function).
  *
  * If there is no need for a transformation, then pass in the
- * `{@link module:transducers.identity|identity}` transducer.
+ * `{@link module:xduce.identity|identity}` transducer.
  *
- * @memberof module:xduce-tools
- * @param {module:xduce-tools.Reducer} xform A transducer object whose step function
- *     will become the returned reduction function.
- * @param {(module:xduce-tools.StepFunction|module:xduce-tools.Reducer)} reducer A reducer
- *     that knows how to reduce values into an output collection. This can
- *     either be a reducing function or a transducer object whose `step`
+ * @memberof module:xdcore
+ * @param {module:xdcore.TransducerFunction} transducer A transducer function
+ *     that wraps a transducer object whose `step` function will be used as a
+ *     reducer function.
+ * @param {(module:xdcore.StepFunction|module:xdcore.ReducerObject)} reducer A
+ *     reducer that knows how to reduce values into an output collection. This
+ *     can either be a reducing function or a reducer object whose `step`
  *     function knows how to perform this reduction.
- * @returns {module:xduce-tools.StepFunction} A function that handles both the
- *     transformation and the reduction of a value onto a target function.
+ * @returns {module:xdcore.StepFunction} A reducer function that will transform
+ *     elements via the transducer function and then reduce them into whatever
+ *     kind of collection the reducer implements.
  */
-function toFunction(xform, reducer) {
+function toFunction(transducer, reducer) {
   const r = typeof reducer === "function" ? toReducer(reducer) : reducer;
-  const result = xform(r);
+  const result = transducer(r);
   return result[p.step].bind(result);
 }
 

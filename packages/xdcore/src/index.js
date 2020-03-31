@@ -320,6 +320,9 @@ export {
  * {@link module:xdcore.InitFunction|the init function} returns) piece by piece
  * from its elements.
  *
+ * This is in every way a reducer function. The name 'step' comes from the fact
+ * that these reduction functions reduce one element at a time, step by step.
+ *
  * It is up to the implementation whether the returned collection is a modified
  * form of the original collection or whether it is a new collection altogether.
  *
@@ -354,7 +357,14 @@ export {
  * type-specific code; the creation, population, and finalization of the result
  * are delegated instead to this reducer object.
  *
+ * Note that a "transducer object" has exactly the same structure. The only
+ * difference is that the step function in a transducer object modifies the
+ * elements before it reduces them, while a reducer object will not. As a
+ * corollary, every reducer object is also a transducer object, but the converse
+ * is not true.
+ *
  * @typedef ReducerObject
+ * @memberof module:xdcore
  * @property {module:xdcore.InitFunction} Symbol.for("transducer/init") A
  *     function that can create a new, empty copy of the reducible type.
  * @property {module:xdcore.StepFunction} Symbol.for("transducer/step") A
@@ -364,4 +374,16 @@ export {
  * @property {module:xdcore.ResultFunction} Symbol.for("transducer/result") A
  *     function that accepts a value of the reducible type and returns the same
  *     value with any final modifications that might be necessary for it.
+ */
+
+/**
+ * A function that accepts a reducer object, which it then chains a transducer
+ * object to. This is the primary way of creating composed transducer chains.
+ *
+ * @callback TransducerFunction
+ * @memberof module:xdcore
+ * @param {module:xdcore.ReducerObject} reducer The reducer object (which may
+ *     also be a transducer object) that is the next reducer in the chain.
+ * @returns {module:xdcore.ReducerObject} A transducer object consisting of some
+ *     new transducer object chained to the supplied reducer object.
  */
