@@ -369,11 +369,11 @@ describe("Transformer composition", () => {
     const addTwo = x => x + 2;
     const even = x => x % 2 === 0;
 
-    const xform = compose(map(addTwo), filter(even), take(3));
+    const transducerFn = compose(map(addTwo), filter(even), take(3));
 
-    const arrayResult = sequence(array, xform);
-    const iterResult = sequence(gen(), xform);
-    const listResult = sequence(list, xform);
+    const arrayResult = sequence(array, transducerFn);
+    const iterResult = sequence(gen(), transducerFn);
+    const listResult = sequence(list, transducerFn);
 
     expect(arrayResult).to.deep.equal([2, 4, 10]);
     expectIterator(iterResult, [2, 4, 10]);
@@ -382,21 +382,21 @@ describe("Transformer composition", () => {
 });
 
 describe("Lazy iterator transformation", () => {
-  const xform = compose(
+  const transducerFn = compose(
     map(x => x * 2),
     filter(x => x > 4)
   );
 
   context("when a transformation is applied to an iterator", () => {
     it("happens via sequence", () => {
-      const iter = sequence(naturals(), xform);
+      const iter = sequence(naturals(), transducerFn);
       expect(iter.next().value).to.equal(6);
       expect(iter.next().value).to.equal(8);
       expect(iter.next().value).to.equal(10);
     });
 
     it("happens via asIterator", () => {
-      const iter = asIterator(naturals(), xform);
+      const iter = asIterator(naturals(), transducerFn);
       expect(iter.next().value).to.equal(6);
       expect(iter.next().value).to.equal(8);
       expect(iter.next().value).to.equal(10);

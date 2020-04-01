@@ -66,38 +66,42 @@ describe("Chunking transducers", () => {
     });
 
     it("works in composition", () => {
-      const xform1 = compose(
+      const transducerFn1 = compose(
         map(x => x + 1),
         chunk(3)
       );
-      const xform2 = compose(
+      const transducerFn2 = compose(
         chunk(3),
         map(x => x.length)
       );
 
-      expect(sequence(ARRAY_5, xform1)).to.deep.equal([
+      expect(sequence(ARRAY_5, transducerFn1)).to.deep.equal([
         [2, 3, 4],
         [5, 6]
       ]);
-      expect(sequence(ARRAY_5, xform2)).to.deep.equal([3, 2]);
+      expect(sequence(ARRAY_5, transducerFn2)).to.deep.equal([3, 2]);
     });
 
     it("works in composition with a completing transducer", () => {
-      const xform1 = compose(chunk(2), take(2));
-      const xform2 = compose(chunk(2), take(3));
-      const xform3 = compose(take(4), chunk(2));
-      const xform4 = compose(take(4), chunk(3));
+      const transducerFn1 = compose(chunk(2), take(2));
+      const transducerFn2 = compose(chunk(2), take(3));
+      const transducerFn3 = compose(take(4), chunk(2));
+      const transducerFn4 = compose(take(4), chunk(3));
 
-      expect(sequence(ARRAY_5, xform1)).to.deep.equal([
+      expect(sequence(ARRAY_5, transducerFn1)).to.deep.equal([
         [1, 2],
         [3, 4]
       ]);
-      expect(sequence(ARRAY_5, xform2)).to.deep.equal([[1, 2], [3, 4], [5]]);
-      expect(sequence(ARRAY_5, xform3)).to.deep.equal([
+      expect(sequence(ARRAY_5, transducerFn2)).to.deep.equal([
+        [1, 2],
+        [3, 4],
+        [5]
+      ]);
+      expect(sequence(ARRAY_5, transducerFn3)).to.deep.equal([
         [1, 2],
         [3, 4]
       ]);
-      expect(sequence(ARRAY_5, xform4)).to.deep.equal([[1, 2, 3], [4]]);
+      expect(sequence(ARRAY_5, transducerFn4)).to.deep.equal([[1, 2, 3], [4]]);
     });
 
     it("passes init calls to the next transducer", () => {
@@ -187,16 +191,16 @@ describe("Chunking transducers", () => {
     });
 
     it("works in composition", () => {
-      const xform1 = compose(
+      const transducerFn1 = compose(
         map(x => x + 1),
         chunkBy(even)
       );
-      const xform2 = compose(
+      const transducerFn2 = compose(
         chunkBy(even),
         map(x => x.length)
       );
 
-      expect(sequence(aFib, xform1)).to.deep.equal([
+      expect(sequence(aFib, transducerFn1)).to.deep.equal([
         [1],
         [2, 2],
         [3],
@@ -205,15 +209,28 @@ describe("Chunking transducers", () => {
         [14, 22],
         [35]
       ]);
-      expect(sequence(aFib, xform2)).to.deep.equal([1, 2, 1, 2, 1, 2, 1]);
+      expect(sequence(aFib, transducerFn2)).to.deep.equal([
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1
+      ]);
     });
 
     it("works in composition with completing transformers", () => {
-      const xform1 = compose(chunkBy(even), take(2));
-      const xform2 = compose(take(5), chunkBy(even));
+      const transducerFn1 = compose(chunkBy(even), take(2));
+      const transducerFn2 = compose(take(5), chunkBy(even));
 
-      expect(sequence(aFib, xform1)).to.deep.equal([[0], [1, 1]]);
-      expect(sequence(aFib, xform2)).to.deep.equal([[0], [1, 1], [2], [3]]);
+      expect(sequence(aFib, transducerFn1)).to.deep.equal([[0], [1, 1]]);
+      expect(sequence(aFib, transducerFn2)).to.deep.equal([
+        [0],
+        [1, 1],
+        [2],
+        [3]
+      ]);
     });
 
     it("passes init calls to the next transducer", () => {

@@ -13,20 +13,20 @@ function take(collection, n) {
   const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, take(num))
-    : xform => {
+    : next => {
         let i = 0;
         return toTransducer((acc, value) => {
           let result = acc;
 
           if (i < num) {
-            result = xform[p.step](acc, value);
+            result = next[p.step](acc, value);
             if (i === num - 1) {
               result = ensureCompleted(result);
             }
           }
           i++;
           return result;
-        }, xform);
+        }, next);
       };
 }
 
@@ -34,11 +34,11 @@ function takeWhile(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, takeWhile(func))
-    : xform =>
+    : next =>
         toTransducer(
           (acc, value) =>
-            func(value) ? xform[p.step](acc, value) : ensureCompleted(acc),
-          xform
+            func(value) ? next[p.step](acc, value) : ensureCompleted(acc),
+          next
         );
 }
 
@@ -46,11 +46,11 @@ function takeNth(collection, n) {
   const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, takeNth(num))
-    : xform => {
+    : next => {
         let i = -1;
         return toTransducer(
-          (acc, value) => (++i % num === 0 ? xform[p.step](acc, value) : acc),
-          xform
+          (acc, value) => (++i % num === 0 ? next[p.step](acc, value) : acc),
+          next
         );
       };
 }

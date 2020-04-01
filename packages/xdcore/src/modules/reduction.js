@@ -282,7 +282,7 @@ function toTransducer(fn, reducer) {
  * `{@link module:xduce.identity|identity}` transducer.
  *
  * @memberof module:xdcore
- * @param {module:xdcore.TransducerFunction} transducer A transducer function
+ * @param {module:xdcore.TransducerFunction} transducerFn A transducer function
  *     that wraps a transducer object whose `step` function will be used as a
  *     reducer function.
  * @param {(module:xdcore.StepFunction|module:xdcore.ReducerObject)} reducer A
@@ -293,9 +293,9 @@ function toTransducer(fn, reducer) {
  *     elements via the transducer function and then reduce them into whatever
  *     kind of collection the reducer implements.
  */
-function toFunction(transducer, reducer) {
+function toFunction(transducerFn, reducer) {
   const r = typeof reducer === "function" ? toReducer(reducer) : reducer;
-  const result = transducer(r);
+  const result = transducerFn(r);
   return result[p.step].bind(result);
 }
 

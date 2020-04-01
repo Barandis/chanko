@@ -45,7 +45,7 @@ import { sequence } from "modules/transduction";
 function identity(collection) {
   return collection
     ? sequence(collection, identity())
-    : xform => toTransducer((acc, value) => xform[p.step](acc, value), xform);
+    : next => toTransducer((acc, value) => next[p.step](acc, value), next);
 }
 
 /**
@@ -85,17 +85,17 @@ function identity(collection) {
 function flatten(collection) {
   return collection
     ? sequence(collection, flatten())
-    : xform =>
+    : next =>
         toTransducer((acc, value) => {
-          const subXform = toTransducer((acc, value) => {
-            const v = xform[p.step](acc, value);
+          const subTransducer = toTransducer((acc, value) => {
+            const v = next[p.step](acc, value);
             return isCompleted(v) ? complete(v) : v;
-          }, xform);
+          }, next);
 
           return isIterable(value)
-            ? reduce(value, subXform, acc)
-            : subXform[p.step](acc, value);
-        }, xform);
+            ? reduce(value, subTransducer, acc)
+            : subTransducer[p.step](acc, value);
+        }, next);
 }
 
 /**
@@ -130,17 +130,17 @@ function repeat(collection, n) {
   const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, repeat(num))
-    : xform =>
+    : next =>
         toTransducer((acc, value) => {
           let result = acc;
           for (let i = 0; i < num; i++) {
-            result = xform[p.step](result, value);
+            result = next[p.step](result, value);
             if (isCompleted(result)) {
               break;
             }
           }
           return result;
-        }, xform);
+        }, next);
 }
 
 export { identity, flatten, repeat };

@@ -13,15 +13,15 @@ function uniqueWith(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, uniqueWith(func))
-    : xform => {
+    : next => {
         const uniques = [];
         return toTransducer((acc, value) => {
           if (uniques.some(u => func(value, u))) {
             return acc;
           }
           uniques.push(value);
-          return xform[p.step](acc, value);
-        }, xform);
+          return next[p.step](acc, value);
+        }, next);
       };
 }
 

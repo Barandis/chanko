@@ -208,7 +208,7 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:core.TransducerFunction} xform The transducer used to
+ * @param {module:core.TransducerFunction} transducerFn The transducer used to
  *     transform values sent to the channel. If no transformations are
  *     necessary, a passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
@@ -223,7 +223,7 @@ function sendBox(value, handler) {
  */
 function channel(
   buffer,
-  xform,
+  transducerFn,
   isTimed = false,
   maxDirty = MAX_DIRTY,
   maxQueued = MAX_QUEUED
@@ -232,8 +232,8 @@ function channel(
     buffer: {
       value: buffer
     },
-    xform: {
-      value: xform
+    transducerFn: {
+      value: transducerFn
     },
     maxDirty: {
       value: maxDirty
@@ -321,7 +321,9 @@ function handleSend(channel, value, handler) {
   // transducer's work is deferred until later when the buffer is not full.
   if (channel.buffer && !isFull(channel.buffer)) {
     handler.commit();
-    const done = isCompleted(channel.xform[p.step](channel.buffer, value));
+    const done = isCompleted(
+      channel.transducerFn[p.step](channel.buffer, value)
+    );
 
     for (;;) {
       if (count(channel.buffer) === 0) {
@@ -441,7 +443,11 @@ function handleRecv(channel, handler) {
         if (callback) {
           dispatch(() => callback(true));
         }
-        if (isCompleted(channel.xform[p.step](channel.buffer, sender.value))) {
+        if (
+          isCompleted(
+            channel.transducerFn[p.step](channel.buffer, sender.value)
+          )
+        ) {
           close(channel);
         }
       }
@@ -530,7 +536,7 @@ function close(channel) {
   // If there is a buffer and it has at least one value in it, send those values
   // to any pending receives that might still be queued.
   if (channel.buffer) {
-    channel.xform[p.final](channel.buffer);
+    channel.transducerFn[p.final](channel.buffer);
     for (;;) {
       if (count(channel.buffer) === 0) {
         break;

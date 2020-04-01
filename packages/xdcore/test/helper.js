@@ -56,33 +56,33 @@ function expectWithin(value, expected, tolerance = 0.001) {
 }
 
 function map(fn) {
-  return xform =>
-    toTransducer((acc, value) => xform[p.step](acc, fn(value)), xform);
+  return next =>
+    toTransducer((acc, value) => next[p.step](acc, fn(value)), next);
 }
 
 function filter(fn) {
-  return xform =>
+  return next =>
     toTransducer(
-      (acc, value) => (fn(value) ? xform[p.step](acc, value) : acc),
-      xform
+      (acc, value) => (fn(value) ? next[p.step](acc, value) : acc),
+      next
     );
 }
 
 function take(n) {
-  return xform => {
+  return next => {
     let i = 0;
     return toTransducer((acc, value) => {
       let result = acc;
 
       if (i < n) {
-        result = xform[p.step](acc, value);
+        result = next[p.step](acc, value);
         if (i === n - 1) {
           result = ensureCompleted(result);
         }
       }
       i++;
       return result;
-    }, xform);
+    }, next);
   };
 }
 

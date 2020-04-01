@@ -130,18 +130,18 @@ function handleException(buffer, handler, ex) {
  * error that occurs within the transducer, either in the step function or the
  * result function, will cause the error handler to be run.
  *
- * @param {Object} xform The transducer to add an error handler to.
+ * @param {Object} transducer The transducer to add an error handler to.
  * @param {module:csp.ExceptionHandler} [handler=DEFAULT_HANDLER] The exception
  *     handling function that is run when an error occurs in the transducer.
  * @return {Object} A new transducer that is the result of wrapping the provided
  *     transducer's step and final functions with the exception handler.
  * @private
  */
-function handlerTransducer(xform, handler = DEFAULT_HANDLER) {
+function handlerTransducer(transducer, handler = DEFAULT_HANDLER) {
   return {
     [p.step](buffer, input) {
       try {
-        return xform[p.step](buffer, input);
+        return transducer[p.step](buffer, input);
       } catch (ex) {
         return handleException(buffer, handler, ex);
       }
@@ -149,7 +149,7 @@ function handlerTransducer(xform, handler = DEFAULT_HANDLER) {
 
     [p.final](buffer) {
       try {
-        return xform[p.final](buffer);
+        return transducer[p.final](buffer);
       } catch (ex) {
         return handleException(buffer, handler, ex);
       }

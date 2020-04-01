@@ -135,9 +135,9 @@ describe("Integration with other libraries", () => {
     return acc;
   };
 
-  const xform = map(x => x + 1);
-  const reducerFn = toFunction(xform, arrayPush);
-  const reducerObj = toFunction(xform, ARRAY_REDUCER);
+  const transducerFn = map(x => x + 1);
+  const reducerFn = toFunction(transducerFn, arrayPush);
+  const reducerObj = toFunction(transducerFn, ARRAY_REDUCER);
 
   context("toFunction", () => {
     it("can make a function to use with Array's reduce", () => {
@@ -226,8 +226,8 @@ describe("Reduction", () => {
     });
 
     it("handles transforming reducers", () => {
-      const map = fn => xform =>
-        toTransducer((acc, value) => xform[p.step](acc, fn(value)), xform);
+      const map = fn => next =>
+        toTransducer((acc, value) => next[p.step](acc, fn(value)), next);
 
       const r1 = map(x => x + 1)(toReducer([]));
       const init1 = r1[p.init]();
@@ -243,20 +243,20 @@ describe("Reduction", () => {
     });
 
     it("handles transforming reducers that complete", () => {
-      const take = n => xform => {
+      const take = n => next => {
         let i = 0;
         return toTransducer((acc, value) => {
           let result = acc;
 
           if (i < n) {
-            result = xform[p.step](acc, value);
+            result = next[p.step](acc, value);
             if (i === n - 1) {
               result = ensureCompleted(result);
             }
           }
           i++;
           return result;
-        }, xform);
+        }, next);
       };
       const r = take(3)(toReducer([]));
       const init = r[p.init]();

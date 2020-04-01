@@ -13,11 +13,11 @@ function drop(collection, n) {
   const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, drop(num))
-    : xform => {
+    : next => {
         let i = 0;
         return toTransducer(
-          (acc, value) => (i++ < num ? acc : xform[p.step](acc, value)),
-          xform
+          (acc, value) => (i++ < num ? acc : next[p.step](acc, value)),
+          next
         );
       };
 }
@@ -26,7 +26,7 @@ function dropWhile(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, dropWhile(func))
-    : xform => {
+    : next => {
         let dropping = true;
         return toTransducer((acc, value) => {
           if (dropping) {
@@ -35,8 +35,8 @@ function dropWhile(collection, fn) {
             }
             dropping = false;
           }
-          return xform[p.step](acc, value);
-        }, xform);
+          return next[p.step](acc, value);
+        }, next);
       };
 }
 

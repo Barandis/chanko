@@ -15,15 +15,15 @@ function distinctWith(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, distinctWith(func))
-    : xform => {
+    : next => {
         let last = NO_VALUE;
         return toTransducer((acc, value) => {
           if (last !== NO_VALUE && func(value, last)) {
             return acc;
           }
           last = value;
-          return xform[p.step](acc, value);
-        }, xform);
+          return next[p.step](acc, value);
+        }, next);
       };
 }
 

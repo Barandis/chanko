@@ -18,7 +18,9 @@ import {
 import { List } from "immutable";
 
 import { take, takeWhile, takeNth } from "modules/take";
-import { sequence, transduce, toReducer } from "modules/transduction";
+import { map } from "modules/map";
+import { filter } from "modules/filter";
+import { sequence, transduce, toReducer, compose } from "modules/transduction";
 import { value, complement } from "modules/utils";
 
 const lt4 = x => x < 4;
@@ -47,22 +49,21 @@ describe("Taking transducers", () => {
       expectIterator(take(naturals(), 3), [1, 2, 3]);
     });
 
-    // TODO: uncomment this once map and filter are done
-    // it("limits infinite iterators when composed", () => {
-    //   const xform1 = compose(
-    //     filter(x => x > 4),
-    //     map(x => x + 2),
-    //     take(3),
-    //   );
-    //   const xform2 = compose(
-    //     take(3),
-    //     filter(x => x % 2 === 0),
-    //     map(x => x + 2),
-    //   );
+    it("limits infinite iterators when composed", () => {
+      const transducerFn1 = compose(
+        filter(x => x > 4),
+        map(x => x + 2),
+        take(3)
+      );
+      const transducerFn2 = compose(
+        take(3),
+        filter(x => x % 2 === 0),
+        map(x => x + 2)
+      );
 
-    //   expectIterator(sequence(naturals(), xform1), [7, 8, 9]);
-    //   expectIterator(sequence(naturals(), xform2), [4]);
-    // });
+      expectIterator(sequence(naturals(), transducerFn1), [7, 8, 9]);
+      expectIterator(sequence(naturals(), transducerFn2), [4]);
+    });
 
     it("works with reducibles", () => {
       expect(take(LIST_5, 3).toArray()).to.deep.equal([1, 2, 3]);

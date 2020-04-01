@@ -112,7 +112,7 @@ describe("Core transducers", () => {
     });
 
     it("works in composition with a completing transducer", () => {
-      const xform = compose(take(2), flatten());
+      const transducerFn = compose(take(2), flatten());
       const result = into(
         [],
         [
@@ -121,7 +121,7 @@ describe("Core transducers", () => {
           [5, 6],
           [7, 8]
         ],
-        xform
+        transducerFn
       );
       expect(result).to.deep.equal([1, 2, 3, 4]);
     });
@@ -171,8 +171,8 @@ describe("Core transducers", () => {
     });
 
     it("works when composed with a completing transducer", () => {
-      const xform = compose(repeat(3), take(5));
-      const result = sequence(ARRAY_5, xform);
+      const transducerFn = compose(repeat(3), take(5));
+      const result = sequence(ARRAY_5, transducerFn);
       expect(result).to.deep.equal([1, 1, 1, 2, 2]);
     });
 

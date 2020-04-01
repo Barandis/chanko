@@ -70,12 +70,12 @@ describe("Transducer channels", () => {
   });
 
   it("handles composed transducers", async () => {
-    const xform = compose(
+    const transducerFn = compose(
       map(x => x * 3),
       filter(even),
       take(3)
     );
-    const ch = chan(10, { transducer: xform });
+    const ch = chan(10, { transducer: transducerFn });
 
     const p1 = go(async () => {
       for (const i of [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]) {
@@ -133,46 +133,46 @@ describe("Transducer channels", () => {
 });
 
 describe("Transducer error handlers", () => {
-  const stepErrorTransducer = xform => ({
+  const stepErrorTransducer = next => ({
     [p.step]() {
       throw Error("step error");
     },
     [p.final](value) {
-      return xform[p.final](value);
+      return next[p.final](value);
     }
   });
 
-  const finalErrorTransducer = xform => ({
+  const finalErrorTransducer = next => ({
     [p.step](acc, input) {
-      return xform[p.step](acc, input);
+      return next[p.step](acc, input);
     },
     [p.final]() {
       throw Error("final error");
     }
   });
 
-  const oneTimeStepErrorTransducer = xform => ({
+  const oneTimeStepErrorTransducer = next => ({
     count: 0,
     [p.step](acc, input) {
       if (this.count++ === 0) {
         throw Error("step error");
       }
-      return xform[p.step](acc, input);
+      return next[p.step](acc, input);
     },
     [p.final](value) {
-      return xform[p.final](value);
+      return next[p.final](value);
     }
   });
 
-  const mustBe1729Transducer = xform => ({
+  const mustBe1729Transducer = next => ({
     [p.step](acc, input) {
       if (input !== 1729) {
         throw Error("not 1729!");
       }
-      return xform[p.step](acc, input);
+      return next[p.step](acc, input);
     },
     [p.final](value) {
-      return xform[p.final](value);
+      return next[p.final](value);
     }
   });
 

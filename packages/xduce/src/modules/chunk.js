@@ -19,13 +19,13 @@ function chunk(collection, n) {
   const [col, num] = parseNumberArgs(collection, n);
   return col
     ? sequence(col, chunk(num))
-    : xform => {
+    : next => {
         let count = 0;
         let part = [];
 
         return {
           [p.init]() {
-            return xform[p.init]();
+            return next[p.init]();
           },
 
           [p.step](acc, value) {
@@ -34,7 +34,7 @@ function chunk(collection, n) {
               const out = part.slice(0, num);
               part = [];
               count = 0;
-              return xform[p.step](acc, out);
+              return next[p.step](acc, out);
             }
             return acc;
           },
@@ -42,10 +42,10 @@ function chunk(collection, n) {
           [p.final](value) {
             if (count > 0) {
               return ensureUncompleted(
-                xform[p.step](value, part.slice(0, count))
+                next[p.step](value, part.slice(0, count))
               );
             }
-            return xform[p.final](value);
+            return next[p.final](value);
           }
         };
       };
@@ -55,13 +55,13 @@ function chunkBy(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, chunkBy(func))
-    : xform => {
+    : next => {
         let part = [];
         let last = NO_VALUE;
 
         return {
           [p.init]() {
-            return xform[p.init]();
+            return next[p.init]();
           },
 
           [p.step](acc, value) {
@@ -70,7 +70,7 @@ function chunkBy(collection, fn) {
             if (last === NO_VALUE || sameValueZero(current, last)) {
               part.push(value);
             } else {
-              result = xform[p.step](result, part);
+              result = next[p.step](result, part);
               part = [value];
             }
             last = current;
@@ -81,10 +81,10 @@ function chunkBy(collection, fn) {
             const count = part.length;
             if (count > 0) {
               return ensureUncompleted(
-                xform[p.step](value, part.slice(0, count))
+                next[p.step](value, part.slice(0, count))
               );
             }
-            return xform[p.final](value);
+            return next[p.final](value);
           }
         };
       };

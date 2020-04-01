@@ -14,8 +14,8 @@ function map(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, map(func))
-    : xform =>
-        toTransducer((acc, value) => xform[p.step](acc, func(value)), xform);
+    : next =>
+        toTransducer((acc, value) => next[p.step](acc, func(value)), next);
 }
 
 function flatMap(collection, fn) {

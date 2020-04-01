@@ -13,10 +13,10 @@ function filter(collection, fn) {
   const [col, func] = parseFunctionArgs(collection, fn);
   return col
     ? sequence(col, filter(func))
-    : xform =>
+    : next =>
         toTransducer(
-          (acc, value) => (func(value) ? xform[p.step](acc, value) : acc),
-          xform
+          (acc, value) => (func(value) ? next[p.step](acc, value) : acc),
+          next
         );
 }
 
