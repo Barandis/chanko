@@ -4,245 +4,140 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+
 /**
- * The central module for the transducer engine.
+ * The core engine for transducers. This consists primarily of reduction support
+ * for chains of transducers but also supplies protocol definitions and utility
+ * functions for writing new transducers.
  *
- * All of the functions in this module deal directly with transducers. But
- * first, let's talk about the protocols that are going to be referred to
- * throughout many of the function discussions.
+ * The general idea is that if you need to use a transducer, you can avoid
+ * importing this library and work with the {@link module:xduce|xduce} module
+ * instead (which internally depends on this module). If you want to write a new
+ * transducer or control low-level access to the reduction engine, then you need
+ * to use this library. (There is a small number of functions that are useful
+ * for both, and {@link module:xduce|xduce} re-exports them from here so they
+ * can be used from either module.)
+ *
+ * This module provides four basic services:
+ *
+ * 1. Reduction of transducer chains
+ * 2. Protocol definition
+ * 3. Iteration support
+ * 4. Authoring utilities
+ *
+ * What follows is a short diuscussion of each.
+ *
+ * ## Reduction
+ *
+ * All transforming functions, whether methods of `Array` or third party tools
+ * such as Lodash, perform reduction in order to build up a new collection out
+ * of the elements that they've transformed/filtered, etc.
+ *
+ * Transducers are no different in that regard, but the manner in which they do
+ * their reduction is what sets them apart.
+ *
+ * Using `Array.prototype.map` as an example, the user of the function provides
+ * a transformation function. The `map` function iterates over the input array,
+ * passes the elements through the provided transformation function, and then
+ * reduces the results into a new array. If `map` is chained to another
+ * function, like `Array.prototype.filter`, the process needs to be repeated:
+ * iterate again, filter via a user-provided function, and reduce again.
+ *
+ * Transducers are different. When using a transducer, rather than a
+ * manipulation function being provided as in `map` or `filter`, a *reducer
+ * object* is used. (It's an object rather than a function because it has
+ * multiple functions, each implemented as properties of the reducer object.)
+ * This means that the user provides instructions for both transformation *and*
+ * reduction, rather than the collection function itself being responsible for
+ * doing the reduction on its own.
+ *
+ * This has two very beneficial effects. First, if a user wants to filter and
+ * then map the elements of a collection, the transducer does not have to reduce
+ * the filtered elements into a collection just to have the map part tear them
+ * apart again and re-reduce them later. The filter part of the transducer can
+ * pass its elements one at a time to the map part, and reduction can happen
+ * only at the end after the elements have been both filtered *and* mapped.
+ *
+ * Secondly, since the user is providing the reduction instructions along with
+ * the transformation instructions, the type of collection that gets reduced
+ * into does not have to be the same type as the input collection. You could
+ * process characters in a string and have it output as an array. Or process the
+ * values in an iterator and get a plain object as output.
+ *
+ * Practically speaking, most of the reducer object creation is abstracted away,
+ * so using transducers is no more difficult than just using
+ * `Array.prototype.map`. The `{@link module:xdcore.reduce|reduce}` function
+ * provided by this library is low level, though, and does not do any of that
+ * abstracting on its own. The functions from the {@link module:xduce|xduce}
+ * module, namely `{@link module:xduce.transduce|transduce}`,
+ * `{@link module:xduce.into|into}`, and
+ * `{@link module:xduce.sequence|sequence}`, take care of that abstraction so
+ * `{@link module:xdcore.reduce|reduce}` can just handle actual reduction.
  *
  * ## Protocols
  *
- * One of the key selling points for transducers is that the same transducer can
- * be used on any type of collection. Rather than having to write a new `map`
- * function (for example) for every kind of collection - one for an array, one
- * for a string, one for an iterator, etc. - there is a single `map` transducer
- * that will work with all of them, and potentially with *any* kind of
- * collection. This is possible implementing *protocols* on the collections.
+ * In ES2015, the idea of protocols was added to JavaScript. This was done at
+ * the beginning to provide language-level support for the new `for...of` loop.
+ * As long as a value supported the iterable protocol by having a property named
+ * `Symbol.iterator` that returns an iterator for that value when it's called,
+ * then it automatically qualified to be used in `for...of`.
  *
- * A protocol in JavaScript is much like an interface in languages like Java and
- * C#. It is a commitment to providing a certain functionality under a certain
- * name. ES2015 has seen the introduction of an `iterator` protocol, for
- * example, and language support for it (the new `for...of` loop can work with
- * any object that correctly implements the `iterator` protocol).
+ * This module uses that iterable module in the same way to understand how to
+ * break collections apart, but it also uses protocols to let collections inform
+ * the engine how to reduce a collection of that type back together again. Since
+ * there are no standard protocols for reduction the way there are for
+ * iteration, this module provides custom protocols of its own. These are also
+ * symbols used as names for properties, but they are stored in an object called
+ * `{@link module:xdcore.protocols|protocols}` to be looked up by string key:
  *
- * To support transduction, Xduce expects collections to implement four
- * protocols.
+ * * `protocols.init`
+ * * `protocols.step`
+ * * `protocols.final`
+ * * `protocols.completed`
+ * * `protocols.value`
  *
- * - `iterator`: a function that returns an iterator (this one is built in to
- *   ES6 JavaScript)
- * - `transducer/init`: a function that returns a new, empty instance of the
- *   output collection
- * - `transducer/step`: a function that takes an accumulator (the result of the
- *   reduction so far) and the next input value, and then returns the
- *   accumulator with the next input value added to it
- * - `transducer/result`: a function that takes the reduced collection and
- *   returns the final output collection
+ * The last two (`completed` and `value`) are used internally for keeping track
+ * of the reduction status of a value and shouldn't need to be used externally.
+ * The first three, however, are how the engine knows how to reduce to a certain
+ * collection type.
  *
- * `iterator` is the built-in JavaScript protocol. When called, it is expected
- * to return an iterator over the implementing collection. This iterator is an
- * object that has a `next` function. Each call to `next` is expected to return
- * an object with `value` and `done` properties, which respectively hold the
- * next value of the iterator and a boolean to indicate whether the iteration
- * has reached its end. (This is a simplified explanation; see
- * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators|this MDN page}
- * for more detailed information.)
+ * `init` is a function that returns a new, empty version of that collection to
+ * be built upon. `step` is a function that gets passed a collection of that
+ * type plus a new value to be added to it, and returns the collection with that
+ * value added to it (i.e., it's a standard reduction function). `final` is a
+ * function that gets passed the fully reduced new collection and returns what
+ * the final output should be, giving the engine one last chance to modify the
+ * final value (this *normally* just returns its argument unmodified). If these
+ * three properties are added to an object, then this module will recognize that
+ * object as reducible and be able to create and fill one.
  *
- * `transducer/init` (referred to from now on as `init`) should be a function
- * that takes no parameters and returns a new, empty instance of the output
- * collection. This is the function that defines how to create a new collection
- * of the correct type.
- *
- * `transducer/step` (referred to from now on as `step`) should be a function
- * that takes two parameters. These parameters are the result of the reduction
- * so far (and so is a collection of the output type) and the next value from
- * the input collection. It must return the new reduction result, with the next
- * value incorporated into it. This is the function that defines how reduce a
- * value onto the collection.
- *
- * `transducer/result` (referred to from now on as `result`) should be a
- * function that takes one parameter, which is the fully reduced collection. It
- * should return the final output collection. This affords a chance to make any
- * last-minute adjustments to the reduced collection before returning it.
- *
- * Arrays, strings, and objects are all given support for all of these
- * protocols. Other collections will have to provide their own (though it should
- * be noted that since `iterator` is built-in, many third-party collections will
- * already implement this protocol). As an example, let's add transducer support
- * to a third-party collection, the `Immutable.List` collection from
- * {@link https://facebook.github.io/immutable-js/|immutable-js}.
+ * As an example, let's add support for transduction to the `List` collection
+ * from [immutable.js][1].
  *
  * ```
- * Immutable.List.prototype[protocols.init] = () => Immutable.List().asMutable();
- * Immutable.List.prototype[protocols.step] = (acc, input) => acc.push(input);
- * Immutable.List.prototype[protocols.result] = (value) => value.asImmutable();
+ * import { protocols as p } from "@chanko/xdcore";
+ * import { List } from "immutable";
+ *
+ * List.prototype[p.init] = () => List().asMutable();
+ * List.prototype[p.step] = (acc, value) => acc.push(value);
+ * List.prototype[p.final] = value => value.asImmutable();
  * ```
  *
- * `Immutable.List` already implements `iterator`, so we don't have to do it
- * ourselves.
+ * The `init` function here returns a new, empty list. The `step` function
+ * describes how to add a value to that list (through the `push` method). The
+ * `final` function runs at the very end to determine the end value. In the
+ * case of this immutable list, the `init` function actually returns a mutable
+ * list that we can add to with `step`, and then `final` turns that into an
+ * immutable list to be returned. This is a textbook use of `final`; most of the
+ * time, `final` will simply return the value that's passed to it, unchanged.
  *
- * The `init` function returns an empty mutable list. This is important for
- * immutable-js because its default lists are immutable, and immutable lists
- * mean that a new list has to be created with every reduction step. It would
- * work fine, but it's quite inefficient.
+ * With these lines of code in place, adding the protocol functions to `List`'s
+ * prototype, reduction will just work.
  *
- * The `step` function adds the next value to the already-created list.
- * `Immutable.List` provides a `push` function that works like an array's
- * `push`, except that it returns the new list with the value pushed onto it.
- * This is perfect for our `step` function.
+ * It is not necessary to provide these functions for native arrays, strings,
+ * plain objects, or iterators, as support for them is built in.
  *
- * The `result` function converts the now-finished mutable list into an
- * immutable one, which is what's going to be expected if we're transducing
- * something into an `Immutable.List`. In most cases, `result` doesn't have to
- * do any work, but since we're creating an intermediate representation of our
- * collection type here, this lets us create the collection that we actually
- * want to output. (Without `result`, we would have to use immutable lists all
- * the way through, creating a new one with each `step` function, since we
- * wouldn't be able to make this converstion at the end.)
- *
- * With those protocols implemented on the prototype, `Immutable.List`
- * collections can now support any transduction we can offer.
- *
- * ### Protocols
- *
- * After talking a lot about protocols and showing how they're properties added
- * to an object, it's probably pretty obvious that there's been no mention of
- * what the actual names of those properties are. That's what
- * `{@link module:xduce-tools.protocols|protocols}` is for.
- *
- * The best way to use these keys can be seen in the immutable-js example above.
- * Instead of worrying about the name of the key for the `init` protocol, the
- * value of `protocols.init` is used.
- *
- * `{@link module:xduce-tools.protocols|protocols}` defines these protocol
- * property names.
- *
- * - `init`
- * - `step`
- * - `result`
- * - `reduced`: used internally to mark a collection as already reduced
- * - `value`: used internally to provide the actual value of a reduced
- *   collection
- *
- * The final two values don't have a lot of use outside the library unless
- * you're writing your own transducers.
- *
- * ## How Objects Are Treated
- *
- * Objects bear some thought because regularly, they aren't candidates for
- * iteration (and therefore for transduction in general). They don't have a very
- * straightforward idea of order, and they have *two* pieces of data (key and
- * value) for every element instead of one. Yet it's undeniable that at least
- * for most transformations, being able to apply them to objects would be quite
- * handy.
- *
- * For that reason, special support is provided end-to-end for objects.
- *
- * ### Object iteration
- *
- * Iterating over an object will produce one object per property of the original
- * object. An order is imposed; by default, this order the same as the ordering
- * of keys in post-ES6 Javascript:
- *
- * 1. Keys that are integers, in ascending numerical order
- * 2. All other string keys, in the order in which they were added to the object
- * 3. All symbol keys, in the order in which they were added to the object
- *
- * The `{@link module:xduce-tools.iterator|iterator}` function can be passed a
- * sorting function that can sort keys in any other way.
- *
- * The result of the iteration, is a set of objects each with a single property,
- * one for each enumerable own property on the original object. The standard
- * ordering for objects (from ES6 onward) is as follows:
- *
- * ### Transforming objects
- *
- * While iterating over objects in this way is straightforward, the syntax of
- * objects makes it ugly to transform them in this form. Here's an example of a
- * transformation function that makes the object's keys upper-case and adds one
- * to each of the values:
- *
- * ```
- * function transform(obj) {
- *   const key = Object.keys(obj)[0];
- *   const value = obj[key];
- *   return { [key.toUpperCase()]: value + 1 };
- * }
- * ```
- *
- * A helper function named `{@link module:xduce-tools.property|property}` can
- * improve this by handling the boilerplate.
- *
- * ```
- * function improvedTransform(obj) {
- *   const {k, v} = property(obj);
- *   return { [k.toUpperCase()]: v + 1 };
- * }
- * ```
- *
- * ### Reducing objects
- *
- * The built-in reducers (for arrays, objects, strings, and iterators)
- * understand these single-property objects and reduce them in the proper manner
- * without any further work.
- *
- * That's it for object-object reduction. Converting between objects and other
- * types is another matter.
- *
- * Every transducer function except for
- * `{@link module:xduce-tools.sequence|sequence}` is capable of turning an
- * object into a different type of collection, turning a different type of
- * collection into an object, or both. Objects are different because they're the
- * only "collections" that have two different pieces of data per element.
- * Because of this, we have to have a strategy on how to move from one to
- * another.
- *
- * Transducing an object into a different type is generally pretty easy. If an
- * object is converted into an array, for instance, the array elements will each
- * be single-property objects, one per property of the original object.
- *
- * Strings are a different story, since encoding a single-property object to a
- * string isn't possible (because every "element" of a string has to be a single
- * character). Strings that are produced from objects will instead just be the
- * object values, concatenated. Because objects are iterated in a particular
- * order, this conversion will always produce the same string, but except in
- * some very specific cases there really isn't a lot of use for this conversion.
- *
- * ```
- * const obj = {a: 1, b: 2};
- *
- * let result = asArray(obj);
- * // result = [{a: 1}, {b: 2}]
- *
- * result = asIterator(obj);
- * // result is an iterator with two values: {a: 1} and {b: 2}
- *
- * result = into(Immutable.List(), obj)
- * // result is an immutable list with two elements: {a: 1} and {b: 2}
- *
- * result = asString(obj);
- * // result is '12'
- * ```
- *
- * The opposite conversion depends on the values inside the collections. If
- * those values are objects, then the result is an object with all of the
- * objects combined (if more than one has the same key, the last one is the one
- * that's kept). Otherwise, keys are created for each of the elements, starting
- * with `0` and increasing from there.
- *
- * This means that converting an object to any non-string collection and back
- * produces the original object.
- *
- * ```
- * let result = asObject([{a: 1}, {b: 2}]);
- * // result = {a: 1, b: 2}
- *
- * result = asObject([1, 2, 3]);
- * // result = {0: 1, 1: 2, 2: 3}
- *
- * result = asObject('hello');
- * // result = {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
- * ```
+ * [1]: https://immutable-js.github.io/immutable-js/
  *
  * @module xdcore
  */
