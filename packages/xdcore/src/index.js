@@ -322,8 +322,8 @@
  * has the three reducer protocol functions on it to describe how a new
  * collection of its type is made; in the immutable list example above, after
  * you add the protocol methods to it, `List` is a reducible object. Arrays,
- * strings, and plain objects are also reducible objects by virtue of specific
- * support built into `{@link module:xdcore.toReducer|toReducer}`.
+ * strings, functions, and plain objects are also reducible objects by virtue of
+ * specific support built into `{@link module:xdcore.toReducer|toReducer}`.
  *
  * With these two simple functions, we can pretty easily use
  * `{@link module:xdcore.reduce|reduce}` directly to perform the transduction
@@ -356,13 +356,13 @@
  *    and `{@link module:xdcore.reduce|reduce}` would return an immutable list
  *    instead. (Sort of...`{@link module:xdcore.reduce|reduce}` actually only
  *    deals with `step` and `final` protocol methods because internally, it
- *    sometimes works with objects that don't have an `init` protocol method.
- *    This is why `{@link module:xdcore.reduce|reduce}` takes a third parameter,
- *    called `init`. So for this to work properly with an immutable list, you
- *    would also have to pass `List().asMutable()` as the third parameter, in
- *    place of `[]` in the example code. This is not something you have to worry
- *    about with higher-level functions in the {@link module:xduce|xduce}
- *    module.)
+ *    sometimes works with reducer objects that don't have an `init` protocol
+ *    method, like ones created from functions. This is why
+ *    `{@link module:xdcore.reduce|reduce}` takes a third parameter, called
+ *    `init`. So for this to work properly with an immutable list, you would
+ *    also have to pass `List().asMutable()` as the third parameter, in place of
+ *    `[]` in the example code. This is not something you have to worry about
+ *    with higher-level functions in the {@link module:xduce|xduce} module.)
  * 3. This is all more easily done using the {@link module:xduce|xduce} module,
  *    which handles much of this work for you. This example just shows how you
  *    can build your own transducer objects, chain them together, and use
