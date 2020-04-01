@@ -238,7 +238,7 @@ export {
  * that might be necessary before the result is returned from the transduction
  * process.
  *
- * @callback ResultFunction
+ * @callback FinalFunction
  * @memberof module:xdcore
  * @param {*} value The fully reduced collection.
  * @returns {*} The reduced collection with any implementation-dependent changes
@@ -260,13 +260,13 @@ export {
  *
  * @typedef ReducerObject
  * @memberof module:xdcore
- * @property {module:xdcore.InitFunction} Symbol.for("transducer/init") A
+ * @property {module:xdcore.InitFunction} Symbol.for("reducer/init") A
  *     function that can create a new, empty copy of the reducible type.
- * @property {module:xdcore.StepFunction} Symbol.for("transducer/step") A
+ * @property {module:xdcore.StepFunction} Symbol.for("reducer/step") A
  *     function that can accept a value of the reducible type and a new element
  *     to be added to it and return the reducible with the new element
  *     incorporated.
- * @property {module:xdcore.ResultFunction} Symbol.for("transducer/result") A
+ * @property {module:xdcore.FinalFunction} Symbol.for("reducer/final") A
  *     function that accepts a value of the reducible type and returns the same
  *     value with any final modifications that might be necessary for it.
  */

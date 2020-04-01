@@ -17,7 +17,7 @@ describe("isImplemented", () => {
     [p.step](acc, value) {
       return acc + value;
     },
-    [p.result](value) {
+    [p.final](value) {
       return value;
     },
     [p.completed]: false,
@@ -55,9 +55,9 @@ describe("isImplemented", () => {
     expect(isImplemented("foo", "step")).to.be.false;
   });
 
-  it("correctly checks result", () => {
-    expect(isImplemented(yes, "result")).to.be.true;
-    expect(isImplemented("foo", "result")).to.be.false;
+  it("correctly checks final", () => {
+    expect(isImplemented(yes, "final")).to.be.true;
+    expect(isImplemented("foo", "final")).to.be.false;
   });
 
   it("correctly checks reduced", () => {

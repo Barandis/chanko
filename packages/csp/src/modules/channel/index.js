@@ -134,7 +134,7 @@ function handleException(buffer, handler, ex) {
  * @param {module:csp.ExceptionHandler} [handler=DEFAULT_HANDLER] The exception
  *     handling function that is run when an error occurs in the transducer.
  * @return {Object} A new transducer that is the result of wrapping the provided
- *     transducer's step and result functions with the exception handler.
+ *     transducer's step and final functions with the exception handler.
  * @private
  */
 function handlerTransducer(xform, handler = DEFAULT_HANDLER) {
@@ -147,9 +147,9 @@ function handlerTransducer(xform, handler = DEFAULT_HANDLER) {
       }
     },
 
-    [p.result](buffer) {
+    [p.final](buffer) {
       try {
-        return xform[p.result](buffer);
+        return xform[p.final](buffer);
       } catch (ex) {
         return handleException(buffer, handler, ex);
       }
@@ -180,7 +180,7 @@ const bufferReducer = {
     return buffer;
   },
 
-  [p.result](buffer) {
+  [p.final](buffer) {
     return buffer;
   }
 };

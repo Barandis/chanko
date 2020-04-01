@@ -115,7 +115,7 @@ function step(collection) {
 }
 
 /**
- * Returns a result function for a collection. This is a function that performs
+ * Returns a final function for a collection. This is a function that performs
  * any final processing that should be done on the result of a reduction. If the
  * collection doesn't support reduction, `null` is returned.
  *
@@ -125,15 +125,15 @@ function step(collection) {
  * @param {(object|function|external:Iterable)}} collection A collection to
  *     create a step function for. This can be anything that supports the
  *     iteration protocol, a plain object, or a function.
- * @return {module:xdcore.ResultFunction} A function that, when given a reduced
+ * @return {module:xdcore.FinalFunction} A function that, when given a reduced
  *     collection, produces the final output. If the provided collection is not
  *     iterable, `null` will be returned.
  * @private
  */
-function result(collection) {
+function final(collection) {
   switch (true) {
-    case isImplemented(collection, "result"):
-      return collection[p.result];
+    case isImplemented(collection, "final"):
+      return collection[p.final];
     case isString(collection):
     case isArray(collection):
     case isObject(collection):
@@ -186,7 +186,7 @@ function result(collection) {
  * @param {(array|object|function|module:xdcore.ReducerObject)} collection A
  *     reducible collection or a reducer function.
  * @return {module:xdcore.ReducerObject} An object containing protocol
- *     properties for `init`, `step`, and `result`. This object is suitable for
+ *     properties for `init`, `step`, and `final`. This object is suitable for
  *     use as a reducer object (one provided to
  *     `{@link module:xdcore.reduce|reduce}`). If the provided collection is not
  *     reducible, all of the properties of this object will be `null`.
@@ -195,7 +195,7 @@ function toReducer(collection) {
   return Object.freeze({
     [p.init]: init(collection),
     [p.step]: step(collection),
-    [p.result]: result(collection)
+    [p.final]: final(collection)
   });
 }
 
@@ -260,8 +260,8 @@ function toTransducer(fn, reducer) {
 
     [p.step]: fn,
 
-    [p.result](value) {
-      return reducer[p.result](value);
+    [p.final](value) {
+      return reducer[p.final](value);
     }
   };
 }
@@ -453,13 +453,13 @@ function reduce(collection, reducer, init) {
     step = iter.next();
   }
 
-  return reducer[p.result](acc);
+  return reducer[p.final](acc);
 }
 
 export {
   init,
   step,
-  result,
+  final,
   toReducer,
   ARRAY_REDUCER,
   OBJECT_REDUCER,

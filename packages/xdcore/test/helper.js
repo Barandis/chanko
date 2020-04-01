@@ -16,7 +16,7 @@ chai.use(sinonChai);
 
 List.prototype[p.init] = () => List().asMutable();
 List.prototype[p.step] = (acc, value) => acc.push(value);
-List.prototype[p.result] = value => value.asImmutable();
+List.prototype[p.final] = value => value.asImmutable();
 
 const ARRAY_5 = [1, 2, 3, 4, 5];
 const OBJECT_AB = { a: 1, b: 2 };

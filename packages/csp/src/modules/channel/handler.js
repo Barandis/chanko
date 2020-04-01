@@ -530,7 +530,7 @@ function close(channel) {
   // If there is a buffer and it has at least one value in it, send those values
   // to any pending receives that might still be queued.
   if (channel.buffer) {
-    channel.xform[p.result](channel.buffer);
+    channel.xform[p.final](channel.buffer);
     for (;;) {
       if (count(channel.buffer) === 0) {
         break;

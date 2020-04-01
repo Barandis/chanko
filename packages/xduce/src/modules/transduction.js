@@ -63,7 +63,7 @@ function transducingIterator(collection, xform) {
       xiter.items.unshift(input);
       return xiter;
     },
-    [p.result](value) {
+    [p.final](value) {
       return value;
     }
   };
@@ -110,7 +110,7 @@ function transducingIterator(collection, xform) {
     while (items.length === count) {
       const stepValue = iter.next();
       if (stepValue.done || completed) {
-        xf[p.result](result);
+        xf[p.final](result);
         break;
       }
       completed = isCompleted(xf[p.step](result, stepValue.value));
@@ -146,7 +146,7 @@ function transducingIterator(collection, xform) {
  *
  * const arrayReducer = {
  *   [p.init]() { return []; },
- *   [p.result](x) { return x; },
+ *   [p.final](x) { return x; },
  *   [p.step](acc, x) {
  *     acc.push(x);
  *     return acc;
@@ -155,7 +155,7 @@ function transducingIterator(collection, xform) {
  *
  * const stringReducer = {
  *   [p.init]() { return ''; },
- *   [p.result](x) { return x; },
+ *   [p.final](x) { return x; },
  *   [p.step](acc, x) { return acc + x; }
  * };
  *

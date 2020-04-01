@@ -39,13 +39,13 @@ function chunk(collection, n) {
             return acc;
           },
 
-          [p.result](value) {
+          [p.final](value) {
             if (count > 0) {
               return ensureUncompleted(
                 xform[p.step](value, part.slice(0, count))
               );
             }
-            return xform[p.result](value);
+            return xform[p.final](value);
           }
         };
       };
@@ -77,14 +77,14 @@ function chunkBy(collection, fn) {
             return result;
           },
 
-          [p.result](value) {
+          [p.final](value) {
             const count = part.length;
             if (count > 0) {
               return ensureUncompleted(
                 xform[p.step](value, part.slice(0, count))
               );
             }
-            return xform[p.result](value);
+            return xform[p.final](value);
           }
         };
       };

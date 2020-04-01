@@ -137,17 +137,17 @@ describe("Transducer error handlers", () => {
     [p.step]() {
       throw Error("step error");
     },
-    [p.result](value) {
-      return xform[p.result](value);
+    [p.final](value) {
+      return xform[p.final](value);
     }
   });
 
-  const resultErrorTransducer = xform => ({
+  const finalErrorTransducer = xform => ({
     [p.step](acc, input) {
       return xform[p.step](acc, input);
     },
-    [p.result]() {
-      throw Error("result error");
+    [p.final]() {
+      throw Error("final error");
     }
   });
 
@@ -159,8 +159,8 @@ describe("Transducer error handlers", () => {
       }
       return xform[p.step](acc, input);
     },
-    [p.result](value) {
-      return xform[p.result](value);
+    [p.final](value) {
+      return xform[p.final](value);
     }
   });
 
@@ -171,8 +171,8 @@ describe("Transducer error handlers", () => {
       }
       return xform[p.step](acc, input);
     },
-    [p.result](value) {
-      return xform[p.result](value);
+    [p.final](value) {
+      return xform[p.final](value);
     }
   });
 
@@ -192,12 +192,12 @@ describe("Transducer error handlers", () => {
     });
   });
 
-  it("can handle a result function error", async () => {
+  it("can handle a final function error", async () => {
     const exh = ex => {
-      expect(ex.message).to.equal("result error");
+      expect(ex.message).to.equal("final error");
     };
 
-    const ch = transChan(resultErrorTransducer, exh);
+    const ch = transChan(finalErrorTransducer, exh);
 
     const p1 = go(async () => {
       await send(ch, 1);
