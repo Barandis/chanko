@@ -129,6 +129,12 @@ function functionIterator(fn) {
  * console.log(iter.next().value);   // -> 120
  * ```
  *
+ * Iterators created from functions are, by default, infinite since there is no
+ * condition for them to not be able to be applied one more time. To create a
+ * finite iterator from a function, have it return `undefined` at some point.
+ * When a return value of `undefined` is encountered, `iterator` will terminate
+ * the iterator, setting its next `done` property to `true`.
+ *
  * If the input value is neither iterable, object, or function, then the result
  * will be `null`.
  *

@@ -57,199 +57,445 @@
         <div class="container-overview">
         
             
-                <div class="description usertext"><p>The central module for the transducer engine.</p>
-<p>All of the functions in this module deal directly with transducers. But
-first, let's talk about the protocols that are going to be referred to
-throughout many of the function discussions.</p>
-<h2>Protocols</h2>
-<p>One of the key selling points for transducers is that the same transducer can
-be used on any type of collection. Rather than having to write a new <code>map</code>
-function (for example) for every kind of collection - one for an array, one
-for a string, one for an iterator, etc. - there is a single <code>map</code> transducer
-that will work with all of them, and potentially with <em>any</em> kind of
-collection. This is possible implementing <em>protocols</em> on the collections.</p>
-<p>A protocol in JavaScript is much like an interface in languages like Java and
-C#. It is a commitment to providing a certain functionality under a certain
-name. ES2015 has seen the introduction of an <code>iterator</code> protocol, for
-example, and language support for it (the new <code>for...of</code> loop can work with
-any object that correctly implements the <code>iterator</code> protocol).</p>
-<p>To support transduction, Xduce expects collections to implement four
-protocols.</p>
-<ul>
-<li><code>iterator</code>: a function that returns an iterator (this one is built in to
-ES6 JavaScript)</li>
-<li><code>transducer/init</code>: a function that returns a new, empty instance of the
-output collection</li>
-<li><code>transducer/step</code>: a function that takes an accumulator (the result of the
-reduction so far) and the next input value, and then returns the
-accumulator with the next input value added to it</li>
-<li><code>transducer/result</code>: a function that takes the reduced collection and
-returns the final output collection</li>
-</ul>
-<p><code>iterator</code> is the built-in JavaScript protocol. When called, it is expected
-to return an iterator over the implementing collection. This iterator is an
-object that has a <code>next</code> function. Each call to <code>next</code> is expected to return
-an object with <code>value</code> and <code>done</code> properties, which respectively hold the
-next value of the iterator and a boolean to indicate whether the iteration
-has reached its end. (This is a simplified explanation; see
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators">this MDN page</a>
-for more detailed information.)</p>
-<p><code>transducer/init</code> (referred to from now on as <code>init</code>) should be a function
-that takes no parameters and returns a new, empty instance of the output
-collection. This is the function that defines how to create a new collection
-of the correct type.</p>
-<p><code>transducer/step</code> (referred to from now on as <code>step</code>) should be a function
-that takes two parameters. These parameters are the result of the reduction
-so far (and so is a collection of the output type) and the next value from
-the input collection. It must return the new reduction result, with the next
-value incorporated into it. This is the function that defines how reduce a
-value onto the collection.</p>
-<p><code>transducer/result</code> (referred to from now on as <code>result</code>) should be a
-function that takes one parameter, which is the fully reduced collection. It
-should return the final output collection. This affords a chance to make any
-last-minute adjustments to the reduced collection before returning it.</p>
-<p>Arrays, strings, and objects are all given support for all of these
-protocols. Other collections will have to provide their own (though it should
-be noted that since <code>iterator</code> is built-in, many third-party collections will
-already implement this protocol). As an example, let's add transducer support
-to a third-party collection, the <code>Immutable.List</code> collection from
-<a href="https://facebook.github.io/immutable-js/">immutable-js</a>.</p>
-<pre class="prettyprint source"><code>Immutable.List.prototype[protocols.init] = () => Immutable.List().asMutable();
-Immutable.List.prototype[protocols.step] = (acc, input) => acc.push(input);
-Immutable.List.prototype[protocols.result] = (value) => value.asImmutable();
-</code></pre>
-<p><code>Immutable.List</code> already implements <code>iterator</code>, so we don't have to do it
-ourselves.</p>
-<p>The <code>init</code> function returns an empty mutable list. This is important for
-immutable-js because its default lists are immutable, and immutable lists
-mean that a new list has to be created with every reduction step. It would
-work fine, but it's quite inefficient.</p>
-<p>The <code>step</code> function adds the next value to the already-created list.
-<code>Immutable.List</code> provides a <code>push</code> function that works like an array's
-<code>push</code>, except that it returns the new list with the value pushed onto it.
-This is perfect for our <code>step</code> function.</p>
-<p>The <code>result</code> function converts the now-finished mutable list into an
-immutable one, which is what's going to be expected if we're transducing
-something into an <code>Immutable.List</code>. In most cases, <code>result</code> doesn't have to
-do any work, but since we're creating an intermediate representation of our
-collection type here, this lets us create the collection that we actually
-want to output. (Without <code>result</code>, we would have to use immutable lists all
-the way through, creating a new one with each <code>step</code> function, since we
-wouldn't be able to make this converstion at the end.)</p>
-<p>With those protocols implemented on the prototype, <code>Immutable.List</code>
-collections can now support any transduction we can offer.</p>
-<h3>Protocols</h3>
-<p>After talking a lot about protocols and showing how they're properties added
-to an object, it's probably pretty obvious that there's been no mention of
-what the actual names of those properties are. That's what
-<code>protocols</code> is for.</p>
-<p>The best way to use these keys can be seen in the immutable-js example above.
-Instead of worrying about the name of the key for the <code>init</code> protocol, the
-value of <code>protocols.init</code> is used.</p>
-<p><code>protocols</code> defines these protocol
-property names.</p>
-<ul>
-<li><code>init</code></li>
-<li><code>step</code></li>
-<li><code>result</code></li>
-<li><code>reduced</code>: used internally to mark a collection as already reduced</li>
-<li><code>value</code>: used internally to provide the actual value of a reduced
-collection</li>
-</ul>
-<p>The final two values don't have a lot of use outside the library unless
-you're writing your own transducers.</p>
-<h2>How Objects Are Treated</h2>
-<p>Objects bear some thought because regularly, they aren't candidates for
-iteration (and therefore for transduction in general). They don't have a very
-straightforward idea of order, and they have <em>two</em> pieces of data (key and
-value) for every element instead of one. Yet it's undeniable that at least
-for most transformations, being able to apply them to objects would be quite
-handy.</p>
-<p>For that reason, special support is provided end-to-end for objects.</p>
-<h3>Object iteration</h3>
-<p>Iterating over an object will produce one object per property of the original
-object. An order is imposed; by default, this order the same as the ordering
-of keys in post-ES6 Javascript:</p>
+                <div class="description usertext"><p>The core engine for transducers. This consists primarily of reduction support
+for chains of transducers but also supplies protocol definitions and utility
+functions for writing new transducers.</p>
+<p>The general idea is that if you need to use a transducer, you can avoid
+importing this library and work with the <a href="module-xduce.html">xduce</a> module
+instead (which internally depends on this module). If you want to write a new
+transducer or control low-level access to the reduction engine, then you need
+to use this library. (There is a small number of functions that are useful
+for both, and <a href="module-xduce.html">xduce</a> re-exports them from here so they
+can be used from either module.)</p>
+<p>This module provides four basic services:</p>
 <ol>
-<li>Keys that are integers, in ascending numerical order</li>
-<li>All other string keys, in the order in which they were added to the object</li>
-<li>All symbol keys, in the order in which they were added to the object</li>
+<li>Reduction of transducer chains</li>
+<li>Protocol definition</li>
+<li>Iteration support</li>
+<li>Authoring utilities</li>
 </ol>
-<p>The <code>iterator</code> function can be passed a
-sorting function that can sort keys in any other way.</p>
-<p>The result of the iteration, is a set of objects each with a single property,
-one for each enumerable own property on the original object. The standard
-ordering for objects (from ES6 onward) is as follows:</p>
-<h3>Transforming objects</h3>
-<p>While iterating over objects in this way is straightforward, the syntax of
-objects makes it ugly to transform them in this form. Here's an example of a
-transformation function that makes the object's keys upper-case and adds one
-to each of the values:</p>
-<pre class="prettyprint source"><code>function transform(obj) {
-  const key = Object.keys(obj)[0];
-  const value = obj[key];
-  return { [key.toUpperCase()]: value + 1 };
+<p>What follows is a short diuscussion of each.</p>
+<h2>Reduction</h2>
+<p>All transforming functions, whether methods of <code>Array</code> or third party tools
+such as Lodash, perform reduction in order to build up a new collection out
+of the elements that they've transformed/filtered, etc.</p>
+<p>Transducers are no different in that regard, but the manner in which they do
+their reduction is what sets them apart.</p>
+<p>Using <code>Array.prototype.map</code> as an example, the user of the function provides
+a transformation function. The <code>map</code> function iterates over the input array,
+passes the elements through the provided transformation function, and then
+reduces the results into a new array. If <code>map</code> is chained to another
+function, like <code>Array.prototype.filter</code>, the process needs to be repeated:
+iterate again, filter via a user-provided function, and reduce again.</p>
+<p>Transducers are different. When using a transducer, rather than a
+manipulation function being provided as in <code>map</code> or <code>filter</code>, a <em>reducer
+object</em> is used. (It's an object rather than a function because it has
+multiple functions, each implemented as properties of the reducer object.)
+This means that the user provides instructions for both transformation <em>and</em>
+reduction, rather than the collection function itself being responsible for
+doing the reduction on its own.</p>
+<p>This has two very beneficial effects. First, if a user wants to filter and
+then map the elements of a collection, the transducer does not have to reduce
+the filtered elements into a collection just to have the map part tear them
+apart again and re-reduce them later. The filter part of the transducer can
+pass its elements one at a time to the map part, and reduction can happen
+only at the end after the elements have been both filtered <em>and</em> mapped.</p>
+<p>Secondly, since the user is providing the reduction instructions along with
+the transformation instructions, the type of collection that gets reduced
+into does not have to be the same type as the input collection. You could
+process characters in a string and have it output as an array. Or process the
+values in an iterator and get a plain object as output.</p>
+<p>Practically speaking, most of the reducer object creation is abstracted away,
+so using transducers is no more difficult than just using
+<code>Array.prototype.map</code>. The <code><a href="module-xdcore.html#.reduce">reduce</a></code> function
+provided by this library is low level, though, and does not do any of that
+abstracting on its own. The functions from the <a href="module-xduce.html">xduce</a>
+module, namely <code><a href="module-xduce.html#.transduce">transduce</a></code>,
+<code><a href="module-xduce.html#.into">into</a></code>, and
+<code><a href="module-xduce.html#.sequence">sequence</a></code>, take care of that abstraction so
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> can just handle actual reduction.</p>
+<h2>Protocols</h2>
+<p>In ES2015, the idea of protocols was added to JavaScript. This was done at
+the beginning to provide language-level support for the new <code>for...of</code> loop.
+As long as a value supported the iterable protocol by having a property named
+<code>Symbol.iterator</code> that returns an iterator for that value when it's called,
+then it automatically qualified to be used in <code>for...of</code>.</p>
+<p>This module uses that iterable module in the same way to understand how to
+break collections apart, but it also uses protocols to let collections inform
+the engine how to reduce a collection of that type back together again. Since
+there are no standard protocols for reduction the way there are for
+iteration, this module provides custom protocols of its own. These are also
+symbols used as names for properties, but they are stored in an object called
+<code><a href="module-xdcore.html#.protocols">protocols</a></code> to be looked up by string key:</p>
+<ul>
+<li><code>protocols.init</code></li>
+<li><code>protocols.step</code></li>
+<li><code>protocols.final</code></li>
+<li><code>protocols.completed</code></li>
+<li><code>protocols.value</code></li>
+</ul>
+<p>The last two (<code>completed</code> and <code>value</code>) are used internally for keeping track
+of the reduction status of a value and shouldn't need to be used externally.
+The first three, however, are how the engine knows how to reduce to a certain
+collection type.</p>
+<p><code>init</code> is a function that returns a new, empty version of that collection to
+be built upon. <code>step</code> is a function that gets passed a collection of that
+type plus a new value to be added to it, and returns the collection with that
+value added to it (i.e., it's a standard reduction function). <code>final</code> is a
+function that gets passed the fully reduced new collection and returns what
+the final output should be, giving the engine one last chance to modify the
+final value (this <em>normally</em> just returns its argument unmodified). If these
+three properties are added to an object, then this module will recognize that
+object as reducible and be able to create and fill one.</p>
+<p>As an example, let's add support for transduction to the <code>List</code> collection
+from <a href="https://immutable-js.github.io/immutable-js/">immutable.js</a>.</p>
+<pre class="prettyprint source"><code>import { protocols as p } from &quot;@chanko/xdcore&quot;;
+import { List } from &quot;immutable&quot;;
+
+List.prototype[p.init] = () => List().asMutable();
+List.prototype[p.step] = (acc, value) => acc.push(value);
+List.prototype[p.final] = value => value.asImmutable();
+</code></pre>
+<p>The <code>init</code> function here returns a new, empty list. The <code>step</code> function
+describes how to add a value to that list (through the <code>push</code> method). The
+<code>final</code> function runs at the very end to determine the end value. In the case
+of this immutable list, the <code>init</code> function actually returns a mutable list
+that we can add to with <code>step</code>, and then <code>final</code> turns that into an immutable
+list to be returned. This is a textbook use of <code>final</code>; most of the time,
+<code>final</code> will simply return the value that's passed to it, unchanged.</p>
+<p>With these lines of code in place, adding the protocol functions to <code>List</code>'s
+prototype, reduction will just work.</p>
+<p>It is not necessary to provide these functions for native arrays, strings,
+plain objects, or iterators, as support for them is built in.</p>
+<h2>Iterators</h2>
+<p>As mentioned above, there is a built-in protocol for iteration in JavaScript
+since ES2015, and this module does recognize and use that protocol. (Because
+this is a built-in protocol, even many third-party libraries take advantage
+of it; we did not have to add the iterable protocol to the immutable <code>List</code>
+above because immutable.js already adds it.)</p>
+<p>Iteratable protocol support works out of the box for any type that implements
+it. However, there is also support built into this module for two types that
+do not support the protocol: plain objects and functions.</p>
+<p>The values that come out of the iterator for plain objects are themselves
+objects, but they're objects of only one property each, one for each property
+in the original object. For example:</p>
+<pre class="prettyprint source"><code>import { iterator } from &quot;@chanko/xdcore&quot;;
+
+const obj = { c: 1, a: 2, b: 3 };
+const iter = iterator(obj);
+console.log(iter.next().value);   // -> { c: 1 }
+console.log(iter.next().value);   // -> { a: 2 }
+console.log(iter.next().value);   // -> { b: 3 }
+console.log(iter.next().done);    // -> true
+</code></pre>
+<p>The ordering is the same as ordering from <code>Object.keys()</code> and the like:</p>
+<ol>
+<li>String keys that are integer indices in ascending numerical order</li>
+<li>All other string keys in the order in which they were added to the object</li>
+<li>All symbol keys in the order in which they were added to the object</li>
+</ol>
+<p>Iteration support for functions happens by invoking the function for each
+iteration and using the return value for the value of the iterator at that
+point. Two values are fed into the function: the index of the iteration
+(starting at 0 for the first iteration and increasing by one for each
+subsequent iteration) and the function's return value from the previous
+iteration (starting as <code>undefined</code> for the first iteration). The function is
+free to use or ignore these values as it likes; all that is important is that
+it returns a value.</p>
+<pre class="prettyprint source"><code>import { iterator } from &quot;@chanko/xdcore&quot;;
+
+const fn = (index, last = 1) => last * (index + 1);
+const iter = iterator(fn);
+console.log(iter.next().value);   // -> 1
+console.log(iter.next().value);   // -> 2
+console.log(iter.next().value);   // -> 6
+console.log(iter.next().value);   // -> 24
+console.log(iter.next().value);   // -> 120
+</code></pre>
+<p>This effectively calculates the factorial of <code>(index + 1)</code>. As in this
+example, iterators created from functions can be infinite; if the function
+returns <code>undefined</code> it'll terminate the iterator immediately.</p>
+<h2>Authoring</h2>
+<p>The tools from this module are used by the <a href="module-xduce.html">xduce</a> module
+to build its transducers, and all of those same tools are available for
+custom transducers as well.</p>
+<p>In brief, a transducer works by having <em>transducer objects</em> which are formed
+into a chain, one for each transformation. At the end of the chain is a
+<em>reducer object</em> which describes how to create a new collection from the
+elements that the transducer objects modified. Elements are pulled one at a
+time through that chain, being modified, filtered out, etc. every step of the
+way until the reducer at the end adds it into the target collection.</p>
+<p>Visually, a transducer that maps element values, filters them, and outputs an
+array containing those elements would look like this:</p>
+<pre class="prettyprint source"><code>+---------------+    +---------------+    +---------------+
+|  map xducer   | -> | filter xducer | -> | array reducer |
++---------------+    +---------------+    +---------------+
+</code></pre>
+<p>There is always one reducer object at the end and an arbitrary number of
+transducer objects before it.</p>
+<p>Transducer and reducer objects are structurally identical. They both are
+required to have the three reduction protocol methods (<code>init</code>, <code>step</code>, and
+<code>final</code>). Their difference is in their purpose.</p>
+<p>A reducer object is responsible for providing an initial collection (<code>init</code>),
+adding elements one by one to that collection (<code>step</code>), and finalizing the
+result (<code>final</code>). It is self-contained and its protocol methods don't
+typically need to call any other reducer objects. Since it is the last object
+in the chain, it's possible for a chain to consist of <em>only</em> a reducer (this
+is useful for turning one kind of collection into another without changing
+any of the elements).</p>
+<p>A transducer object is responsible for two things: manipulating data, and
+then passing that data along to the next object in the chain. For that
+reason, the <code>init</code> and <code>final</code> methods typically simply call the same method
+on the next object and return its value (i.e., they do nothing themselves).
+The <code>step</code> method is where the work happens, and when that work is done, it's
+sent to the next object by calling <em>its</em> <code>step</code> method. A transducer object
+cannot make a chain by itself; it always requires a reducer object to
+actually put the manipulated data back together.</p>
+<p>The reason that a transducer object needs these protocol methods even if they
+only call the next one is because a transducer object should not need to know
+whether the next object in the chain is a transducer object or a reducer
+object. All it needs to know is that there will be an object with the three
+reduction protocol methods that it can call. (There are also edge cases where
+a transducer object may do more with an <code>init</code> or <code>final</code> method, but those
+are fairly rare.)</p>
+<p>Here is an example of transducer definitions, using the same two transducer
+objects as in the above diagram. It defines two <em>transducer functions</em>, which
+are functions that take a transducer or reducer object (which is the next
+object in the chain) and return its own transducer object already chained to
+that next object.</p>
+<pre class="prettyprint source"><code>import { protocols as p } from &quot;@chanko/xdcore&quot;;
+
+function mapTransducer(fn, next) {
+  return {
+    [p.init]: () => next[p.init](),
+    [p.step]: (acc, value) => next[p.step](acc, fn(value)),
+    [p.final]: value => next[p.final](value),
+  };
+}
+
+function filterTransducer(fn, next) {
+  return {
+    [p.init]: () => next[p.init](),
+    [p.step]: (acc, value) => fn(value) ? next[p.step](acc, value) : acc,
+    [p.final]: value => next[p.final](value),
+  };
 }
 </code></pre>
-<p>A helper function named <code>property</code> can
-improve this by handling the boilerplate.</p>
-<pre class="prettyprint source"><code>function improvedTransform(obj) {
-  const {k, v} = property(obj);
-  return { [k.toUpperCase()]: v + 1 };
+<p>As expected, the <code>init</code> and <code>final</code> methods in both transducer objects simply
+call the same functions in the next object, while the <code>step</code> function does
+the actual work, either passing each value through the mapping function in
+<code>mapTransducer</code> or deciding whether to add it to the collection at all in
+<code>filterTransducer</code>.</p>
+<p>Since it <em>is</em> so common to create transducer objects whose <code>init</code> and <code>final</code>
+methods simply chain to the next object, there is a helper function to make
+transducer object creation easier. The same two transducer functions from
+above can be written like this.</p>
+<pre class="prettyprint source"><code>import { protocols as p, toTransducer } from &quot;@chanko/xdcore&quot;;
+
+function mapTransducer(fn, next) {
+  const step = (acc, value) => next[p.step](acc, fn(value));
+  return toTransducer(step, next);
+}
+
+function filterTransducer(fn, next) {
+  const step = (acc, value) => fn(value) ? next[p.step](acc, value) : acc;
+  return toTransducer(step, next);
 }
 </code></pre>
-<h3>Reducing objects</h3>
-<p>The built-in reducers (for arrays, objects, strings, and iterators)
-understand these single-property objects and reduce them in the proper manner
-without any further work.</p>
-<p>That's it for object-object reduction. Converting between objects and other
-types is another matter.</p>
-<p>Every transducer function except for
-<code>sequence</code> is capable of turning an
-object into a different type of collection, turning a different type of
-collection into an object, or both. Objects are different because they're the
-only &quot;collections&quot; that have two different pieces of data per element.
-Because of this, we have to have a strategy on how to move from one to
-another.</p>
-<p>Transducing an object into a different type is generally pretty easy. If an
-object is converted into an array, for instance, the array elements will each
-be single-property objects, one per property of the original object.</p>
-<p>Strings are a different story, since encoding a single-property object to a
-string isn't possible (because every &quot;element&quot; of a string has to be a single
-character). Strings that are produced from objects will instead just be the
-object values, concatenated. Because objects are iterated in a particular
-order, this conversion will always produce the same string, but except in
-some very specific cases there really isn't a lot of use for this conversion.</p>
-<pre class="prettyprint source"><code>const obj = {a: 1, b: 2};
+<p><code><a href="module-xdcore.html#.toTransducer">toTransducer</a></code> takes a step function and
+the next object and takes care of the <code>init</code> and <code>final</code> methods for you.</p>
+<p>If you plan to write your transducers to work with high-level
+<a href="module-xduce.html">xduce</a> functions like
+<code><a href="module-xduce.html#.sequence">sequence</a></code> or
+<code><a href="module-xduce.html#.transduce">transduce</a></code>, then this is enough. You don't
+need to go any further. However, this is not enough for the
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> function, which expects a <em>reducer</em>
+object, not a transducer object. (<code><a href="module-xduce.html#.transduce">transduce</a></code>
+also expects a reducer object, but that's <em>in addition to</em> a transducer
+object and not in place of one.) <code><a href="module-xdcore.html#.reduce">reduce</a></code>
+doesn't care if that reducer object has other transducer objects chained to
+it; it only cares that the whole object acts like a reducer, which it will
+use to build a new collection.</p>
+<p>There is a similar function for reducer objects, called
+<code><a href="module-xdcore.html#.toReducer">toReducer</a></code>. It takes a <em>reducible object</em>
+and returns a reducer object for it. A reducible object is any object that
+has the three reducer protocol functions on it to describe how a new
+collection of its type is made; in the immutable list example above, after
+you add the protocol methods to it, <code>List</code> is a reducible object. Arrays,
+strings, and plain objects are also reducible objects by virtue of specific
+support built into <code><a href="module-xdcore.html#.toReducer">toReducer</a></code>.</p>
+<p>With these two simple functions, we can pretty easily use
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> directly to perform the transduction
+diagrammed above.</p>
+<pre class="prettyprint source"><code>import { toReducer, reduce } from &quot;@chanko/xdcore&quot;;
 
-let result = asArray(obj);
-// result = [{a: 1}, {b: 2}]
+const isEven = x => x % 2 === 0;
+const addOne = x => x + 1;
 
-result = asIterator(obj);
-// result is an iterator with two values: {a: 1} and {b: 2}
+let reducer = toReducer([]);
+reducer = filterTransducer(isEven, reducer);
+reducer = mapTransducer(addOne, reducer);
 
-result = into(Immutable.List(), obj)
-// result is an immutable list with two elements: {a: 1} and {b: 2}
-
-result = asString(obj);
-// result is '12'
+const r = reduce([1, 2, 3, 4, 5], reducer, []);
+console.log(r);   // -> [2, 4, 6]
 </code></pre>
-<p>The opposite conversion depends on the values inside the collections. If
-those values are objects, then the result is an object with all of the
-objects combined (if more than one has the same key, the last one is the one
-that's kept). Otherwise, keys are created for each of the elements, starting
-with <code>0</code> and increasing from there.</p>
-<p>This means that converting an object to any non-string collection and back
-produces the original object.</p>
-<pre class="prettyprint source"><code>let result = asObject([{a: 1}, {b: 2}]);
-// result = {a: 1, b: 2}
+<p>There are some important points to notice about this example.</p>
+<ol>
+<li>The transducer chain is built backwards, starting from the reducer and
+adding the transducers in reverse order. This makes sense, as each
+transducer function requires a reference to the following
+transducer/reducer object when it's called.</li>
+<li>This creates an array, but since
+<code><a href="module-xdcore.html#.toReducer">toReducer</a></code> can create a reducer object
+from any reducible object, we could have passed <code>List</code> to it (after adding
+the three protocol properties as in the earlier immutable list example)
+and <code><a href="module-xdcore.html#.reduce">reduce</a></code> would return an immutable list
+instead. (Sort of...<code><a href="module-xdcore.html#.reduce">reduce</a></code> actually only
+deals with <code>step</code> and <code>final</code> protocol methods because internally, it
+sometimes works with objects that don't have an <code>init</code> protocol method.
+This is why <code><a href="module-xdcore.html#.reduce">reduce</a></code> takes a third parameter,
+called <code>init</code>. So for this to work properly with an immutable list, you
+would also have to pass <code>List().asMutable()</code> as the third parameter, in
+place of <code>[]</code> in the example code. This is not something you have to worry
+about with higher-level functions in the <a href="module-xduce.html">xduce</a>
+module.)</li>
+<li>This is all more easily done using the <a href="module-xduce.html">xduce</a> module,
+which handles much of this work for you. This example just shows how you
+can build your own transducer objects, chain them together, and use
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> to process them.</li>
+</ol>
+<p>Here is what it would look like with the <a href="module-xduce.html">xduce</a> module.</p>
+<pre class="prettyprint source"><code>import { map, filter, sequence, compose } from &quot;@chanko/xduce&quot;;
 
-result = asObject([1, 2, 3]);
-// result = {0: 1, 1: 2, 2: 3}
+const isEven = x => x % 2 === 0;
+const addOne = x => x + 1;
 
-result = asObject('hello');
-// result = {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
-</code></pre></div>
+const r = sequence([1, 2, 3, 4, 5], compose(map(addOne), filter(isEven)));
+console.log(r);   // -> [2, 4, 6]
+</code></pre>
+<p>More details are available in the documentation for the
+<a href="module-xduce.html">xduce</a> module, but basically
+<code><a href="module-xduce.html#.compose">compose</a></code> chains transducer objects together,
+while <code><a href="module-xduce.html#.sequence">sequence</a></code> figures out what initial
+collection and what reducer object to use (from the input collection), chains
+the transducer objects to the reducer object, and passes all of the relevant
+information to <code><a href="module-xdcore.html#.reduce">reduce</a></code>.</p>
+<p><code><a href="module-xdcore.html#.reduce">reduce</a></code> works in a simple way, but there is one
+bit of special functionality that's relevant to writing transducers. If it
+processes an element and the value returned by the reducer/transducer chain
+is a <em>completed value</em>, it will cease the reduction right there even if there
+are more elements in the input collection. A completed value is a value that
+is wrapped in an object using the other two reducer protocol properties,
+<code>completed</code> and <code>value</code>:</p>
+<pre class="prettyprint source"><code>import { protocols as p } from &quot;@chanko/xdcore&quot;;
+
+// A regular value
+const value = 1729;
+
+// A completed version of that same value
+const completed = {
+  [p.completed]: true,
+  [p.value]: 1729,
+};
+</code></pre>
+<p>The reason for the long-windedness of using a wrapper is so that a completed
+value can be completed again, making it double-wrapped. This is occasionally
+useful in writing more complex transducers, and it is simplest to achieve
+with a wrapper.</p>
+<p>A good example of the use of a completed value is the
+<code>take</code> transducer, which returns a certain number
+of elements and then returns no more. Here's how it would look using
+<a href="module-xduce.html">xduce</a>:</p>
+<pre class="prettyprint source"><code>import { take } from &quot;@chanko/xduce&quot;;
+const r = take([1, 2, 3, 4, 5], 2);
+console.log(r);   // -> [1, 2]
+</code></pre>
+<p>No matter how many elements are in the input collection,
+<code>take</code> will only process a certain number (in this
+case, 2). The input collection could even be a generator that never
+terminates, and it would still work fine. <code>take</code>
+does this by, at some point, returning a completed, which in turn causes
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> to stop processing.</p>
+<pre class="prettyprint source"><code>import { protocols as p, toTransducer } from &quot;@chanko/xdcore&quot;;
+
+function takeTransducer(n, next) {
+  let i = 0;
+  const step = (acc, value) => {
+    let result = next[p.step](acc, value);
+    if (i === n - 1) {
+      result = {
+        [p.completed]: true,
+        [p.value]: result,
+      };
+    }
+    i++;
+    return result;
+  };
+  return toTransducer(step, next);
+}
+</code></pre>
+<p>This is a bit more complex, but the gist of it is that the transducer object
+simply passes the value on down the chain. However, if the element being
+processed is the last one before it reaches the target number of elements,
+the value returned from the chain is wrapped as a completed object.
+<code><a href="module-xdcore.html#.reduce">reduce</a></code> will see this value and stop the
+process as soon as it does.</p>
+<p>As you might expect, there are helper functions for writing transducers like
+this:</p>
+<ul>
+<li><code><a href="module-xdcore.html#.complete">complete</a></code></li>
+<li><code><a href="module-xdcore.html#.uncomplete">uncomplete</a></code></li>
+<li><code><a href="module-xdcore.html#.ensureCompleted">ensureCompleted</a></code></li>
+<li><code><a href="module-xdcore.html#.ensureUncompleted">ensureUncompleted</a></code></li>
+<li><code><a href="module-xdcore.html#.isCompleted">isCompleted</a></code></li>
+</ul>
+<p>The first two either wrap or unwrap a value in the completed wrapper. The
+third and fourth do the same thing, but they only do it if it's actually
+necessary to do so (<code><a href="module-xdcore.html#.complete">complete</a></code> will
+double-wrap a value if passed an already-completed value;
+<code><a href="module-xdcore.html#.ensureCompleted">ensureCompleted</a></code> will not do this
+double wrapping). The final function simply returns whether or not the value
+passed to it is a completed object.</p>
+<p>These functions mean that you should never have to work directly with either
+the <code>completed</code> or <code>value</code> reducer protocol properties.</p>
+<p>With those in mind, the actual step function for the take transducer is a
+little simpler.</p>
+<pre class="prettyprint source"><code>const step = (acc, value) => {
+  let result = next[p.step](acc, value);
+  if (i === n - 1) {
+    result = complete(result);
+  }
+  i++;
+  return result;
+};
+</code></pre>
+<p>After all that, one final bit of provided functionality: there are a series
+of helper functions to determine the type of a value.</p>
+<ul>
+<li><code><a href="module-xdcore.html#.isArray">isArray</a></code></li>
+<li><code><a href="module-xdcore.html#.isFunction">isFunction</a></code></li>
+<li><code><a href="module-xdcore.html#.isGeneratorFunction">isGeneratorFunction</a></code></li>
+<li><code><a href="module-xdcore.html#.isNumber">isNumber</a></code></li>
+<li><code><a href="module-xdcore.html#.isObject">isObject</a></code></li>
+<li><code><a href="module-xdcore.html#.isString">isString</a></code></li>
+</ul>
+<p>These all work as you might expect, with a few caveats.</p>
+<ol>
+<li><code><a href="module-xdcore.html#.isFunction">isFunction</a></code> will return <code>false</code> if
+passed a generator function. Use
+<code><a href="module-xdcore.html#.isGeneratorFunction">isGeneratorFunction</a></code> to check
+for those.</li>
+<li><code><a href="module-xdcore.html#.isNumber">isNumber</a></code> is only for concrete numbers
+that are not strings. It will return <code>false</code> for <code>Infinity</code>, <code>NaN</code>, and
+things like <code>&quot;1729&quot;</code>.</li>
+<li><code><a href="module-xdcore.html#.isObject">isObject</a></code> returns <code>true</code> only for plain
+objects. It will return <code>false</code> for any other sort of object, including
+things like arrays, objects with constructors (from classes or from
+constructor functions), and <code>null</code> (which famously returns <code>&quot;object&quot;</code> when
+<code>typeof</code> is used on it).</li>
+<li><code><a href="module-xdcore.html#.isArray">isArray</a></code> is just the regular
+<code>Array.isArray</code>, packaged here for consistency.</li>
+</ol></div>
             
 
             
@@ -263,7 +509,7 @@ result = asObject('hello');
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line7">line 7</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -1619,7 +1865,7 @@ built-in iterator protocols and the five custom transducer protocols:</p>
 <li><code>asyncItrerator</code></li>
 <li><code>init</code></li>
 <li><code>step</code></li>
-<li><code>result</code></li>
+<li><code>final</code></li>
 <li><code>completed</code></li>
 <li><code>value</code></li>
 </ul>
@@ -1767,7 +2013,7 @@ the properties other than <code>completed</code> and <code>step</code> must be f
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line173">line 173</a>
+        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -2421,7 +2667,7 @@ it is not.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line144">line 144</a>
+        <a href="xdcore_src_modules_iteration.js.html">xdcore/src/modules/iteration.js</a>, <a href="xdcore_src_modules_iteration.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -2516,6 +2762,11 @@ console.log(iter.next().value);   // -> 6
 console.log(iter.next().value);   // -> 24
 console.log(iter.next().value);   // -> 120
 </code></pre>
+<p>Iterators created from functions are, by default, infinite since there is no
+condition for them to not be able to be applied one more time. To create a
+finite iterator from a function, have it return <code>undefined</code> at some point.
+When a return value of <code>undefined</code> is encountered, <code>iterator</code> will terminate
+the iterator, setting its next <code>done</code> property to <code>true</code>.</p>
 <p>If the input value is neither iterable, object, or function, then the result
 will be <code>null</code>.</p>
 </div>
@@ -3230,7 +3481,7 @@ reducible collection or a reducer function.</p></td>
         
 <div class="param-desc">
     <p>An object containing protocol
-properties for <code>init</code>, <code>step</code>, and <code>result</code>. This object is suitable for
+properties for <code>init</code>, <code>step</code>, and <code>final</code>. This object is suitable for
 use as a reducer object (one provided to
 <code><a href="module-xdcore.html#.reduce">reduce</a></code>). If the provided collection is not
 reducible, all of the properties of this object will be <code>null</code>.</p>
@@ -3768,6 +4019,171 @@ this is a wrapped value.</p>
 
     
 
+    <h4 class="name" id=".FinalFunction"><span class="type-signature"></span>FinalFunction<span class="signature">(value)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line614">line 614</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>A function that accepts a fully reduced collection and returns that
+collection with any last-minute modifications that might need to be done to
+it.</p>
+<p>In most cases this function will simply return its argument, unmodified, but
+it does afford the transducer an opportunity to make any final modifications
+that might be necessary before the result is returned from the transduction
+process.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The fully reduced collection.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The reduced collection with any implementation-dependent changes
+that might be deemed necessary.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+                
+
+    
+
     <h4 class="name" id=".InitFunction"><span class="type-signature"></span>InitFunction<span class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
 
     
@@ -3780,7 +4196,7 @@ this is a wrapped value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line307">line 307</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line585">line 585</a>
     </li></ul></dd>
     
 
@@ -3890,7 +4306,7 @@ type is being worked with.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line291">line 291</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line569">line 569</a>
     </li></ul></dd>
     
 
@@ -4185,7 +4601,7 @@ added to the target collection one at a time.</p></td>
 
         <tr>
             
-                <td class="name"><code>result</code></td>
+                <td class="name"><code>final</code></td>
             
 
             <td class="type">
@@ -4201,11 +4617,11 @@ added to the target collection one at a time.</p></td>
 
             
 
-            <td class="description last"><p>The <code>reducer/result</code> protocol. This is used to mark
+            <td class="description last"><p>The <code>reducer/final</code> protocol. This is used to mark
 functions that take the final result of the step process and return the
 final form to be output. This is optional; if the reducer does not want
 to transform the final result, it should just return the result of its
-chained reducer's <code>result</code> function.</p></td>
+chained reducer's <code>final</code> function.</p></td>
         </tr>
 
     
@@ -4306,7 +4722,7 @@ by string name rather than by more difficult-to-work-with symbols.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line353">line 353</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line631">line 631</a>
     </li></ul></dd>
     
 
@@ -4369,7 +4785,7 @@ by string name rather than by more difficult-to-work-with symbols.</p>
 
         <tr>
             
-                <td class="name"><code>Symbol.for("transducer/init")</code></td>
+                <td class="name"><code>Symbol.for("reducer/init")</code></td>
             
 
             <td class="type">
@@ -4385,15 +4801,15 @@ by string name rather than by more difficult-to-work-with symbols.</p>
 
             
 
-            <td class="description last"><p>A
-function that can create a new, empty copy of the reducible type.</p></td>
+            <td class="description last"><p>A function
+that can create a new, empty copy of the reducible type.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>Symbol.for("transducer/step")</code></td>
+                <td class="name"><code>Symbol.for("reducer/step")</code></td>
             
 
             <td class="type">
@@ -4409,23 +4825,22 @@ function that can create a new, empty copy of the reducible type.</p></td>
 
             
 
-            <td class="description last"><p>A
-function that can accept a value of the reducible type and a new element
-to be added to it and return the reducible with the new element
-incorporated.</p></td>
+            <td class="description last"><p>A function
+that can accept a value of the reducible type and a new element to be
+added to it and return the reducible with the new element incorporated.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>Symbol.for("transducer/result")</code></td>
+                <td class="name"><code>Symbol.for("reducer/final")</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-xdcore.html#.ResultFunction">module:xdcore.ResultFunction</a></span>
+<span class="param-type"><a href="module-xdcore.html#.FinalFunction">module:xdcore.FinalFunction</a></span>
 
 
             
@@ -4456,181 +4871,17 @@ engine to create a result from a reduction without having to have its own
 type-specific code; the creation, population, and finalization of the result
 are delegated instead to this reducer object.</p>
 <p>Note that a &quot;transducer object&quot; has exactly the same structure. The only
-difference is that the step function in a transducer object modifies the
-elements before it reduces them, while a reducer object will not. As a
-corollary, every reducer object is also a transducer object, but the converse
-is not true.</p>
+differences are that the step function in a transducer object modifies the
+elements before it reduces them, while a reducer object will not; and a
+transducer object will call the equivalent functions in the next object in
+the chain, while a reducer object will not. As a corollary, every reducer
+object is also a transducer object, but the converse is not true.</p>
 </div>
 
 
 
 
 
-
-
-
-            
-                
-
-    
-
-    <h4 class="name" id=".ResultFunction"><span class="type-signature"></span>ResultFunction<span class="signature">(value)</span><span class="type-signature"> &rarr; {*}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line336">line 336</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>A function that accepts a fully reduced collection and returns that
-collection with any last-minute modifications that might need to be done to
-it.</p>
-<p>In most cases this function will simply return its argument, unmodified, but
-it does afford the transducer an opportunity to make any final modifications
-that might be necessary before the result is returned from the transduction
-process.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The fully reduced collection.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The reduced collection with any implementation-dependent changes
-that might be deemed necessary.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">*</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -4651,7 +4902,7 @@ that might be deemed necessary.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line316">line 316</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line594">line 594</a>
     </li></ul></dd>
     
 
@@ -4828,7 +5079,7 @@ form of the original collection or whether it is a new collection altogether.</p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line379">line 379</a>
+        <a href="xdcore_src_index.js.html">xdcore/src/index.js</a>, <a href="xdcore_src_index.js.html#line657">line 657</a>
     </li></ul></dd>
     
 
@@ -4992,7 +5243,7 @@ new transducer object chained to the supplied reducer object.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Mar 31 2020 11:43:51 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Apr 01 2020 15:37:48 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

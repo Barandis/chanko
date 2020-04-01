@@ -125,17 +125,400 @@
  *
  * The `init` function here returns a new, empty list. The `step` function
  * describes how to add a value to that list (through the `push` method). The
- * `final` function runs at the very end to determine the end value. In the
- * case of this immutable list, the `init` function actually returns a mutable
- * list that we can add to with `step`, and then `final` turns that into an
- * immutable list to be returned. This is a textbook use of `final`; most of the
- * time, `final` will simply return the value that's passed to it, unchanged.
+ * `final` function runs at the very end to determine the end value. In the case
+ * of this immutable list, the `init` function actually returns a mutable list
+ * that we can add to with `step`, and then `final` turns that into an immutable
+ * list to be returned. This is a textbook use of `final`; most of the time,
+ * `final` will simply return the value that's passed to it, unchanged.
  *
  * With these lines of code in place, adding the protocol functions to `List`'s
  * prototype, reduction will just work.
  *
  * It is not necessary to provide these functions for native arrays, strings,
  * plain objects, or iterators, as support for them is built in.
+ *
+ * ## Iterators
+ *
+ * As mentioned above, there is a built-in protocol for iteration in JavaScript
+ * since ES2015, and this module does recognize and use that protocol. (Because
+ * this is a built-in protocol, even many third-party libraries take advantage
+ * of it; we did not have to add the iterable protocol to the immutable `List`
+ * above because immutable.js already adds it.)
+ *
+ * Iteratable protocol support works out of the box for any type that implements
+ * it. However, there is also support built into this module for two types that
+ * do not support the protocol: plain objects and functions.
+ *
+ * The values that come out of the iterator for plain objects are themselves
+ * objects, but they're objects of only one property each, one for each property
+ * in the original object. For example:
+ *
+ * ```
+ * import { iterator } from "@chanko/xdcore";
+ *
+ * const obj = { c: 1, a: 2, b: 3 };
+ * const iter = iterator(obj);
+ * console.log(iter.next().value);   // -> { c: 1 }
+ * console.log(iter.next().value);   // -> { a: 2 }
+ * console.log(iter.next().value);   // -> { b: 3 }
+ * console.log(iter.next().done);    // -> true
+ * ```
+ *
+ * The ordering is the same as ordering from `Object.keys()` and the like:
+ *
+ * 1. String keys that are integer indices in ascending numerical order
+ * 2. All other string keys in the order in which they were added to the object
+ * 3. All symbol keys in the order in which they were added to the object
+ *
+ * Iteration support for functions happens by invoking the function for each
+ * iteration and using the return value for the value of the iterator at that
+ * point. Two values are fed into the function: the index of the iteration
+ * (starting at 0 for the first iteration and increasing by one for each
+ * subsequent iteration) and the function's return value from the previous
+ * iteration (starting as `undefined` for the first iteration). The function is
+ * free to use or ignore these values as it likes; all that is important is that
+ * it returns a value.
+ *
+ * ```
+ * import { iterator } from "@chanko/xdcore";
+ *
+ * const fn = (index, last = 1) => last * (index + 1);
+ * const iter = iterator(fn);
+ * console.log(iter.next().value);   // -> 1
+ * console.log(iter.next().value);   // -> 2
+ * console.log(iter.next().value);   // -> 6
+ * console.log(iter.next().value);   // -> 24
+ * console.log(iter.next().value);   // -> 120
+ * ```
+ *
+ * This effectively calculates the factorial of `(index + 1)`. As in this
+ * example, iterators created from functions can be infinite; if the function
+ * returns `undefined` it'll terminate the iterator immediately.
+ *
+ * ## Authoring
+ *
+ * The tools from this module are used by the {@link module:xduce|xduce} module
+ * to build its transducers, and all of those same tools are available for
+ * custom transducers as well.
+ *
+ * In brief, a transducer works by having *transducer objects* which are formed
+ * into a chain, one for each transformation. At the end of the chain is a
+ * *reducer object* which describes how to create a new collection from the
+ * elements that the transducer objects modified. Elements are pulled one at a
+ * time through that chain, being modified, filtered out, etc. every step of the
+ * way until the reducer at the end adds it into the target collection.
+ *
+ * Visually, a transducer that maps element values, filters them, and outputs an
+ * array containing those elements would look like this:
+ *
+ * ```
+ * +---------------+    +---------------+    +---------------+
+ * |  map xducer   | -> | filter xducer | -> | array reducer |
+ * +---------------+    +---------------+    +---------------+
+ * ```
+ *
+ * There is always one reducer object at the end and an arbitrary number of
+ * transducer objects before it.
+ *
+ * Transducer and reducer objects are structurally identical. They both are
+ * required to have the three reduction protocol methods (`init`, `step`, and
+ * `final`). Their difference is in their purpose.
+ *
+ * A reducer object is responsible for providing an initial collection (`init`),
+ * adding elements one by one to that collection (`step`), and finalizing the
+ * result (`final`). It is self-contained and its protocol methods don't
+ * typically need to call any other reducer objects. Since it is the last object
+ * in the chain, it's possible for a chain to consist of *only* a reducer (this
+ * is useful for turning one kind of collection into another without changing
+ * any of the elements).
+ *
+ * A transducer object is responsible for two things: manipulating data, and
+ * then passing that data along to the next object in the chain. For that
+ * reason, the `init` and `final` methods typically simply call the same method
+ * on the next object and return its value (i.e., they do nothing themselves).
+ * The `step` method is where the work happens, and when that work is done, it's
+ * sent to the next object by calling *its* `step` method. A transducer object
+ * cannot make a chain by itself; it always requires a reducer object to
+ * actually put the manipulated data back together.
+ *
+ * The reason that a transducer object needs these protocol methods even if they
+ * only call the next one is because a transducer object should not need to know
+ * whether the next object in the chain is a transducer object or a reducer
+ * object. All it needs to know is that there will be an object with the three
+ * reduction protocol methods that it can call. (There are also edge cases where
+ * a transducer object may do more with an `init` or `final` method, but those
+ * are fairly rare.)
+ *
+ * Here is an example of transducer definitions, using the same two transducer
+ * objects as in the above diagram. It defines two *transducer functions*, which
+ * are functions that take a transducer or reducer object (which is the next
+ * object in the chain) and return its own transducer object already chained to
+ * that next object.
+ *
+ * ```
+ * import { protocols as p } from "@chanko/xdcore";
+ *
+ * function mapTransducer(fn, next) {
+ *   return {
+ *     [p.init]: () => next[p.init](),
+ *     [p.step]: (acc, value) => next[p.step](acc, fn(value)),
+ *     [p.final]: value => next[p.final](value),
+ *   };
+ * }
+ *
+ * function filterTransducer(fn, next) {
+ *   return {
+ *     [p.init]: () => next[p.init](),
+ *     [p.step]: (acc, value) => fn(value) ? next[p.step](acc, value) : acc,
+ *     [p.final]: value => next[p.final](value),
+ *   };
+ * }
+ * ```
+ *
+ * As expected, the `init` and `final` methods in both transducer objects simply
+ * call the same functions in the next object, while the `step` function does
+ * the actual work, either passing each value through the mapping function in
+ * `mapTransducer` or deciding whether to add it to the collection at all in
+ * `filterTransducer`.
+ *
+ * Since it *is* so common to create transducer objects whose `init` and `final`
+ * methods simply chain to the next object, there is a helper function to make
+ * transducer object creation easier. The same two transducer functions from
+ * above can be written like this.
+ *
+ * ```
+ * import { protocols as p, toTransducer } from "@chanko/xdcore";
+ *
+ * function mapTransducer(fn, next) {
+ *   const step = (acc, value) => next[p.step](acc, fn(value));
+ *   return toTransducer(step, next);
+ * }
+ *
+ * function filterTransducer(fn, next) {
+ *   const step = (acc, value) => fn(value) ? next[p.step](acc, value) : acc;
+ *   return toTransducer(step, next);
+ * }
+ * ```
+ *
+ * `{@link module:xdcore.toTransducer|toTransducer}` takes a step function and
+ * the next object and takes care of the `init` and `final` methods for you.
+ *
+ * If you plan to write your transducers to work with high-level
+ * {@link module:xduce|xduce} functions like
+ * `{@link module:xduce.sequence|sequence}` or
+ * `{@link module:xduce.transduce|transduce}`, then this is enough. You don't
+ * need to go any further. However, this is not enough for the
+ * `{@link module:xdcore.reduce|reduce}` function, which expects a *reducer*
+ * object, not a transducer object. (`{@link module:xduce.transduce|transduce}`
+ * also expects a reducer object, but that's *in addition to* a transducer
+ * object and not in place of one.) `{@link module:xdcore.reduce|reduce}`
+ * doesn't care if that reducer object has other transducer objects chained to
+ * it; it only cares that the whole object acts like a reducer, which it will
+ * use to build a new collection.
+ *
+ * There is a similar function for reducer objects, called
+ * `{@link module:xdcore.toReducer|toReducer}`. It takes a *reducible object*
+ * and returns a reducer object for it. A reducible object is any object that
+ * has the three reducer protocol functions on it to describe how a new
+ * collection of its type is made; in the immutable list example above, after
+ * you add the protocol methods to it, `List` is a reducible object. Arrays,
+ * strings, and plain objects are also reducible objects by virtue of specific
+ * support built into `{@link module:xdcore.toReducer|toReducer}`.
+ *
+ * With these two simple functions, we can pretty easily use
+ * `{@link module:xdcore.reduce|reduce}` directly to perform the transduction
+ * diagrammed above.
+ *
+ * ```
+ * import { toReducer, reduce } from "@chanko/xdcore";
+ *
+ * const isEven = x => x % 2 === 0;
+ * const addOne = x => x + 1;
+ *
+ * let reducer = toReducer([]);
+ * reducer = filterTransducer(isEven, reducer);
+ * reducer = mapTransducer(addOne, reducer);
+ *
+ * const r = reduce([1, 2, 3, 4, 5], reducer, []);
+ * console.log(r);   // -> [2, 4, 6]
+ * ```
+ *
+ * There are some important points to notice about this example.
+ *
+ * 1. The transducer chain is built backwards, starting from the reducer and
+ *    adding the transducers in reverse order. This makes sense, as each
+ *    transducer function requires a reference to the following
+ *    transducer/reducer object when it's called.
+ * 2. This creates an array, but since
+ *    `{@link module:xdcore.toReducer|toReducer}` can create a reducer object
+ *    from any reducible object, we could have passed `List` to it (after adding
+ *    the three protocol properties as in the earlier immutable list example)
+ *    and `{@link module:xdcore.reduce|reduce}` would return an immutable list
+ *    instead. (Sort of...`{@link module:xdcore.reduce|reduce}` actually only
+ *    deals with `step` and `final` protocol methods because internally, it
+ *    sometimes works with objects that don't have an `init` protocol method.
+ *    This is why `{@link module:xdcore.reduce|reduce}` takes a third parameter,
+ *    called `init`. So for this to work properly with an immutable list, you
+ *    would also have to pass `List().asMutable()` as the third parameter, in
+ *    place of `[]` in the example code. This is not something you have to worry
+ *    about with higher-level functions in the {@link module:xduce|xduce}
+ *    module.)
+ * 3. This is all more easily done using the {@link module:xduce|xduce} module,
+ *    which handles much of this work for you. This example just shows how you
+ *    can build your own transducer objects, chain them together, and use
+ *    `{@link module:xdcore.reduce|reduce}` to process them.
+ *
+ * Here is what it would look like with the {@link module:xduce|xduce} module.
+ *
+ * ```
+ * import { map, filter, sequence, compose } from "@chanko/xduce";
+ *
+ * const isEven = x => x % 2 === 0;
+ * const addOne = x => x + 1;
+ *
+ * const r = sequence([1, 2, 3, 4, 5], compose(map(addOne), filter(isEven)));
+ * console.log(r);   // -> [2, 4, 6]
+ * ```
+ *
+ * More details are available in the documentation for the
+ * {@link module:xduce|xduce} module, but basically
+ * `{@link module:xduce.compose|compose}` chains transducer objects together,
+ * while `{@link module:xduce.sequence|sequence}` figures out what initial
+ * collection and what reducer object to use (from the input collection), chains
+ * the transducer objects to the reducer object, and passes all of the relevant
+ * information to `{@link module:xdcore.reduce|reduce}`.
+ *
+ * `{@link module:xdcore.reduce|reduce}` works in a simple way, but there is one
+ * bit of special functionality that's relevant to writing transducers. If it
+ * processes an element and the value returned by the reducer/transducer chain
+ * is a *completed value*, it will cease the reduction right there even if there
+ * are more elements in the input collection. A completed value is a value that
+ * is wrapped in an object using the other two reducer protocol properties,
+ * `completed` and `value`:
+ *
+ * ```
+ * import { protocols as p } from "@chanko/xdcore";
+ *
+ * // A regular value
+ * const value = 1729;
+ *
+ * // A completed version of that same value
+ * const completed = {
+ *   [p.completed]: true,
+ *   [p.value]: 1729,
+ * };
+ * ```
+ *
+ * The reason for the long-windedness of using a wrapper is so that a completed
+ * value can be completed again, making it double-wrapped. This is occasionally
+ * useful in writing more complex transducers, and it is simplest to achieve
+ * with a wrapper.
+ *
+ * A good example of the use of a completed value is the
+ * `{@link module:xduce.take|take}` transducer, which returns a certain number
+ * of elements and then returns no more. Here's how it would look using
+ * {@link module:xduce|xduce}:
+ *
+ * ```
+ * import { take } from "@chanko/xduce";
+ * const r = take([1, 2, 3, 4, 5], 2);
+ * console.log(r);   // -> [1, 2]
+ * ```
+ *
+ * No matter how many elements are in the input collection,
+ * `{@link module:xduce.take|take}` will only process a certain number (in this
+ * case, 2). The input collection could even be a generator that never
+ * terminates, and it would still work fine. `{@link module:xduce.take|take}`
+ * does this by, at some point, returning a completed, which in turn causes
+ * `{@link module:xdcore.reduce|reduce}` to stop processing.
+ *
+ * ```
+ * import { protocols as p, toTransducer } from "@chanko/xdcore";
+ *
+ * function takeTransducer(n, next) {
+ *   let i = 0;
+ *   const step = (acc, value) => {
+ *     let result = next[p.step](acc, value);
+ *     if (i === n - 1) {
+ *       result = {
+ *         [p.completed]: true,
+ *         [p.value]: result,
+ *       };
+ *     }
+ *     i++;
+ *     return result;
+ *   };
+ *   return toTransducer(step, next);
+ * }
+ * ```
+ *
+ * This is a bit more complex, but the gist of it is that the transducer object
+ * simply passes the value on down the chain. However, if the element being
+ * processed is the last one before it reaches the target number of elements,
+ * the value returned from the chain is wrapped as a completed object.
+ * `{@link module:xdcore.reduce|reduce}` will see this value and stop the
+ * process as soon as it does.
+ *
+ * As you might expect, there are helper functions for writing transducers like
+ * this:
+ *
+ * * `{@link module:xdcore.complete|complete}`
+ * * `{@link module:xdcore.uncomplete|uncomplete}`
+ * * `{@link module:xdcore.ensureCompleted|ensureCompleted}`
+ * * `{@link module:xdcore.ensureUncompleted|ensureUncompleted}`
+ * * `{@link module:xdcore.isCompleted|isCompleted}`
+ *
+ * The first two either wrap or unwrap a value in the completed wrapper. The
+ * third and fourth do the same thing, but they only do it if it's actually
+ * necessary to do so (`{@link module:xdcore.complete|complete}` will
+ * double-wrap a value if passed an already-completed value;
+ * `{@link module:xdcore.ensureCompleted|ensureCompleted}` will not do this
+ * double wrapping). The final function simply returns whether or not the value
+ * passed to it is a completed object.
+ *
+ * These functions mean that you should never have to work directly with either
+ * the `completed` or `value` reducer protocol properties.
+ *
+ * With those in mind, the actual step function for the take transducer is a
+ * little simpler.
+ *
+ * ```
+ * const step = (acc, value) => {
+ *   let result = next[p.step](acc, value);
+ *   if (i === n - 1) {
+ *     result = complete(result);
+ *   }
+ *   i++;
+ *   return result;
+ * };
+ * ```
+ *
+ * After all that, one final bit of provided functionality: there are a series
+ * of helper functions to determine the type of a value.
+ *
+ * * `{@link module:xdcore.isArray|isArray}`
+ * * `{@link module:xdcore.isFunction|isFunction}`
+ * * `{@link module:xdcore.isGeneratorFunction|isGeneratorFunction}`
+ * * `{@link module:xdcore.isNumber|isNumber}`
+ * * `{@link module:xdcore.isObject|isObject}`
+ * * `{@link module:xdcore.isString|isString}`
+ *
+ * These all work as you might expect, with a few caveats.
+ *
+ * 1. `{@link module:xdcore.isFunction|isFunction}` will return `false` if
+ *    passed a generator function. Use
+ *    `{@link module:xdcore.isGeneratorFunction|isGeneratorFunction}` to check
+ *    for those.
+ * 2. `{@link module:xdcore.isNumber|isNumber}` is only for concrete numbers
+ *    that are not strings. It will return `false` for `Infinity`, `NaN`, and
+ *    things like `"1729"`.
+ * 3. `{@link module:xdcore.isObject|isObject}` returns `true` only for plain
+ *    objects. It will return `false` for any other sort of object, including
+ *    things like arrays, objects with constructors (from classes or from
+ *    constructor functions), and `null` (which famously returns `"object"` when
+ *    `typeof` is used on it).
+ * 4. `{@link module:xdcore.isArray|isArray}` is just the regular
+ *    `Array.isArray`, packaged here for consistency.
  *
  * [1]: https://immutable-js.github.io/immutable-js/
  *
@@ -253,19 +636,19 @@ export {
  * are delegated instead to this reducer object.
  *
  * Note that a "transducer object" has exactly the same structure. The only
- * difference is that the step function in a transducer object modifies the
- * elements before it reduces them, while a reducer object will not. As a
- * corollary, every reducer object is also a transducer object, but the converse
- * is not true.
+ * differences are that the step function in a transducer object modifies the
+ * elements before it reduces them, while a reducer object will not; and a
+ * transducer object will call the equivalent functions in the next object in
+ * the chain, while a reducer object will not. As a corollary, every reducer
+ * object is also a transducer object, but the converse is not true.
  *
  * @typedef ReducerObject
  * @memberof module:xdcore
- * @property {module:xdcore.InitFunction} Symbol.for("reducer/init") A
- *     function that can create a new, empty copy of the reducible type.
- * @property {module:xdcore.StepFunction} Symbol.for("reducer/step") A
- *     function that can accept a value of the reducible type and a new element
- *     to be added to it and return the reducible with the new element
- *     incorporated.
+ * @property {module:xdcore.InitFunction} Symbol.for("reducer/init") A function
+ *     that can create a new, empty copy of the reducible type.
+ * @property {module:xdcore.StepFunction} Symbol.for("reducer/step") A function
+ *     that can accept a value of the reducible type and a new element to be
+ *     added to it and return the reducible with the new element incorporated.
  * @property {module:xdcore.FinalFunction} Symbol.for("reducer/final") A
  *     function that accepts a value of the reducible type and returns the same
  *     value with any final modifications that might be necessary for it.
