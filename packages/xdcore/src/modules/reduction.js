@@ -185,7 +185,7 @@ function final(collection) {
  * @memberof module:xdcore
  * @param {(array|object|function|module:xdcore.ReducerObject)} collection A
  *     reducible collection or a reducer function.
- * @return {module:xdcore.ReducerObject} An object containing protocol
+ * @returns {module:xdcore.ReducerObject} An object containing protocol
  *     properties for `init`, `step`, and `final`. This object is suitable for
  *     use as a reducer object (one provided to
  *     `{@link module:xdcore.reduce|reduce}`). If the provided collection is not

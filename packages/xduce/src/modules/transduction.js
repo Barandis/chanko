@@ -18,8 +18,8 @@ import {
   isImplemented,
   iterator,
   isCompleted,
-  toReducer,
-  toFunction,
+  toReducer as xdcoreToReducer,
+  toFunction as xdcoreToFunction,
   reduce,
   isFunction,
   isArray,
@@ -596,6 +596,84 @@ function compose(...transducerFns) {
   const reversed = transducerFns.reverse();
   return value => reversed.reduce((acc, fn) => fn(acc), value);
 }
+
+/**
+ * Creates a reducer object from a function or from a reducible type (array,
+ * object, string, or object implementing the reducer protocols).
+ *
+ * To create a reducer for arrays, objects, or strings, simply pass an empty
+ * version of that collection to this function (e.g., `toReducer([])`).
+ *
+ * The notable use for this function though is to turn a reduction function into
+ * a reducer object. The function is a function of two parameters, an
+ * accumulator and a value, and returns the accumulator with the value in it.
+ * This is exactly the same kind of function that is passed to reduction
+ * functions like JavaScript's `Array.prototype.reduce` and Lodash's `_.reduce`.
+ *
+ * Note in particular that the output of this reducer does not need to be a
+ * collection. It can be anything. While transducing normally involves
+ * transforming one collection into another, it need not be so.
+ *
+ * This can be combined with transducers as well, as in this calculation of the
+ * sum of the *squares* of the collection values.
+ *
+ * ```
+ * import { toReducer, transduce, map } from "@chanko/xduce";
+ *
+ * const sumReducer = toReducer((acc, input) => acc + input);
+ * const sum = transduce([1, 2, 3, 4, 5], map(x => x * x), sumReducer, 0);
+ * console.log(sum);   // -> 55
+ * ```
+ *
+ * This function is defined in {@link module:xdcore|xdcore} and is re-exported
+ * here.
+ *
+ * @memberof module:xduce
+ * @function toReducer
+ * @see module:xdcore.toReducer
+ * @param {(array|object|function|module:xdcore.ReducerObject)} collection A
+ *     reducible collection or a reducer function.
+ * @returns {module:xdcore.ReducerObject} An object containing protocol
+ *     properties for `init`, `step`, and `final`. This object is suitable for
+ *     use as a reducer object (one provided to
+ *     `{@link module:xdcore.reduce|reduce}`). If the provided collection is not
+ *     reducible, all of the properties of this object will be `null`.
+ */
+const toReducer = xdcoreToReducer; // done this way for documentation
+
+/**
+ * Creates a reducer function from a transducer function and a reducer.
+ *
+ * This produces a function that's suitable for being passed into other
+ * libraries' reduce functions, such as JavaScript's `Array.prototype.reduce` or
+ * Lodash's `_.reduce`. It requires both a transducer *and* a reducer because
+ * reduction functions for those libraries must know how to reduce as well as
+ * how to transform. The reducer can be a standard reducer object like the ones
+ * sent to `{@link module:xdcore.reduce|reduce}`, or it can be a plain function
+ * that takes two parameters and returns the result of reducing the second
+ * parameter into the first (i.e., a reducer function).
+ *
+ * If there is no need for a transformation, then pass in the
+ * `{@link module:xduce.identity|identity}` transducer.
+ *
+ * This function is defined in {@link module:xdcore|xdcore} and is re-exported
+ * here.
+ *
+ * @memberof module:xduce
+ * @function toFunction
+ * @see module:xdcore.toFunction
+ * @param {module:xdcore.TransducerFunction} transducerFn A transducer function
+ *     that wraps a transducer object whose `step` function will be used as a
+ *     reducer function.
+ * @param {(module:xdcore.StepFunction|module:xdcore.ReducerObject)} reducer A
+ *     reducer that knows how to reduce values into an output collection. This
+ *     can either be a reducing function or a reducer object whose `step`
+ *     function knows how to perform this reduction.
+ * @returns {module:xdcore.StepFunction} A reducer function that will transform
+ *     elements via the transducer function and then reduce them into whatever
+ *     kind of collection the reducer implements.
+ */
+const toFunction = xdcoreToFunction; // done this way for documentation
 
 export {
   transduce,
