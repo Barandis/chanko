@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>csp/src/modules/queue.js - Documentation</title>
+    <title>xduce/src/modules/take.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">csp/src/modules/queue.js</h1>
+    <h1 class="page-title">xduce/src/modules/take.js</h1>
     
 
     
@@ -52,206 +52,173 @@
  */
 
 /**
- * Provides an efficient general-purpose queue.
+ * Transducers for dropping some number of elements at the end of a collection.
  *
- * @module csp/queue
+ * @module xduce/take
  * @private
  */
 
-/**
- * A general purpose, highly efficient JavaScript queue. It is backed by a
- * JavaScript array, but it does not use `unshift` to take elements off the
- * array because unshift causes elements to be copied every time it's used.
- * Instead, a pointer is maintained that keeps track of the location of the next
- * element to be dequeued, and when that dequeue happens, the pointer simply
- * moves. When the empty space at the head of the array gets large enough, it's
- * removed by a single slice operation.
- *
- * Putting elements into the queue is just done with a basic `push`, which *is*
- * highly efficient.
- *
- * This type of queue is possible in JavaScript because JS arrays are resizable.
- * In languages with fixed-size arrays, a resizing operation would have to be
- * run each time the queue fills.
- *
- * @namespace Queue
- * @private
- */
+import { protocols as p, toTransducer, ensureCompleted } from "@chanko/xdcore";
+import { parseNumberArgs, parseFunctionArgs } from "modules/utils";
+import { sequence } from "modules/transduction";
 
 /**
- * The value returned when a queue is read when it's empty.
+ * Creates a new collection containing only the first `n` elements of the input
+ * collection.
  *
- * This special value is used because `null` and `undefined` are possible
- * legitimate values that can be stored in a queue. Another option is to use
- * some kind of `Maybe` or `Option` type, but that requires more effort on the
- * part of the end user to interface with.
+ * Note that this is an excellent way to turn an 'infinite' collection - one
+ * that doesn't have a well-defined end, like a stream, channel, or infinite
+ * generator - into a finite collection.
  *
- * @type {Symbol}
- * @memberof module:csp
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * // An iterator that will return every positive integer, one at a time
+ * function* naturals() {
+ *   let x = 1;
+ *   while (true) {
+ *     yield x++;
+ *   }
+ * }
+ *
+ * const result = take(naturals(), 3);
+ * // result is now an iterator that has only three values in it
+ * console.log(result.next().value);  // -> 1
+ * console.log(result.next().value);  // -> 2
+ * console.log(result.next().value);  // -> 3
+ * console.log(result.next().done);   // -> true
+ * ```
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @param {number} n The number of elements at the beginning of the input
+ *     collection that should be kept in the output collection.
+ * @returns {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type containing only the first `n` elements. If no collection is
+ *     supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
  */
-const EMPTY = Symbol("EMPTY");
+function take(collection, n) {
+  const [col, num] = parseNumberArgs(collection, n);
+  return col
+    ? sequence(col, take(num))
+    : next => {
+        let i = 0;
+        return toTransducer((acc, value) => {
+          let result = acc;
 
-/**
- * A marker property name to indicate that an object is in fact a queue.
- *
- * A queue has a property with this name whose readonly value is set to `true`.
- * This is not meant to be read except by the
- * `{@link module:queue.isQueue|isQueue}` function.
- *
- * @type {Symbol}
- * @private
- */
-const QUEUE = Symbol("QUEUE");
-
-/**
- * Determines whether an object is a queue.
- *
- * @param {*} obj The object to be tested.
- * @return {boolean} Either `true` if the object is a queue or `false` if it is
- * not.
- */
-function isQueue(obj) {
-  return !!obj?.[QUEUE];
+          if (i &lt; num) {
+            result = next[p.step](acc, value);
+            if (i === num - 1) {
+              result = ensureCompleted(result);
+            }
+          }
+          i++;
+          return result;
+        }, next);
+      };
 }
 
 /**
- * Creates a new queue. This queue is created empty, with a backing array of
- * length 0.
+ * Creates a new collection containing the elements of the input collection up
+ * until the first one that causes a predicate function to return `false`.
  *
- * @memberof module:csp/queue
- * @returns {module:csp/queue~Queue} A new, empty queue.
- * @private
+ * While this is similar to `{@link module:xduce.filter|filter}`, there is one
+ * key difference. `takeWhile` will not add any further elements to a collection
+ * once the first fails the predicate, including later elements that might pass
+ * the predicate. `{@link module:xduce.filter|filter}`, on the other hand, will
+ * continue to add those later elements. Therefore `takeWhile` will convert an
+ * infinite collection to a finite one while
+ * `{@link module:xduce.filter|filter}` cannot.
+ *
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * const array = [2, 4, 6, 8, 1, 3, 5, 7, 9, 10];
+ * const even = x => x % 2 === 0;
+ *
+ * let result = takeWhile(array, even);
+ * console.log(result);  // -> [2, 4, 6, 8];
+ *
+ * // This shows the difference between takeWhile and filter with the same 
+ * // parameters
+ * result = filter(array, even);
+ * console.log(result);  // -> [2, 4, 6, 8, 10];
+ * ```
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @param {function} fn A predicate function. This takes each element of the
+ *     input collection and returns `true` or `false` based on that element. The
+ *     first one to return `false` is the first element of the input collection
+ *     that does *not* appear in the output collection.
+ * @returns {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type with some of the elements of the input collection dropped. If
+ *     no collection is supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
  */
-function queue() {
-  return Object.create(null, {
-    store: {
-      value: [],
-      writable: true
-    },
-
-    pointer: {
-      value: 0,
-      writable: true
-    },
-
-    [QUEUE]: {
-      value: true
-    }
-  });
+function takeWhile(collection, fn) {
+  const [col, func] = parseFunctionArgs(collection, fn);
+  return col
+    ? sequence(col, takeWhile(func))
+    : next =>
+        toTransducer(
+          (acc, value) =>
+            func(value) ? next[p.step](acc, value) : ensureCompleted(acc),
+          next
+        );
 }
 
 /**
- * Returns the number of elements stored in a queue. This may or may not equal
- * the length of the backing store, as there is often empty space at the head of
- * the backing store.
+ * Creates a new collection consisting of the first element of the input
+ * collection, and then every `n`th element after that.
  *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue whose items are being
- *     counted.
- * @return {number} The number of items in the queue.
- * @private
+ * Note that unlike `{@link module:xduce.take|take}` and
+ * `{@link module:xduce.takeWhile|takeWhile}`, this function is not capable of
+ * returning a finite collection when given an infinite collection.
+ *
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
+ *
+ * ```
+ * const result = takeNth([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3);
+ * console.log(result);  // -> [1, 4, 7, 10]
+ * ```
+ *
+ * @memberof module:xduce
+ * @param {module:xduce.Collection} [collection] An optional input collection
+ *     that is to be transduced.
+ * @param {number} n The skip value. Every `n`th element of the input
+ *     collection, after the first, will be a part of the output collection.
+ * @return {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
+ *     collection is supplied, then the function returns a new collection of the
+ *     same type containing only every `n` elements. If no collection is
+ *     supplied, a transducer function, suitable for passing to
+ *     `{@link module:xduce.sequence|sequence}`,
+ *     `{@link module:xduce.into|into}`, etc. is returned.
  */
-function count(queue) {
-  return queue.store.length - queue.pointer;
+function takeNth(collection, n) {
+  const [col, num] = parseNumberArgs(collection, n);
+  return col
+    ? sequence(col, takeNth(num))
+    : next => {
+        let i = -1;
+        return toTransducer(
+          (acc, value) => (++i % num === 0 ? next[p.step](acc, value) : acc),
+          next
+        );
+      };
 }
 
-/**
- * Determines whether a queue is empty.
- *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue being checked for emptiness.
- * @return {boolean} Either `true` if the queue is empty or `false` if it is
- *     not.
- * @private
- */
-function isEmpty(queue) {
-  return queue.store.length === 0;
-}
-
-/**
- * Adds an item to a queue.
- *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue which is having an item added
- *     to it.
- * @param {*} item The item being added to the queue.
- * @private
- */
-function enqueue(queue, item) {
-  queue.store.push(item);
-}
-
-/**
- * Removes an item from a queue and returns that item. If the removal causes the
- * amount of empty space at the head of the backing store to exceed a threshold,
- * that empty space is removed.
- *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue whose oldest item is to be
- *     removed.
- * @return {*} The oldest stored item in the queue.
- * @private
- */
-function dequeue(queue) {
-  if (queue.store.length === 0) {
-    return EMPTY;
-  }
-
-  const item = queue.store[queue.pointer];
-  // Removes the items in the backing store before the current pointer, if there
-  // is enough "empty" space before the pointer to justify it (i.e., the unused
-  // portion is at least half as large as the used portion)
-  if (++queue.pointer * 2 >= queue.store.length) {
-    queue.store = queue.store.slice(queue.pointer);
-    queue.pointer = 0;
-  }
-  return item;
-}
-
-/**
- * Returns the next item in a queue without removing it.
- *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue whose oldest item is to be
- *     peeked at.
- * @return {*} The oldest item stored in the queue.
- * @private
- */
-function peek(queue) {
-  return queue.store.length === 0 ? EMPTY : queue.store[queue.pointer];
-}
-
-/**
- * Filters out any item in a queue that does not cause the supplied predicate
- * function to return `true` when passed that item. This is not exactly a
- * general purpose queue operation, but we need it with channels that will
- * occasionally want to get rid of inactive handlers.
- *
- * @memberof module:csp/queue
- * @param {module:csp/queue~Queue} queue The queue being filtered.
- * @param {function} fn The predicate function that determines whether an
- *     element remains in the queue.
- */
-function filter(queue, predicate) {
-  for (let i = 0, end = count(queue); i &lt; end; i++) {
-    const item = dequeue(queue);
-    if (predicate(item)) {
-      enqueue(queue, item);
-    }
-  }
-}
-
-export {
-  EMPTY,
-  queue,
-  isQueue,
-  count,
-  isEmpty,
-  enqueue,
-  dequeue,
-  peek,
-  filter
-};
+export { take, takeWhile, takeNth };
 </code></pre>
         </article>
     </section>

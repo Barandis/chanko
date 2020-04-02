@@ -24,18 +24,18 @@ import { sequence } from "modules/transduction";
  * there is no desire to do an actual transformation. The "transformation"
  * implemented here is to pass each element through exactly as it is.
  *
- * If no collection is provided, a function is returned that can be passed to
- * `{@link module:xduce.sequence|sequence}`, et al.
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
  *
  * ```
  * const result = identity([1, 2, 3, 4, 5]);
- * console.log(result);   // -> [1, 2, 3, 4, 5]
+ * console.log(result);  // -> [1, 2, 3, 4, 5]
  * ```
  *
  * @memberof module:xduce
  * @param {module:xduce.Collection} [collection] An optional input collection
  *     that is to be transduced.
- * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ * @returns {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
  *     collection is supplied, then the function returns a new collection of the
  *     same type with all of the elements of the input collection untouched. If
  *     no collection is supplied, a transducer function, suitable for passing to
@@ -61,21 +61,21 @@ function identity(collection) {
  * Since there aren't sub-collections in objects, strings, or iterators,
  * `flatten` doesn't make sense with those types of collections.
  *
- * If no collection is provided, a function is returned that can be passed to
- * `{@link module:xduce.sequence|sequence}`, et al.
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
  *
  * ```
  * const result = flatten([[1, 2], [3, 4, 5], 6, [7]]);
- * console.log(reuslt);   // -> [1, 2, 3, 4, 5, 6, 7]
+ * console.log(reuslt);  // -> [1, 2, 3, 4, 5, 6, 7]
  *
  * const result = flatten([[1, 2], [3, [4, 5]], 6, [7]]);
- * console.log(reuslt);   // -> [1, 2, 3, [4, 5], 6, 7]
+ * console.log(reuslt);  // -> [1, 2, 3, [4, 5], 6, 7]
  * ```
  *
- * @memberof module:xduce.transducers
+ * @memberof module:xduce
  * @param {module:xduce.Collection} [collection] An optional input collection
  *     that is to be transduced.
- * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ * @returns {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
  *     collection is supplied, then the function returns a new collection of the
  *     same type with all of the elements of the input collection flattened. If
  *     no collection is supplied, a transducer function, suitable for passing to
@@ -106,12 +106,12 @@ function flatten(collection) {
  * subcollections. In other words, each input element creates `n` output
  * elements.
  *
- * If no collection is provided, a function is returned that can be passed to
- * `{@link module:xduce.sequence|sequence}`, et al.
+ * If no collection is provided, a transducer function is returned that can be
+ * passed to `{@link module:xduce.sequence|sequence}`, et al.
  *
  * ```
  * const result = repeat([1, 2, 3, 4, 5], 3);
- * console.log(result);   // -> [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
+ * console.log(result);  // -> [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
  * ```
  *
  * @memberof module:xduce
@@ -119,7 +119,7 @@ function flatten(collection) {
  *     that is to be transduced.
  * @param {number} n The number of times that each element from the input
  *     collection should be repeated in the output collection.
- * @return {(module:xduce.Collection|module:xduce.TransducerFunction)} If a
+ * @returns {(module:xduce.Collection|module:xdcore.TransducerFunction)} If a
  *     collection is supplied, then the function returns a new collection of the
  *     same type with all of the elements of the input collection repeated. If
  *     no collection is supplied, a transducer function, suitable for passing to
