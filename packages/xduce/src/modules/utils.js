@@ -86,7 +86,7 @@ function parseFunctionArgs(collection, fn) {
  *
  * @memberof module:xduce
  * @param {object} obj The object whose first property is returned.
- * @return {module:xduce-tools.PropertyObject} The property as a two-property object.
+ * @return {module:xduce.PropertyObject} The property as a two-property object.
  */
 function kv(obj) {
   const key = Object.keys(obj)[0];

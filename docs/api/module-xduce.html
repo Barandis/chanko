@@ -1048,7 +1048,7 @@ input collection elements.</p>
 
     
 
-    <h4 class="name" id=".complement"><span class="type-signature">(static) </span>complement<span class="signature">(fn)</span><span class="type-signature"> &rarr; {module:xduce.PredicateFunction}</span></h4>
+    <h4 class="name" id=".complement"><span class="type-signature">(static) </span>complement<span class="signature">(fn)</span><span class="type-signature"> &rarr; {<a href="module-xduce.html#.PredicateFunction">module:xduce.PredicateFunction</a>}</span></h4>
 
     
 
@@ -1145,7 +1145,7 @@ returns the opposite of the original function.</p>
             <td class="type">
             
                 
-<span class="param-type">module:xduce.PredicateFunction</span>
+<span class="param-type"><a href="module-xduce.html#.PredicateFunction">module:xduce.PredicateFunction</a></span>
 
 
             
@@ -1193,7 +1193,7 @@ the opposite value as the supplied function.</p>
     </dt>
     <dd>
         
-<span class="param-type">module:xduce.PredicateFunction</span>
+<span class="param-type"><a href="module-xduce.html#.PredicateFunction">module:xduce.PredicateFunction</a></span>
 
 
     </dd>
@@ -2048,7 +2048,7 @@ access parts of the single-property objects that they emit.</p>
 
     
 
-    <h4 class="name" id=".kv"><span class="type-signature">(static) </span>kv<span class="signature">(obj)</span><span class="type-signature"> &rarr; {module:xduce-tools.PropertyObject}</span></h4>
+    <h4 class="name" id=".kv"><span class="type-signature">(static) </span>kv<span class="signature">(obj)</span><span class="type-signature"> &rarr; {<a href="module-xduce.html#.PropertyObject">module:xduce.PropertyObject</a>}</span></h4>
 
     
 
@@ -2209,7 +2209,7 @@ console.log(property(value));   // -> { k: &quot;b&quot;, v: 3 }
     </dt>
     <dd>
         
-<span class="param-type">module:xduce-tools.PropertyObject</span>
+<span class="param-type"><a href="module-xduce.html#.PropertyObject">module:xduce.PropertyObject</a></span>
 
 
     </dd>
@@ -3384,6 +3384,326 @@ aren't necessary because the values they would provide are explicitly passed.</p
 
 
             
+                
+
+    
+
+    <h4 class="name" id=".PredicateFunction"><span class="type-signature"></span>PredicateFunction<span class="signature">(&hellip;args)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xduce_src_index.js.html">xduce/src/index.js</a>, <a href="xduce_src_index.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>A function which takes some number of arguments and returns <code>true</code> or <code>false</code>
+when applied to those arguments depending on the rules that the function
+implements.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The arguments passed to the function. The number and
+types of these arguments vary depending on what the function is doing.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Either <code>true</code> or <code>false</code> depending on whether the
+arguments pass whatever test the function is specifying.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+            
+                
+<h4 class="name" id=".PropertyObject">PropertyObject</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xduce_src_index.js.html">xduce/src/index.js</a>, <a href="xduce_src_index.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>k</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Symbol</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The key of the property represented by this
+object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>v</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value of the property represented by this object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>An object reporesenting a single property on another object. One of these
+objects will have two keys: <code>k</code>, which represents the key of one of the
+other project's properties, and <code>v</code>, which represents the value. This is the
+format output by convenience functions that make it easier to work with
+objects in transducers.</p>
+</div>
+
+
+
+
+
+
+
+
+            
     
 
     
@@ -3401,7 +3721,7 @@ aren't necessary because the values they would provide are explicitly passed.</p
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Apr 02 2020 06:30:08 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Apr 02 2020 10:05:52 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

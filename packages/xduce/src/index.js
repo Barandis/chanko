@@ -52,3 +52,30 @@ export { unique, uniqueBy, uniqueWith } from "modules/unique";
  *     function that accepts a collection and returns the same collection with
  *     any final modifications that might be necessary for it.
  */
+
+/**
+ * An object reporesenting a single property on another object. One of these
+ * objects will have two keys: `k`, which represents the key of one of the
+ * other project's properties, and `v`, which represents the value. This is the
+ * format output by convenience functions that make it easier to work with
+ * objects in transducers.
+ *
+ * @typedef PropertyObject
+ * @memberof module:xduce
+ * @property {(string|Symbol)} k The key of the property represented by this
+ *     object.
+ * @property {*} v The value of the property represented by this object.
+ */
+
+/**
+ * A function which takes some number of arguments and returns `true` or `false`
+ * when applied to those arguments depending on the rules that the function
+ * implements.
+ *
+ * @callback PredicateFunction
+ * @memberof module:xduce
+ * @param {...*} args The arguments passed to the function. The number and
+ *     types of these arguments vary depending on what the function is doing.
+ * @returns {boolean} Either `true` or `false` depending on whether the
+ *     arguments pass whatever test the function is specifying.
+ */
