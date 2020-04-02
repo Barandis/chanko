@@ -83,7 +83,7 @@
 
     
 
-    <h4 class="name" id=".asArray"><span class="type-signature">(static) </span>asArray<span class="signature">(collection, xform<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id=".asArray"><span class="type-signature">(static) </span>asArray<span class="signature">(collection, transducerFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {array}</span></h4>
 
     
 
@@ -95,7 +95,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line277">line 277</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -137,16 +137,16 @@
 <div class="description usertext">
     <p>Transforms the elements of the input collection and reduces them into a new
 array.</p>
-<p>The transformer is optional. If it isn't present, this function just converts
-the input collection into an array.</p>
+<p>The transducer function is optional. If it isn't present, this function just
+converts the input collection into an array.</p>
 <pre class="prettyprint source"><code>import { asArray, map } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x + 1);
+const transducerFn = map(x => x + 1);
 
-let result = asArray([1, 2, 3, 4, 5], xform);
+let result = asArray([1, 2, 3, 4, 5], transducerFn);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
-result = asArray('12345', xform);
+result = asArray('12345', transducerFn);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
 result = asArray('12345');
@@ -200,7 +200,13 @@ console.log(result);   // -> [{ a: 1 }, { b: 2 }]
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -218,23 +224,23 @@ console.log(result);   // -> [{ a: 1 }, { b: 2 }]
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterable</code>
-protocol. Special support is provided by the library for objects, so they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and objects, so they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -254,12 +260,12 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-<a href="module-xduce.html">xduce</a> module can produce a suitable transducer
-function. If this isn't present, the input collection will simply be
-reduced into an array without transformation.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function. If this isn't present, the
+input collection will simply be reduced into an array without
+transformation.</p></td>
         </tr>
 
     
@@ -297,7 +303,7 @@ input collection elements.</p>
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">array</span>
 
 
     </dd>
@@ -312,7 +318,7 @@ input collection elements.</p>
 
     
 
-    <h4 class="name" id=".asIterator"><span class="type-signature">(static) </span>asIterator<span class="signature">(collection, xform<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:xduce-tools.Iterator}</span></h4>
+    <h4 class="name" id=".asIterator"><span class="type-signature">(static) </span>asIterator<span class="signature">(collection, transducerFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="external-Iterator.html">external:Iterator</a>}</span></h4>
 
     
 
@@ -324,7 +330,7 @@ input collection elements.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line432">line 432</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line418">line 418</a>
     </li></ul></dd>
     
 
@@ -366,24 +372,24 @@ input collection elements.</p>
 <div class="description usertext">
     <p>Transforms the elements of the input collection and reduces them into a new
 iterator.</p>
-<p>The transformer is optional. If it isn't present, this function just converts
-the input collection into an iterator.</p>
+<p>The transducer function is optional. If it isn't present, this function just
+converts the input collection into an iterator.</p>
 <p><em>(The results here are shown passed through <code>asArray</code> because there's no
 printable representation of an iterator to show. The <code>asArray</code> calls are for
 demonstration purposes only.)</em></p>
 <pre class="prettyprint source"><code>import { asIterator, asArray, map } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x + 1);
+const transducerFn = map(x => x + 1);
 function* five() {
   for (let i = 1; i &lt;= 5; ++i) {
     yield i;
   }
 };
 
-let result = asIterator(five(), xform);
+let result = asIterator(five(), transducerFn);
 console.log(asArray(result));   // -> [2, 3, 4, 5, 6]
 
-result = asIterator([1, 2, 3, 4, 5], xform);
+result = asIterator([1, 2, 3, 4, 5], transducerFn);
 console.log(asArray(result));   // -> [2, 3, 4, 5, 6]
 
 result = asIterator([1, 2, 3, 4, 5]);
@@ -437,7 +443,13 @@ console.log(asArray(result));   // -> [{ a: 1 }, { b: 2 }]
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -455,23 +467,23 @@ console.log(asArray(result));   // -> [{ a: 1 }, { b: 2 }]
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterable</code>
-protocol. Special support is provided by the library for objects, so they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and objects, so they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -491,12 +503,12 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-transducers module can produce a suitable
-transducer function. If this isn't present, the input collection will
-simply be reduced into an iterator without transformation.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function. If this isn't present, the
+input collection will simply be reduced into an iterator without
+transformation.</p></td>
         </tr>
 
     
@@ -534,7 +546,7 @@ values from the input collection elements.</p>
     </dt>
     <dd>
         
-<span class="param-type">module:xduce-tools.Iterator</span>
+<span class="param-type"><a href="external-Iterator.html">external:Iterator</a></span>
 
 
     </dd>
@@ -549,7 +561,7 @@ values from the input collection elements.</p>
 
     
 
-    <h4 class="name" id=".asObject"><span class="type-signature">(static) </span>asObject<span class="signature">(collection, xform<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".asObject"><span class="type-signature">(static) </span>asObject<span class="signature">(collection, transducerFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
@@ -561,7 +573,7 @@ values from the input collection elements.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line329">line 329</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line314">line 314</a>
     </li></ul></dd>
     
 
@@ -603,8 +615,8 @@ values from the input collection elements.</p>
 <div class="description usertext">
     <p>Transforms the elements of the input collection and reduces them into a new
 object.</p>
-<p>The transformer is optional. If it isn't present, this function just converts
-the input collection into an object. When this happens, if the input
+<p>The transducer function is optional. If it isn't present, this function just
+converts the input collection into an object. When this happens, if the input
 collection is not an object or an array of objects, numbers starting at <code>0</code>
 will be used as keys for the values provided by the input collection.</p>
 <pre class="prettyprint source"><code>import { asObject, kv, map } from &quot;@chanko/xduce&quot;;
@@ -613,12 +625,12 @@ const fn = prop => {
   const { k, v } = kv(prop);
   return { [k]: v + 1 };
 }
-const xform = map(fn);
+const transducerFn = map(fn);
 
-let result = asObject({ a: 1, b: 2 }, xform);
+let result = asObject({ a: 1, b: 2 }, transducerFn);
 console.log(result);   // -> { a: 2, b: 3 }
 
-result = asObject([{ a: 1 }, { b: 2 }], xform);
+result = asObject([{ a: 1 }, { b: 2 }], transducerFn);
 console.log(result);   // -> { a: 2, b: 3 }
 
 result = asObject([1, 2, 3, 4, 5]);
@@ -675,7 +687,13 @@ console.log(result);   // -> { 0: &quot;h&quot;, 1: &quot;e&quot;, 2: &quot;l&qu
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -693,23 +711,23 @@ console.log(result);   // -> { 0: &quot;h&quot;, 1: &quot;e&quot;, 2: &quot;l&qu
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterable</code>
-protocol. Special support is provided by the library for objects, so they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and objects, so they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Tranducer</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -729,12 +747,12 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a transducer
-object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-<a href="module-xduce.html">xduce</a> module can produce a suitable transducer
-function. If this isn't present, the input collection will simply be
-reduced into an object without transformation.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this
+module can produce a suitable transducer function. If this isn't present,
+the input collection will simply be reduced into an object without
+transformation.</p></td>
         </tr>
 
     
@@ -772,7 +790,7 @@ input collection elements.</p>
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -787,7 +805,7 @@ input collection elements.</p>
 
     
 
-    <h4 class="name" id=".asString"><span class="type-signature">(static) </span>asString<span class="signature">(collection, xform<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id=".asString"><span class="type-signature">(static) </span>asString<span class="signature">(collection, transducerFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -799,7 +817,7 @@ input collection elements.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line380">line 380</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line366">line 366</a>
     </li></ul></dd>
     
 
@@ -841,20 +859,21 @@ input collection elements.</p>
 <div class="description usertext">
     <p>Transforms the elements of the input collection and reduces them into a new
 string.</p>
-<p>The transformer is optional. If it isn't present, this function just converts
-the input collection into an string. If this is the case and the input
-collection is an object, only the values will be concatenated into a string.</p>
+<p>The transducer function is optional. If it isn't present, this function just
+converts the input collection into an string. If this is the case and the
+input collection is an object, only the values will be concatenated into a
+string.</p>
 <p>Otherwise, transforming objects into strings only makes much sense if the
 transducer produces only a single output from each of the objects key/value
 pairs.</p>
 <pre class="prettyprint source"><code>import { transduce, key, map } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x.toUpperCase());
+const transducerFn = map(x => x.toUpperCase());
 
-let result = asString('hello', xform);
+let result = asString('hello', transducerFn);
 console.log(result);   // -> &quot;HELLO&quot;
 
-result = asString(['h', 'e', 'l', 'l', 'o'], xform);
+result = asString(['h', 'e', 'l', 'l', 'o'], transducerFn);
 console.log(result);   // -> &quot;HELLO&quot;
 
 result = asString({ a: 1, c: 2, b: 3 }, map(key));
@@ -911,7 +930,13 @@ console.log(result);   // -> &quot;123&quot;
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -929,23 +954,23 @@ console.log(result);   // -> &quot;123&quot;
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterable</code>
-protocol. Special support is provided by the library for objects, so they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and objects, so they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -965,12 +990,12 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-transducers module can produce a suitable
-transducer function. If this isn't present, the input collection will
-simply be reduced into a string without transformation.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function. If this isn't present, the
+input collection will simply be reduced into a string without
+transformation.</p></td>
         </tr>
 
     
@@ -1008,7 +1033,7 @@ input collection elements.</p>
     </dt>
     <dd>
         
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -1183,7 +1208,7 @@ the opposite value as the supplied function.</p>
 
     
 
-    <h4 class="name" id=".compose"><span class="type-signature">(static) </span>compose<span class="signature">(&hellip;fns)</span><span class="type-signature"> &rarr; {module:xduce-tools.TransducerFunction}</span></h4>
+    <h4 class="name" id=".compose"><span class="type-signature">(static) </span>compose<span class="signature">(&hellip;fns)</span><span class="type-signature"> &rarr; {<a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a>}</span></h4>
 
     
 
@@ -1195,7 +1220,7 @@ the opposite value as the supplied function.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line608">line 608</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line595">line 595</a>
     </li></ul></dd>
     
 
@@ -1245,16 +1270,15 @@ transducer function that does what all of them do.</p>
 that the first-executed function is listed last. This is done in the opposite
 way, with the first transducer executing first, etc. This is a more natural
 ordering for transducer functions because there is a very real directional
-pull of elements through a chain of composed transducer functions.</p>
-<pre class="prettyprint source"><code>import { compose, sequence } from &quot;@chanko/xduce&quot;;
-import { map, filter, take } from &quot;@chanko/transducers&quot;;
+pull of elements through a chain of composed transducers.</p>
+<pre class="prettyprint source"><code>import { compose, sequence, map, filter, take } from &quot;@chanko/xduce&quot;;
 
 const add1 = x => x + 1;
 const odd = x => x % 2 !== 0;
 
-const xform = compose(map(add1), filter(odd), take(3));
+const transducerFn = compose(map(add1), filter(odd), take(3));
 
-const result = sequence([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], xform);
+const result = sequence([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], transducerFn);
 console.log(result);   // -> [3, 5, 7];
 </code></pre>
 </div>
@@ -1302,7 +1326,7 @@ console.log(result);   // -> [3, 5, 7];
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -1322,11 +1346,9 @@ console.log(result);   // -> [3, 5, 7];
 
             
 
-            <td class="description last"><p>One or more function that each
-create a transducer object that defines the transformation being done to
-a collection's elements. Any of the transducers in the
-<a href="module-xduce.html">xduce</a> module can produce a suitable transducer
-function.</p></td>
+            <td class="description last"><p>One or more transducer
+functions to be composed into a single transducer function. Any of the
+transducers in this module can produce a suitable transducer function.</p></td>
         </tr>
 
     
@@ -1365,7 +1387,7 @@ objects produced by the input transducer functions.</p>
     </dt>
     <dd>
         
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
     </dd>
@@ -1380,7 +1402,7 @@ objects produced by the input transducer functions.</p>
 
     
 
-    <h4 class="name" id=".identity"><span class="type-signature">(static) </span>identity<span class="signature">(collection<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:xduce.Collection|module:xduce.TransducerFunction}</span></h4>
+    <h4 class="name" id=".identity"><span class="type-signature">(static) </span>identity<span class="signature">(collection<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-xduce.html#.Collection">module:xduce.Collection</a>|module:xduce.TransducerFunction}</span></h4>
 
     
 
@@ -1486,7 +1508,7 @@ console.log(result);   // -> [1, 2, 3, 4, 5]
             <td class="type">
             
                 
-<span class="param-type">module:xduce.Collection</span>
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 
 
             
@@ -1549,7 +1571,7 @@ no collection is supplied, a transducer function, suitable for passing to
     </dt>
     <dd>
         
-<span class="param-type">module:xduce.Collection</span>
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 |
 
 <span class="param-type">module:xduce.TransducerFunction</span>
@@ -1567,7 +1589,7 @@ no collection is supplied, a transducer function, suitable for passing to
 
     
 
-    <h4 class="name" id=".into"><span class="type-signature">(static) </span>into<span class="signature">(target, collection, xform<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {module:xduce-tools.Reducible}</span></h4>
+    <h4 class="name" id=".into"><span class="type-signature">(static) </span>into<span class="signature">(target, collection, transducerFn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {array|object|string|<a href="module-xdcore.html#.Reducible">module:xdcore.Reducible</a>}</span></h4>
 
     
 
@@ -1579,7 +1601,7 @@ no collection is supplied, a transducer function, suitable for passing to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line555">line 555</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line545">line 545</a>
     </li></ul></dd>
     
 
@@ -1624,25 +1646,25 @@ target collection.</p>
 <p>This is much like <code><a href="module-xduce.html#.transduce">transduce</a></code>, except that
 instead of explicitly providing a reducer (and perhaps an initial
 collection), the target collection acts as a reducer itself. This requires
-that the collection implement the <code>init</code>, <code>result</code>, and <code>step</code> transducer
+that the collection implement the <code>init</code>, <code>result</code>, and <code>step</code> reducer
 protocol functions.</p>
 <p>If no transducer function is provided, the input collection elements are
 reduced into the target collection without being transformed. This can be
 used to convert one kind of collection into another.</p>
 <pre class="prettyprint source"><code>import { into, map } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x + 1);
+const transducerFn = map(x => x + 1);
 
-let result = into([], [1, 2, 3, 4, 5], xform);
+let result = into([], [1, 2, 3, 4, 5], transducerFn);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
-result = into(&quot;&quot;, [1, 2, 3, 4, 5], xform);
+result = into(&quot;&quot;, [1, 2, 3, 4, 5], transducerFn);
 console.log(result);   // -> &quot;23456&quot;
 
-result = into([], &quot;12345&quot;, xform);
+result = into([], &quot;12345&quot;, transducerFn);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
-result = into(&quot;&quot;, &quot;12345&quot;, xform);
+result = into(&quot;&quot;, &quot;12345&quot;, transducerFn);
 console.log(result);   // -> &quot;23456&quot;
 </code></pre>
 </div>
@@ -1690,7 +1712,16 @@ console.log(result);   // -> &quot;23456&quot;
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Reducible</span>
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="module-xdcore.html#.Reducible">module:xdcore.Reducible</a></span>
 
 
             
@@ -1708,11 +1739,12 @@ console.log(result);   // -> &quot;23456&quot;
 
             
 
-            <td class="description last"><p>The collection into which all of the
-transformed input collection elements will be reduced. This collection
-must implement the <code>init</code>, <code>result</code>, and <code>step</code> protocol functions from
-the transducer protocol. Special support is provided for arrays, strings,
-and objects, so they need not implement the protocol.</p></td>
+            <td class="description last"><p>The collection
+into which all of the transformed input collection elements will be
+reduced. This collection must implement the <code>init</code>, <code>final</code>, and <code>step</code>
+protocol functions from the reducer protocol. Special support is provided
+for arrays, strings, and objects, so they need not implement the
+protocol.</p></td>
         </tr>
 
     
@@ -1725,7 +1757,13 @@ and objects, so they need not implement the protocol.</p></td>
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -1743,23 +1781,23 @@ and objects, so they need not implement the protocol.</p></td>
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterator</code>
-protocol. Special support is provided by the library for objects, to they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and objects, to they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -1779,12 +1817,12 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-<a href="module-xduce.html">xduce</a> mnodule can produce a suitable transducer
-function. If this isn't present, the input collection will simply be
-reduced into the target collection without transformation.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function. If this isn't present, the
+input collection will simply be reduced into the target collection
+without transformation.</p></td>
         </tr>
 
     
@@ -1810,8 +1848,9 @@ reduced into the target collection without transformation.</p></td>
 
         
 <div class="param-desc">
-    <p>The <code>target</code> collection, with all of the
-tranformed input collection elements reduced onto it.</p>
+    <p>The <code>target</code>
+collection, with all of the tranformed input collection elements reduced
+onto it.</p>
 </div>
 
 
@@ -1822,7 +1861,16 @@ tranformed input collection elements reduced onto it.</p>
     </dt>
     <dd>
         
-<span class="param-type">module:xduce-tools.Reducible</span>
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="module-xdcore.html#.Reducible">module:xdcore.Reducible</a></span>
 
 
     </dd>
@@ -2176,7 +2224,7 @@ console.log(property(value));   // -> { k: &quot;b&quot;, v: 3 }
 
     
 
-    <h4 class="name" id=".repeat"><span class="type-signature">(static) </span>repeat<span class="signature">(collection<span class="signature-attributes">opt</span>, n)</span><span class="type-signature"> &rarr; {module:xduce.Collection|module:xduce.TransducerFunction}</span></h4>
+    <h4 class="name" id=".repeat"><span class="type-signature">(static) </span>repeat<span class="signature">(collection<span class="signature-attributes">opt</span>, n)</span><span class="type-signature"> &rarr; {<a href="module-xduce.html#.Collection">module:xduce.Collection</a>|module:xduce.TransducerFunction}</span></h4>
 
     
 
@@ -2283,7 +2331,7 @@ console.log(result);   // -> [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5]
             <td class="type">
             
                 
-<span class="param-type">module:xduce.Collection</span>
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 
 
             
@@ -2378,7 +2426,7 @@ no collection is supplied, a transducer function, suitable for passing to
     </dt>
     <dd>
         
-<span class="param-type">module:xduce.Collection</span>
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 |
 
 <span class="param-type">module:xduce.TransducerFunction</span>
@@ -2396,7 +2444,7 @@ no collection is supplied, a transducer function, suitable for passing to
 
     
 
-    <h4 class="name" id=".sequence"><span class="type-signature">(static) </span>sequence<span class="signature">(collection, xform)</span><span class="type-signature"> &rarr; {module:xduce-tools.ReducibleIterable}</span></h4>
+    <h4 class="name" id=".sequence"><span class="type-signature">(static) </span>sequence<span class="signature">(collection, transducerFn)</span><span class="type-signature"> &rarr; {array|object|string|<a href="external-Iterator.html">external:Iterator</a>|<a href="module-xduce.html#.Collection">module:xduce.Collection</a>}</span></h4>
 
     
 
@@ -2408,7 +2456,7 @@ no collection is supplied, a transducer function, suitable for passing to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line487">line 487</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line475">line 475</a>
     </li></ul></dd>
     
 
@@ -2458,7 +2506,7 @@ into it. Additionally, unlike <code><a href="module-xduce.html#.into">into</a></
 <code><a href="module-xduce.html#.transduce">transduce</a></code>, this function is capable of
 producing an iterator (as long as the input is an iterator).</p>
 <p>The input collection must not only implement the <code>iterator</code> protocol (as in
-the last two functions) but also the <code>init</code>, <code>result</code>, and <code>step</code> transducer
+the last two functions) but also the <code>init</code>, <code>result</code>, and <code>step</code> reducer
 protocols. Special support is provided for arrays, strings, objects, and
 iterators, so they need not implement any protocol.</p>
 <p>The obvious limitation of this function is that the type of output collection
@@ -2466,12 +2514,12 @@ cannot be chosen. Since it is always the same as the input collection, this
 function cannot be used to convert a collection into a different type.</p>
 <pre class="prettyprint source"><code>import { sequence, map } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x + 1);
+const transducerFn = map(x => x + 1);
 
-let result = sequence([1, 2, 3, 4, 5], xform);
+let result = sequence([1, 2, 3, 4, 5], transducerFn);
 console.log(result);   // -> result = [2, 3, 4, 5, 6]
 
-result = sequence('12345', xform);
+result = sequence('12345', transducerFn);
 console.log(result);   // -> result = '23456'
 </code></pre>
 <p>These examples are identical to some of the examples from the <code>asX</code>
@@ -2520,7 +2568,19 @@ different input and output collection types.</p>
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.ReducibleIterable</span>
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="external-Iterator.html">external:Iterator</a></span>
+|
+
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 
 
             
@@ -2530,23 +2590,23 @@ different input and output collection types.</p>
 
             
 
-            <td class="description last"><p>The input collection. This
-must implement the <code>iterator</code>, <code>init</code>, <code>result</code>, and <code>step</code> protocols.
-Special support is provided for arrays, strings, objects, and iterators,
-so they do not have to implement any protocols.</p></td>
+            <td class="description last"><p>The input collection. This must implement the <code>iterator</code>,
+<code>init</code>, <code>result</code>, and <code>step</code> protocols. Special support is provided for
+arrays, strings, objects, and iterators, so they do not have to implement
+any protocols.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -2556,11 +2616,10 @@ so they do not have to implement any protocols.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-transducers module can produce a suitable
-transducer function.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function.</p></td>
         </tr>
 
     
@@ -2586,9 +2645,9 @@ transducer function.</p></td>
 
         
 <div class="param-desc">
-    <p>A collection of the same type as the
-input collection, containing all of the transformed values from the input
-collection elements.</p>
+    <p>A
+collection of the same type as the input collection, containing all of
+the transformed values from the input collection elements.</p>
 </div>
 
 
@@ -2599,7 +2658,19 @@ collection elements.</p>
     </dt>
     <dd>
         
-<span class="param-type">module:xduce-tools.ReducibleIterable</span>
+<span class="param-type">array</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="external-Iterator.html">external:Iterator</a></span>
+|
+
+<span class="param-type"><a href="module-xduce.html#.Collection">module:xduce.Collection</a></span>
 
 
     </dd>
@@ -2614,7 +2685,7 @@ collection elements.</p>
 
     
 
-    <h4 class="name" id=".transduce"><span class="type-signature">(static) </span>transduce<span class="signature">(collection, xform<span class="signature-attributes">opt</span>, reducer, init<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id=".transduce"><span class="type-signature">(static) </span>transduce<span class="signature">(collection, transducerFn, reducer, init<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
 
     
 
@@ -2626,7 +2697,7 @@ collection elements.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line231">line 231</a>
+        <a href="xduce_src_modules_transduction.js.html">xduce/src/modules/transduction.js</a>, <a href="xduce_src_modules_transduction.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -2674,52 +2745,38 @@ to be passed explicitly. This means that any kind of collection can be
 produced, since the reducer is not tied to the input collection in any way.</p>
 <p><code>transduce</code> also will accept an initial value for the resulting collection as
 the optional last parameter. If this parameter isn't present, then the
-initial value is determined from the transducer init protocol property on the
+initial value is determined from the reducer <code>init</code> protocol property on the
 reducer. Note however that many reducers may not provide an initial value,
 and in those cases it will <em>have</em> to be passed as a parameter.</p>
-<pre class="prettyprint source"><code>import { map, transduce } from &quot;@chanko/xduce&quot;;
-import { protocols as p } from &quot;@chanko/xduce-tools&quot;;
+<pre class="prettyprint source"><code>import { map, transduce, toReducer } from &quot;@chanko/xduce&quot;;
 
-const xform = map(x => x + 1);
+const transducerFn = map(x => x + 1);
 
-const arrayReducer = {
-  [p.init]() { return []; },
-  [p.final](x) { return x; },
-  [p.step](acc, x) {
-    acc.push(x);
-    return acc;
-  }
-};
+const arrayReducer = toReducer([]);
+const stringReducer = toReducer(&quot;&quot;);
 
-const stringReducer = {
-  [p.init]() { return ''; },
-  [p.final](x) { return x; },
-  [p.step](acc, x) { return acc + x; }
-};
-
-let result = transduce([1, 2, 3, 4, 5], xform, arrayReducer);
+let result = transduce([1, 2, 3, 4, 5], transducerFn, arrayReducer);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
-result = transduce([1, 2, 3, 4, 5], xform, stringReducer);
+result = transduce([1, 2, 3, 4, 5], transducerFn, stringReducer);
 console.log(result);   // -> &quot;23456&quot;
 
-result = transduce('12345', xform, arrayReducer);
+result = transduce('12345', transducerFn, arrayReducer);
 console.log(result);   // -> [2, 3, 4, 5, 6]
 
-result = transduce('12345', xform, stringReducer);
+result = transduce('12345', transducerFn, stringReducer);
 console.log(result);   // -> &quot;23456&quot;
 </code></pre>
 <p>These examples illustrate a number of important concepts. First of all, the
 transducer function is independent of the type of the collection; the same
 transducer function is used no matter the type of input or output
 collections. Secondly, two reducers are defined. These are objects that
-conform to the transducer protocol (see the documentation on
-<code>module:xduce-tools.protocols</code>) and that know how to produce the output
-collection of choice. In this case, the reducers know how to create new
-arrays and strings (the <code>init</code> protocol) and how to add elements to arrays
-and strings (the <code>step</code> protocol). Because these reducers do have <code>init</code>
-protocol properties, the <code>transduce</code> calls do not require explicit initial
-collections.</p>
+conform to the reducer protocol and that know how to produce the output
+collection of choice. In this case, the reducers are produced by the
+<code><a href="module-xdcore.html#.toReducer">toReducer</a></code>function that this module
+re-exports from the <a href="module-xdcore.html">xdcore</a> module. Because these
+reducers do have <code>init</code> protocol properties, the <code>transduce</code> calls do not
+require explicit initial collections.</p>
 <p>The final point is that <code>transduce</code> can accept any kind of iterable
 collection, and by passing in the proper reducer, it can produce any kind of
 output collection. The same <code>transduce</code> function and the same map transformer
@@ -2780,7 +2837,13 @@ as targets know how to reduce themselves already).</p>
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Iterable</span>
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type"><a href="external-Iterable.html">external:Iterable</a></span>
 
 
             
@@ -2798,23 +2861,23 @@ as targets know how to reduce themselves already).</p>
 
             
 
-            <td class="description last"><p>The input collection. The only
-requirement of this collection is that it implement the <code>iterable</code>
-protocol. Special support is provided by the library for objects, so they
-can also be used.</p></td>
+            <td class="description last"><p>The input collection.
+The only requirement of this collection is that it implement the
+<code>iterable</code> protocol. Special support is provided by the library for
+functions and plain objects, so they can also be used.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>xform</code></td>
+                <td class="name"><code>transducerFn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.TransducerFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.TransducerFunction">module:xdcore.TransducerFunction</a></span>
 
 
             
@@ -2822,8 +2885,6 @@ can also be used.</p></td>
 
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
 
                 
@@ -2834,11 +2895,10 @@ can also be used.</p></td>
 
             
 
-            <td class="description last"><p>A function that creates a
-transducer object that defines the transformation being done to the input
-collection's elements. Any of the transducers in the
-transducers module can produce a suitable
-transducer function.</p></td>
+            <td class="description last"><p>A function that
+creates a transducer object that defines the transformation being done to
+the input collection's elements. Any of the transducers in this module
+can produce a suitable transducer function.</p></td>
         </tr>
 
     
@@ -2851,10 +2911,10 @@ transducer function.</p></td>
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.StepFunction</span>
+<span class="param-type"><a href="module-xdcore.html#.StepFunction">module:xdcore.StepFunction</a></span>
 |
 
-<span class="param-type">module:xduce-tools.Reducer</span>
+<span class="param-type"><a href="module-xdcore.html#.ReducerObject">module:xdcore.ReducerObject</a></span>
 
 
             
@@ -2872,12 +2932,11 @@ transducer function.</p></td>
 
             
 
-            <td class="description last"><p>Either a
-function or a reducer object that implements the transducer protocols
-(<code>init</code> is  only required if the <code>init</code> parameter is not present). This
-object must know how to produce an output collection through its <code>step</code>
-and <code>result</code> protocol functions. If this parameter is a function, then it
-is turned into a valid reducer object.</p></td>
+            <td class="description last"><p>Either a function or a reducer object that implements the transducer
+protocols (<code>init</code> is  only required if the <code>init</code> parameter is not
+present). This object must know how to produce an output value through
+its <code>step</code> and <code>result</code> protocol functions. If this parameter is a
+function, then it is turned into a valid reducer object.</p></td>
         </tr>
 
     
@@ -2890,7 +2949,7 @@ is turned into a valid reducer object.</p></td>
             <td class="type">
             
                 
-<span class="param-type">module:xduce-tools.Reducible</span>
+<span class="param-type">*</span>
 
 
             
@@ -2910,11 +2969,11 @@ is turned into a valid reducer object.</p></td>
 
             
 
-            <td class="description last"><p>A collection of the same type as the
-output collection. If this is not present, then the reducer's <code>init</code>
-protocol function is called instead to get the initial collection. If it
-is present and not empty, then the existing elements remain and the
-transformed input collection elements are added to it.</p></td>
+            <td class="description last"><p>A value of the same type as the output value. If this is
+not present, then the reducer's <code>init</code> protocol function is called
+instead to get the initial collection. If it is present and not empty,
+then the existing elements remain and the transformed input collection
+elements are added to it.</p></td>
         </tr>
 
     
@@ -2940,9 +2999,9 @@ transformed input collection elements are added to it.</p></td>
 
         
 <div class="param-desc">
-    <p>A collection of a type determined by the passed reducer. The
-elements of this collection are the results from the transformer function
-being applied to each element of the input collection.</p>
+    <p>A value of a type determined by the passed reducer. This is
+usually a collection, but if the reducer produces a scalar value, then
+this will be a scalar value of that type.</p>
 </div>
 
 
@@ -3127,6 +3186,205 @@ access parts of the single-property objects that they emit.</p>
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Collection">Collection</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="xduce_src_index.js.html">xduce/src/index.js</a>, <a href="xduce_src_index.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Symbol.iterator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="external-Iterator.html">external:Iterator</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An iterator, according to the
+JavaScript standard, that provides a <code>next()</code> function that can be called
+repeatedly.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Symbol.for("reducer/init")</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-xdcore.html#.InitFunction">module:xdcore.InitFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A function
+that can create a new, empty copy of the collection.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Symbol.for("reducer/step")</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-xdcore.html#.StepFunction">module:xdcore.StepFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A function
+that can accept a collection and a new element to be added to it and
+return the collection with the new element incorporated.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Symbol.for("reducer/final")</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-xdcore.html#.FinalFunction">module:xdcore.FinalFunction</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A
+function that accepts a collection and returns the same collection with
+any final modifications that might be necessary for it.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>A collection that fully supports the iterable and reducer protocols. Any
+value that supports all four can be used by
+<code><a href="module-xduce.html#.sequence">sequence</a></code>; those that do not support all four
+will have to be used with lower-level functions where some of the protocols
+aren't necessary because the values they would provide are explicitly passed.</p>
+</div>
+
+
+
+
+
+
+
+
+            
+    
 
     
 </article>
@@ -3143,7 +3401,7 @@ access parts of the single-property objects that they emit.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Apr 01 2020 15:44:13 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Apr 02 2020 06:30:08 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

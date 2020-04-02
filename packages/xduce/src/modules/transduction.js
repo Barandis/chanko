@@ -9,7 +9,7 @@
  * Functions dealing with the actual transformation of values and for choosing
  * the reducer during transduction.
  *
- * @module xduce/transformation
+ * @module xduce/transduction
  * @private
  */
 
@@ -45,16 +45,16 @@ import {
  * will return more. In either case, `next` in this class will return one
  * element per call.
  *
- * @param {module:xduce-tools.Iterable} collection the input collection that the
- *     produced iterator will be iterating over.
- * @param {module:xduce-tools.TransducerFunction} transducerFn A function that
+ * @param {external:Iterable} collection the input collection that the produced
+ *     iterator will be iterating over.
+ * @param {module:xdcore.TransducerFunction} transducerFn A function that
  *     creates a transducer object that defines the transformation being done to
  *     the iterator's elements. Any of the transducers in the
  *     {@link module:xduce|xduce} module can produce a suitable transducer
  *     function.
- * @return {module:xduce-tools.Iterator} An iterator that will transform its
- *     input elements using the transducer function as its
- *     `{@link module:xduce-tools.NextFunction|next}` function is called.
+ * @returns {external:Iterator} An iterator that will transform its input
+ *     elements using the transducer function as its `next()` function is
+ *     called.
  * @private
  */
 function transducingIterator(collection, transducerFn) {
@@ -134,30 +134,17 @@ function transducingIterator(collection, transducerFn) {
  *
  * `transduce` also will accept an initial value for the resulting collection as
  * the optional last parameter. If this parameter isn't present, then the
- * initial value is determined from the transducer init protocol property on the
+ * initial value is determined from the reducer `init` protocol property on the
  * reducer. Note however that many reducers may not provide an initial value,
  * and in those cases it will *have* to be passed as a parameter.
  *
  * ```
- * import { map, transduce } from "@chanko/xduce";
- * import { protocols as p } from "@chanko/xduce-tools";
+ * import { map, transduce, toReducer } from "@chanko/xduce";
  *
  * const transducerFn = map(x => x + 1);
  *
- * const arrayReducer = {
- *   [p.init]() { return []; },
- *   [p.final](x) { return x; },
- *   [p.step](acc, x) {
- *     acc.push(x);
- *     return acc;
- *   }
- * };
- *
- * const stringReducer = {
- *   [p.init]() { return ''; },
- *   [p.final](x) { return x; },
- *   [p.step](acc, x) { return acc + x; }
- * };
+ * const arrayReducer = toReducer([]);
+ * const stringReducer = toReducer("");
  *
  * let result = transduce([1, 2, 3, 4, 5], transducerFn, arrayReducer);
  * console.log(result);   // -> [2, 3, 4, 5, 6]
@@ -176,13 +163,12 @@ function transducingIterator(collection, transducerFn) {
  * transducer function is independent of the type of the collection; the same
  * transducer function is used no matter the type of input or output
  * collections. Secondly, two reducers are defined. These are objects that
- * conform to the transducer protocol (see the documentation on
- * `{@link module:xduce-tools.protocols}`) and that know how to produce the
- * output collection of choice. In this case, the reducers know how to create
- * new arrays and strings (the `init` protocol) and how to add elements to
- * arrays and strings (the `step` protocol). Because these reducers do have
- * `init` protocol properties, the `transduce` calls do not require explicit
- * initial collections.
+ * conform to the reducer protocol and that know how to produce the output
+ * collection of choice. In this case, the reducers are produced by the
+ * `{@link module:xdcore.toReducer|toReducer} `function that this module
+ * re-exports from the {@link module:xdcore|xdcore} module. Because these
+ * reducers do have `init` protocol properties, the `transduce` calls do not
+ * require explicit initial collections.
  *
  * The final point is that `transduce` can accept any kind of iterable
  * collection, and by passing in the proper reducer, it can produce any kind of
@@ -204,29 +190,28 @@ function transducingIterator(collection, transducerFn) {
  * as targets know how to reduce themselves already).
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterable`
- *     protocol. Special support is provided by the library for objects, so they
- *     can also be used.
- * @param {module:xduce-tools.TransducerFunction} [transducerFn] A function that
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and plain objects, so they can also be used.
+ * @param {module:xdcore.TransducerFunction} transducerFn A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function.
- * @param {(module:xduce-tools.StepFunction|module:xduce-tools.Reducer)} reducer
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function.
+ * @param {(module:xdcore.StepFunction|module:xdcore.ReducerObject)} reducer
  *     Either a function or a reducer object that implements the transducer
  *     protocols (`init` is  only required if the `init` parameter is not
- *     present). This object must know how to produce an output collection
- *     through its `step` and `result` protocol functions. If this parameter is
- *     a function, then it is turned into a valid reducer object.
- * @param {module:xduce-tools.Reducible} [init] A collection of the same type as
- *     the output collection. If this is not present, then the reducer's `init`
- *     protocol function is called instead to get the initial collection. If it
- *     is present and not empty, then the existing elements remain and the
- *     transformed input collection elements are added to it.
- * @return {*} A collection of a type determined by the passed reducer. The
- *     elements of this collection are the results from the transformer function
- *     being applied to each element of the input collection.
+ *     present). This object must know how to produce an output value through
+ *     its `step` and `result` protocol functions. If this parameter is a
+ *     function, then it is turned into a valid reducer object.
+ * @param {*} [init] A value of the same type as the output value. If this is
+ *     not present, then the reducer's `init` protocol function is called
+ *     instead to get the initial collection. If it is present and not empty,
+ *     then the existing elements remain and the transformed input collection
+ *     elements are added to it.
+ * @returns {*} A value of a type determined by the passed reducer. This is
+ *     usually a collection, but if the reducer produces a scalar value, then
+ *     this will be a scalar value of that type.
  */
 function transduce(collection, transducerFn, reducer, init) {
   const r = isFunction(reducer) ? toReducer(reducer) : reducer;
@@ -239,8 +224,8 @@ function transduce(collection, transducerFn, reducer, init) {
  * Transforms the elements of the input collection and reduces them into a new
  * array.
  *
- * The transformer is optional. If it isn't present, this function just converts
- * the input collection into an array.
+ * The transducer function is optional. If it isn't present, this function just
+ * converts the input collection into an array.
  *
  * ```
  * import { asArray, map } from "@chanko/xduce";
@@ -261,17 +246,17 @@ function transduce(collection, transducerFn, reducer, init) {
  * ```
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterable`
- *     protocol. Special support is provided by the library for objects, so they
- *     can also be used.
- * @param {module:xduce-tools.TransducerFunction} [transducerFn] A function that
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and objects, so they can also be used.
+ * @param {module:xdcore.TransducerFunction} [transducerFn] A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:xduce|xduce} module can produce a suitable transducer
- *     function. If this isn't present, the input collection will simply be
- *     reduced into an array without transformation.
- * @return {Array} An array containing all of the transformed values from the
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function. If this isn't present, the
+ *     input collection will simply be reduced into an array without
+ *     transformation.
+ * @returns {array} An array containing all of the transformed values from the
  *     input collection elements.
  */
 function asArray(collection, transducerFn) {
@@ -282,8 +267,8 @@ function asArray(collection, transducerFn) {
  * Transforms the elements of the input collection and reduces them into a new
  * object.
  *
- * The transformer is optional. If it isn't present, this function just converts
- * the input collection into an object. When this happens, if the input
+ * The transducer function is optional. If it isn't present, this function just
+ * converts the input collection into an object. When this happens, if the input
  * collection is not an object or an array of objects, numbers starting at `0`
  * will be used as keys for the values provided by the input collection.
  *
@@ -313,17 +298,17 @@ function asArray(collection, transducerFn) {
  * ```
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterable`
- *     protocol. Special support is provided by the library for objects, so they
- *     can also be used.
- * @param {module:xduce-tools.Tranducer} [transducerFn] A function that creates
- *     a transducer object that defines the transformation being done to the
- *     input collection's elements. Any of the transducers in the
- *     {@link module:xduce|xduce} module can produce a suitable transducer
- *     function. If this isn't present, the input collection will simply be
- *     reduced into an object without transformation.
- * @return {Object} An object containing all of the transformed values from the
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and objects, so they can also be used.
+ * @param {module:xdcore.TransducerFunction} [transducerFn] A function that
+ *     creates a transducer object that defines the transformation being done to
+ *     the input collection's elements. Any of the transducers in this
+ *     module can produce a suitable transducer function. If this isn't present,
+ *     the input collection will simply be reduced into an object without
+ *     transformation.
+ * @returns {object} An object containing all of the transformed values from the
  *     input collection elements.
  */
 function asObject(collection, transducerFn) {
@@ -334,9 +319,10 @@ function asObject(collection, transducerFn) {
  * Transforms the elements of the input collection and reduces them into a new
  * string.
  *
- * The transformer is optional. If it isn't present, this function just converts
- * the input collection into an string. If this is the case and the input
- * collection is an object, only the values will be concatenated into a string.
+ * The transducer function is optional. If it isn't present, this function just
+ * converts the input collection into an string. If this is the case and the
+ * input collection is an object, only the values will be concatenated into a
+ * string.
  *
  * Otherwise, transforming objects into strings only makes much sense if the
  * transducer produces only a single output from each of the objects key/value
@@ -364,17 +350,17 @@ function asObject(collection, transducerFn) {
  * ```
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterable`
- *     protocol. Special support is provided by the library for objects, so they
- *     can also be used.
- * @param {module:xduce-tools.TransducerFunction} [transducerFn] A function that
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and objects, so they can also be used.
+ * @param {module:xdcore.TransducerFunction} [transducerFn] A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function. If this isn't present, the input collection will
- *     simply be reduced into a string without transformation.
- * @return {String} A string containing all of the transformed values from the
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function. If this isn't present, the
+ *     input collection will simply be reduced into a string without
+ *     transformation.
+ * @returns {string} A string containing all of the transformed values from the
  *     input collection elements.
  */
 function asString(collection, transducerFn) {
@@ -385,8 +371,8 @@ function asString(collection, transducerFn) {
  * Transforms the elements of the input collection and reduces them into a new
  * iterator.
  *
- * The transformer is optional. If it isn't present, this function just converts
- * the input collection into an iterator.
+ * The transducer function is optional. If it isn't present, this function just
+ * converts the input collection into an iterator.
  *
  * *(The results here are shown passed through `asArray` because there's no
  * printable representation of an iterator to show. The `asArray` calls are for
@@ -416,18 +402,18 @@ function asString(collection, transducerFn) {
  * ```
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterable`
- *     protocol. Special support is provided by the library for objects, so they
- *     can also be used.
- * @param {module:xduce-tools.TransducerFunction} [transducerFn] A function that
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and objects, so they can also be used.
+ * @param {module:xdcore.TransducerFunction} [transducerFn] A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:transducers|transducers} module can produce a suitable
- *     transducer function. If this isn't present, the input collection will
- *     simply be reduced into an iterator without transformation.
- * @return {module:xduce-tools.Iterator} An iterator containing all of the
- *     transformed values from the input collection elements.
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function. If this isn't present, the
+ *     input collection will simply be reduced into an iterator without
+ *     transformation.
+ * @returns {external:Iterator} An iterator containing all of the transformed
+ *     values from the input collection elements.
  */
 function asIterator(collection, transducerFn) {
   return transducerFn
@@ -448,7 +434,7 @@ function asIterator(collection, transducerFn) {
  * producing an iterator (as long as the input is an iterator).
  *
  * The input collection must not only implement the `iterator` protocol (as in
- * the last two functions) but also the `init`, `result`, and `step` transducer
+ * the last two functions) but also the `init`, `result`, and `step` reducer
  * protocols. Special support is provided for arrays, strings, objects, and
  * iterators, so they need not implement any protocol.
  *
@@ -473,18 +459,18 @@ function asIterator(collection, transducerFn) {
  * different input and output collection types.
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.ReducibleIterable} collection The input
- *     collection. This must implement the `iterator`, `init`, `result`, and
- *     `step` protocols. Special support is provided for arrays, strings,
- *     objects, and iterators, so they do not have to implement any protocols.
- * @param {module:xduce-tools.TransducerFunction} transducerFn A function that
+ * @param {(array|object|string|external:Iterator|module:xduce.Collection)}
+ *     collection The input collection. This must implement the `iterator`,
+ *     `init`, `result`, and `step` protocols. Special support is provided for
+ *     arrays, strings, objects, and iterators, so they do not have to implement
+ *     any protocols.
+ * @param {module:xdcore.TransducerFunction} transducerFn A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:xduce-tools.transducers|transducers} module can produce a
- *     suitable transducer function.
- * @return {module:xduce-tools.ReducibleIterable} A collection of the same type
- *     as the input collection, containing all of the transformed values from
- *     the input collection elements.
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function.
+ * @returns {(array|object|string|external:Iterator|module:xduce.Collection)} A
+ *     collection of the same type as the input collection, containing all of
+ *     the transformed values from the input collection elements.
  */
 function sequence(collection, transducerFn) {
   switch (true) {
@@ -510,7 +496,7 @@ function sequence(collection, transducerFn) {
  * This is much like `{@link module:xduce.transduce|transduce}`, except that
  * instead of explicitly providing a reducer (and perhaps an initial
  * collection), the target collection acts as a reducer itself. This requires
- * that the collection implement the `init`, `result`, and `step` transducer
+ * that the collection implement the `init`, `result`, and `step` reducer
  * protocol functions.
  *
  * If no transducer function is provided, the input collection elements are
@@ -536,23 +522,25 @@ function sequence(collection, transducerFn) {
  * ```
  *
  * @memberof module:xduce
- * @param {module:xduce-tools.Reducible} target The collection into which all of
- *     the transformed input collection elements will be reduced. This
- *     collection must implement the `init`, `result`, and `step` protocol
- *     functions from the transducer protocol. Special support is provided for
- *     arrays, strings, and objects, so they need not implement the protocol.
- * @param {module:xduce-tools.Iterable} collection The input collection. The
- *     only requirement of this collection is that it implement the `iterator`
- *     protocol. Special support is provided by the library for objects, to they
- *     can also be used.
- * @param {module:xduce-tools.TransducerFunction} [transducerFn] A function that
+ * @param {(array|object|string|module:xdcore.Reducible)} target The collection
+ *     into which all of the transformed input collection elements will be
+ *     reduced. This collection must implement the `init`, `final`, and `step`
+ *     protocol functions from the reducer protocol. Special support is provided
+ *     for arrays, strings, and objects, so they need not implement the
+ *     protocol.
+ * @param {(object|function|external:Iterable)} collection The input collection.
+ *     The only requirement of this collection is that it implement the
+ *     `iterable` protocol. Special support is provided by the library for
+ *     functions and objects, to they can also be used.
+ * @param {module:xdcore.TransducerFunction} [transducerFn] A function that
  *     creates a transducer object that defines the transformation being done to
- *     the input collection's elements. Any of the transducers in the
- *     {@link module:xduce|xduce} mnodule can produce a suitable transducer
- *     function. If this isn't present, the input collection will simply be
- *     reduced into the target collection without transformation.
- * @return {module:xduce-tools.Reducible} The `target` collection, with all of
- *     the tranformed input collection elements reduced onto it.
+ *     the input collection's elements. Any of the transducers in this module
+ *     can produce a suitable transducer function. If this isn't present, the
+ *     input collection will simply be reduced into the target collection
+ *     without transformation.
+ * @return {(array|object|string|module:xdcore.Reducible)} The `target`
+ *     collection, with all of the tranformed input collection elements reduced
+ *     onto it.
  */
 function into(target, collection, transducerFn) {
   switch (true) {
@@ -582,11 +570,10 @@ function into(target, collection, transducerFn) {
  * that the first-executed function is listed last. This is done in the opposite
  * way, with the first transducer executing first, etc. This is a more natural
  * ordering for transducer functions because there is a very real directional
- * pull of elements through a chain of composed transducer functions.
+ * pull of elements through a chain of composed transducers.
  *
  * ```
- * import { compose, sequence } from "@chanko/xduce";
- * import { map, filter, take } from "@chanko/transducers";
+ * import { compose, sequence, map, filter, take } from "@chanko/xduce";
  *
  * const add1 = x => x + 1;
  * const odd = x => x % 2 !== 0;
@@ -598,14 +585,12 @@ function into(target, collection, transducerFn) {
  * ```
  *
  * @memberof module:xduce
- * @param {...module:xduce-tools.TransducerFunction} fns One or more function
- *     that each create a transducer object that defines the transformation
- *     being done to a collection's elements. Any of the transducers in the
- *     {@link module:xduce|xduce} module can produce a suitable transducer
- *     function.
- * @return {module:xduce-tools.TransducerFunction} A transducer function that
- *     produces a transducer object that performs *all* of the transformations
- *     of the objects produced by the input transducer functions.
+ * @param {...module:xdcore.TransducerFunction} fns One or more transducer
+ *     functions to be composed into a single transducer function. Any of the
+ *     transducers in this module can produce a suitable transducer function.
+ * @return {module:xdcore.TransducerFunction} A transducer function that produces
+ *     a transducer object that performs *all* of the transformations of the
+ *     objects produced by the input transducer functions.
  */
 function compose(...transducerFns) {
   const reversed = transducerFns.reverse();

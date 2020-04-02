@@ -635,7 +635,7 @@ export {
  * type-specific code; the creation, population, and finalization of the result
  * are delegated instead to this reducer object.
  *
- * Note that a "transducer object" has exactly the same structure. The only
+ * Note that a *transducer object* has exactly the same structure. The only
  * differences are that the step function in a transducer object modifies the
  * elements before it reduces them, while a reducer object will not; and a
  * transducer object will call the equivalent functions in the next object in
@@ -652,6 +652,20 @@ export {
  * @property {module:xdcore.FinalFunction} Symbol.for("reducer/final") A
  *     function that accepts a value of the reducible type and returns the same
  *     value with any final modifications that might be necessary for it.
+ */
+
+/**
+ * A collection that carries its own information about how to produce itself.
+ * This is structurally the same as a
+ * `{@link module:xdcore.ReducerObject|ReducerObject}`. It is given a distinct
+ * type because it's assumed that this type will be a collection with the
+ * reducer protocol methods added to it; a
+ * `{@link module:xdcore.ReducerObject|ReducerObject}` is normally an object
+ * that has *only* those protocol methods and serves no purpose other than
+ * providing reduction information.
+ *
+ * @typedef {module:xdcore.ReducerObject} Reducible
+ * @memberof module:xdcore
  */
 
 /**
