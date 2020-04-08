@@ -33,12 +33,10 @@
  */
 
 /**
- * The value returned when a queue is read when it's empty.
+ * The value returned when a buffer's queue is read when it's empty.
  *
  * This special value is used because `null` and `undefined` are possible
- * legitimate values that can be stored in a queue. Another option is to use
- * some kind of `Maybe` or `Option` type, but that requires more effort on the
- * part of the end user to interface with.
+ * legitimate values that can be stored in a buffer.
  *
  * @type {Symbol}
  * @memberof module:csp
@@ -61,8 +59,9 @@ const QUEUE = Symbol("QUEUE");
  * Determines whether an object is a queue.
  *
  * @param {*} obj The object to be tested.
- * @return {boolean} Either `true` if the object is a queue or `false` if it is
- * not.
+ * @returns {boolean} Either `true` if the object is a queue or `false` if it is
+ *     not.
+ * @private
  */
 function isQueue(obj) {
   return !!obj?.[QUEUE];
@@ -102,7 +101,7 @@ function queue() {
  * @memberof module:csp/queue
  * @param {module:csp/queue~Queue} queue The queue whose items are being
  *     counted.
- * @return {number} The number of items in the queue.
+ * @returns {number} The number of items in the queue.
  * @private
  */
 function count(queue) {
@@ -114,7 +113,7 @@ function count(queue) {
  *
  * @memberof module:csp/queue
  * @param {module:csp/queue~Queue} queue The queue being checked for emptiness.
- * @return {boolean} Either `true` if the queue is empty or `false` if it is
+ * @returns {boolean} Either `true` if the queue is empty or `false` if it is
  *     not.
  * @private
  */
@@ -143,7 +142,7 @@ function enqueue(queue, item) {
  * @memberof module:csp/queue
  * @param {module:csp/queue~Queue} queue The queue whose oldest item is to be
  *     removed.
- * @return {*} The oldest stored item in the queue.
+ * @returns {*} The oldest stored item in the queue.
  * @private
  */
 function dequeue(queue) {
@@ -168,7 +167,7 @@ function dequeue(queue) {
  * @memberof module:csp/queue
  * @param {module:csp/queue~Queue} queue The queue whose oldest item is to be
  *     peeked at.
- * @return {*} The oldest item stored in the queue.
+ * @returns {*} The oldest item stored in the queue.
  * @private
  */
 function peek(queue) {

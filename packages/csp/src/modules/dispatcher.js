@@ -104,7 +104,8 @@ let queued = true;
  * function that is created depends on the currently selected `dispatchMethod`
  * that can be set with `{@link module:csp.config|config}`.
  *
- * @return A dispatcher function using the currently selected dispatch method.
+ * @returns {function} A dispatcher function using the currently selected
+ *     dispatch method.
  * @private
  */
 function createDispatcher() {
@@ -155,7 +156,7 @@ function createDispatcher() {
  * dispatch method, but this function will return
  * `{@link module:csp.MESSAGE_CHANNEL|MESSAGE_CHANNEL}`.
  *
- * @return {Symbol} The dispatch method to use based on setting and environment.
+ * @returns {Symbol} The dispatch method to use based on setting and environment.
  * @private
  */
 function calcDispatchMethod() {
@@ -222,9 +223,9 @@ function setDispatcher() {
 }
 
 /**
- * The configuration of the Chanko dispatcher. An object like this is returned
- * from the {@link module:csp.config} function, and it may also be passed to the
- * same function (though each property is optional in that case).
+ * The configuration of the Chanko CSP dispatcher. An object like this is
+ * returned from the {@link module:csp.config} function, and it may also be
+ * passed to the same function (though each property is optional in that case).
  *
  * @typedef {object} DispatcherConfig
  * @memberof module:csp
@@ -262,7 +263,7 @@ function setDispatcher() {
  *     `{@link module:csp.SET_IMMEDIATE|SET_IMMEDIATE}`. If a method is set but
  *     is not available in that environment, then it will silently fall back to
  *     the next method that is available.
- * @return {module:csp.DispatcherConfig} The configuration settings for the
+ * @returns {module:csp.DispatcherConfig} The configuration settings for the
  *     dispatcher after any new values have been set.
  */
 function config(opts = {}) {

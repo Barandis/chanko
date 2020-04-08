@@ -14,8 +14,8 @@ import { box, handleSend, handleRecv, isBox } from "./handler";
  * its value.
  *
  * This only happens when an `{@link module:csp.select|select} /
- * {@link module:csp.selectAsync|selectAsync}` call is performed, all operations
- * are initially blocking, and a `default` option is sent. The immediate
+ * {@link module:csp.selectAsync|selectAsync}` call is performed *with* a
+ * `default` option and all operations are initially blocking. The immediate
  * response in that situation is `{ value: options.default, channel: DEFAULT }`.
  *
  * @type {Symbol}
@@ -32,7 +32,7 @@ const DEFAULT = Symbol("DEFAULT");
  *     needs to manipulate it directly.
  * @param {module:csp/channel.HandlerCallback} fn The callback to be run when
  *     (and if) the operation completes.
- * @return {module:csp/channel.Handler} The new handler.
+ * @returns {module:csp/channel.Handler} The new handler.
  * @private
  */
 function selectHandler(active, fn) {
@@ -59,7 +59,7 @@ function selectHandler(active, fn) {
  *
  * @memberof module:csp/channel
  * @param {number} upper The upper limit of the array values, exclusive.
- * @return {number[]} An array of integers from `0` to `upper - 1`, shuffled
+ * @returns {number[]} An array of integers from `0` to `upper - 1`, shuffled
  *     into a random order.
  * @private
  */
@@ -127,14 +127,31 @@ function selectResult(value, channel) {
  * The callback is a function of one parameter, which in this case is an object
  * with `value` and `channel` properties.
  *
+ * ```
+ * import { chan, selectAsync, recvAsync } from "@chanko/csp";
+ *
+ * const sendChan = new chan();
+ * const recvChan = new chan();
+ * const operations = [[sendChan, 1729], recvChan];
+ *
+ * selectAsync(operations, ({ value, channel }) => {
+ *   console.log(value);                 // -> 1729
+ *   console.log(channel === sendChan);  // -> true
+ * });
+ *
+ * // This will cause 'sendChan' to be the one to fire in the 'selectAsync' call
+ * // above as it becomes the first operation to unblock
+ * recvAsync(sendChan);
+ * ```
+ *
  * @memberof module:csp
  * @param {Object[]} operations A collection of elements that correspond to recv
  *     and send operations. A recv operation is signified by an element that is
  *     a channel (which is the channel to be received from). A send operation is
  *     specified by an element that is itself a two-element array, which has a
  *     channel followed by a value (which is the channel and value to be sent).
- * @param {module:csp.SelectCallback} callback A function that gets invoked when
- *     one of the operations completes.
+ * @param {module:csp.SelectCallback} [callback=() => {}] A function that gets
+ *     invoked when one of the operations completes.
  * @param {Object} [options={}] An optional object which can change the behavior
  *     of `selectAsync` through two properties.
  * @param {boolean} [options.priority=false] If `true`, then the priority of
@@ -214,8 +231,8 @@ function selectAsync(ops, callback = () => {}, options = {}) {
  *
  * `operations` is an array whose elements must be channels or two-element
  * sub-arrays of channels and values, in any combination. An operation that is a
- * channel is a take operation on that channel. An operation that is a
- * two-element array is a put operation on that channel using that value.
+ * channel is a receive operation on that channel. An operation that is a
+ * two-element array is a send operation on that channel using that value.
  * Exactly one of these operations will complete, and it will be the first
  * operation that unblocks.
  *
@@ -224,29 +241,69 @@ function selectAsync(ops, callback = () => {}, options = {}) {
  *
  * When `select` is completed and its process unblocks, its `await` expression
  * evaluates to an object of two properties. The `value` property becomes
- * exactly what would have been returned by the equivalent `await put` or `await
- * take` operation: a boolean in the case of a put, or the taken value in the
- * case of a take. The `channel` property is set to the channel where the
- * operation actually took place. This will be equivalent to the channel in the
+ * exactly what would have been returned by the equivalent `await
+ * {@link module:csp.send|send}` or `await {@link module:csp.recv|recv}`
+ * operation: a boolean in the case of a send, or the taken value in the case of
+ * a receive. The `channel` property is set to the channel where the operation
+ * actually took place. This will be equivalent to the channel in the
  * `operations` array which completed first, allowing the process to unblock.
+ *
+ * ```
+ * import { chan, go, select, recv } from "@chanko/csp";
+ *
+ * const sendChan = new chan();
+ * const recvChan = new chan();
+ * const operations = [[sendChan, 1729], recvChan];
+ *
+ * go(async () => {
+ *   const { value, channel } = await select(operations);
+ *   console.log(value);                 // -> 1729
+ *   console.log(channel === sendChan);  // -> true
+ * });
+ *
+ * go(async () => {
+ *   // This will cause `sendChan` to be the one to fire in the `select` call
+ *   // above as it becomes the first operation to unblock
+ *   await recv(sendChan);
+ * });
+ * ```
  *
  * If there is more than one operation already available to complete when the
  * call to `select` is made, the operation with the highest priority will be the
  * one to complete. Regularly, priority is non-deterministic (i.e., it's set
  * randomly). However, if the options object has a `priority` value set to
- * `true`, priority will be assigned in the order of the operations in the
- * supplied array.
+ * `true`, priority will be assigned in the same order as the order of the
+ * operations in the supplied array (i.e., the unblocked operation with the
+ * lowest index in the `operations` array will be the one to run).
  *
- * If all of the operations must block (i.e., there are no pending puts for take
- * operations, or takes for put operations), a default value may be returned.
- * This is only done if there is a `default` property in the options object, and
- * the value of that property becomes the value returned by `await select`. The
- * channel is set to the special value `{@link module:csp.DEFAULT|DEFAULT}`.
+ * If all of the operations must block (i.e., there are no pending sends for
+ * receive operations, or pending receives for send operations), a default value
+ * may be returned. This is only done if there is a `default` property in the
+ * options object, and the value of that property becomes the value returned by
+ * `await select`. The channel is set to the special value
+ * `{@link module:csp.DEFAULT|DEFAULT}`.
+ *
+ * ```
+ * import { chan, go, select, DEFAULT } from "@chanko/csp";
+ *
+ * const sendChan = new chan();
+ * const recvChan = new chan();
+ * const operations = [[sendChan, 1729], recvChan];
+ *
+ * go(async () => {
+ *   // Both operations block immediately because we haven't written any
+ *   // code that will ever cause either to unblock. Because it has a `default`
+ *   // option set, this `await select` call will proceed anyway.
+ *   const { value, channel } = await select(operations, { default: 6 });
+ *   console.log(value);                // -> 6
+ *   console.log(channel === DEFAULT);  // -> true
+ * });
+ * ```
  *
  * @memberof module:csp
  * @param {object[]} operations A collection of elements that correspond to recv
  *     and send operations. A recv operation is signified by an element that is
- *     a channel (which is the channel to be taken from). A send operation is
+ *     a channel (which is the channel to be received from). A send operation is
  *     specified by an element that is itself a two-element array, which has a
  *     channel followed by a value (which is the channel and value to be sent).
  * @param {object} [options={}] An optional object which can change the behavior
@@ -261,7 +318,7 @@ function selectAsync(ops, callback = () => {}, options = {}) {
  *     option (the channel will be `{@link module:csp.DEFAULT|DEFAULT})`. If not
  *     set, the `select` call will block until one of the operations completes
  *     and that value and channel will be the ones returned.
- * @return {Promise<module:csp.SelectResult>} A promise that will resolve to an
+ * @returns {Promise<module:csp.SelectResult>} A promise that will resolve to an
  *     object of two properties: `value` will contain the value that would have
  *     been returned by the corresponding `{@link module:csp.send|send}` or
  *     `{@link module:csp.recv|recv}` operation; and `channel` will be a
@@ -283,7 +340,7 @@ function select(ops, options = {}) {
  * @memberof module:csp
  * @param {module:csp.SelectResult} result The result coming from a select
  *     operation.
- * @return {*} The value provided by the select operation.
+ * @returns {*} The value provided by the select operation.
  */
 function value(result) {
   return result.value;
@@ -298,7 +355,7 @@ function value(result) {
  * @memberof module:csp
  * @param {module:csp.SelectResult} result The result coming from a select
  *     operation.
- * @return {module:csp.Channel} The channel upon which the select operation
+ * @returns {module:csp.Channel} The channel upon which the select operation
  *     completed.
  */
 function channel(result) {

@@ -44,7 +44,7 @@ export { go, sleep, join } from "modules/process";
 export { EMPTY } from "modules/queue";
 
 /**
- * An error handling funciton. This is used to handle exceptions thrown in async
+ * An error handling function. This is used to handle exceptions thrown in async
  * functions and in transducers. The return value of an exception handler is
  * typically sent to a channel; if the exception happened within an async
  * function, it will be sent to that function's output channel, and if the

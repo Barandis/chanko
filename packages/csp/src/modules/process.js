@@ -38,7 +38,7 @@ import { timedChan, recvAsync } from "modules/channel";
  *     run by the dispatcher. If this is missing or set to `0`, the process will
  *     cede execution to the next one but immediately requeue itself to be run
  *     again.
- * @return {Promise} A promise that resolves with no meaningful result when the
+ * @returns {Promise} A promise that resolves with no meaningful result when the
  *     time has elapsed.
  */
 function sleep(delay = 0) {
@@ -52,32 +52,49 @@ function sleep(delay = 0) {
  * Invokes an async function acting as a process.
  *
  * This is purely a convenience function, driven by the fact that it's necessary
- * to use an IIFE to invoke an anonymous async function, and that's not very
- * aesthetically pleasing. It does no more than invoke the passed function, but
- * that at least releases us from the need to put the empty parentheses after
- * the function definition.
+ * to use an *immediately invoked function expression* (IIFE) to invoke an
+ * anonymous async function, and that's not very aesthetically pleasing. It does
+ * no more than invoke the passed function, but that at least releases us from
+ * having to wrap the function in parentheses and then invoke it with more
+ * parentheses.
  *
  * A named async function can simply be invoked (without being an IIFE) and
- * doesn't benefit from this convenience.
+ * doesn't benefit as much from this convenience, though calling `go` in this
+ * case still makes the intent clear (that the async function is being used as
+ * a process).
  *
  * Anonymous process without `go`:
  * ```
  * (async () => {
- *   ... do some process stuff here ...
+ *   // ... do some process stuff here ...
  * })();
  * ```
  * Anonymous process with `go`:
  * ```
  * go(async () => {
- *   ... do some process stuff here ...
+ *   // ... do some process stuff here ...
  * });
+ * ```
+ * Named process without `go`:
+ * ```
+ * async function process() {
+ *   // ... do some process stuff here ...
+ * }
+ * process();
+ * ```
+ * Named process with `go`:
+ * ```
+ * async function process() {
+ *   // ... do some process stuff here ...
+ * }
+ * go(process);
  * ```
  *
  * @memberof module:csp
  * @param {function} fn The async function being used as a process.
  * @param {...*} args Arguments that are sent to the async function when it's
  *     invoked.
- * @return {Promise} The promise returned by the async function.
+ * @returns {Promise} The promise returned by the async function.
  */
 function go(fn, ...args) {
   return fn(...args);
@@ -91,7 +108,7 @@ function go(fn, ...args) {
  * @memberof module:csp
  * @param {...function} fns Any number of async functions whose resolutions are
  *     being waited for.
- * @return {Promise} A promise that resolves when all of the processes promises
+ * @returns {Promise} A promise that resolves when all of the processes promises
  *     resolve.
  */
 function join(...fns) {

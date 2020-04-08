@@ -58,7 +58,7 @@ import {
   EMPTY,
   filter,
   count as qCount,
-  enqueue
+  enqueue,
 } from "modules/queue";
 import { isFull, count, remove } from "modules/buffer";
 import { dispatch } from "modules/dispatcher";
@@ -82,7 +82,7 @@ const MAX_DIRTY = 64;
 const MAX_QUEUED = 1024;
 
 /**
- * *he value returned from a receive on a channel when that channel is closed
+ * The value returned from a receive on a channel when that channel is closed
  * and has no more values available.
  *
  * This is a special value that is returned under a certain circumstance, namely
@@ -109,7 +109,7 @@ const BOX = Symbol("BOX");
  * Determines whether an object is a box.
  *
  * @param {*} obj A value to check for boxiness.
- * @return Either `true` if the value is a box or `false` if it isn't.
+ * @returns Either `true` if the value is a box or `false` if it isn't.
  * @private
  */
 function isBox(obj) {
@@ -117,14 +117,14 @@ function isBox(obj) {
 }
 
 /**
- * Determines whether an object is reduced. This is done using the transducer
- * protocol; an object with the protocol-specified `reduced` property is assumed
- * to be reduced. If a result of a transformation is reduced, it means that the
- * transformation is complete and the channel should be closed.
+ * Determines whether an object is completed. This is done using the reducer
+ * protocol; an object with the protocol-specified `completed` property is
+ * assumed to be completed. If a result of a transformation is completed, it
+ * means that the transformation is finshed and the channel should be closed.
  *
  * @param {*} value The value being checked for reduction.
- * @return {boolean} Either `true` if the value has been reduced, or `false` if
- *     it has not been.
+ * @returns {boolean} Either `true` if the value has been completed, or `false`
+ *     if it has not been.
  * @private
  */
 function isCompleted(value) {
@@ -152,18 +152,18 @@ function isCompleted(value) {
  *
  * @memberof module:csp/channel
  * @param {*} value The value to box.
- * @return {module:csp/channel.Box} The boxed value.
+ * @returns {module:csp/channel.Box} The boxed value.
  * @private
  */
 function box(value) {
   return Object.create(null, {
     value: {
       value,
-      writable: true
+      writable: true,
     },
     [BOX]: {
-      value: true
-    }
+      value: true,
+    },
   });
 }
 
@@ -195,14 +195,14 @@ function sendBox(value, handler) {
   return Object.create(null, {
     value: {
       value,
-      writable: true
+      writable: true,
     },
     handler: {
-      value: handler
+      value: handler,
     },
     [BOX]: {
-      value: true
-    }
+      value: true,
+    },
   });
 }
 
@@ -254,7 +254,7 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:core.TransducerFunction} transducerFn The transducer used to
+ * @param {module:xdcore.TransducerFunction} transducerFn The transducer used to
  *     transform values sent to the channel. If no transformations are
  *     necessary, a passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
@@ -272,45 +272,45 @@ function channel(
   transducerFn,
   isTimed = false,
   maxDirty = MAX_DIRTY,
-  maxQueued = MAX_QUEUED
+  maxQueued = MAX_QUEUED,
 ) {
   return Object.create(null, {
     buffer: {
-      value: buffer
+      value: buffer,
     },
     transducerFn: {
-      value: transducerFn
+      value: transducerFn,
     },
     maxDirty: {
-      value: maxDirty
+      value: maxDirty,
     },
     maxQueued: {
-      value: maxQueued
+      value: maxQueued,
     },
     recvs: {
-      value: queue()
+      value: queue(),
     },
     sends: {
-      value: queue()
+      value: queue(),
     },
     dirtyRecvs: {
       value: 0,
-      writable: true
+      writable: true,
     },
     dirtySends: {
       value: 0,
-      writable: true
+      writable: true,
     },
     closed: {
       value: false,
-      writable: true
+      writable: true,
     },
     isBuffered: {
-      value: !!buffer
+      value: !!buffer,
     },
     isTimed: {
-      value: isTimed
-    }
+      value: isTimed,
+    },
   });
 }
 
@@ -328,7 +328,6 @@ function channel(
  * handlers. It is not meant for general use. Use those other operations
  * functions instead.
  *
- *
  * @memberof module:csp/channel
  * @param {module:csp.Channel} channel The channel that the value is being sent
  *     to.
@@ -338,11 +337,11 @@ function channel(
  * @param {function} handler.commit Deactivates the send (so it can't be
  *     serviced a second time) and returns the callback to be fired when the
  *     send completes.
- * @return {module:csp/channel.Box|null} One of three values. A boxed `true` is
- *     returned if the send was immediately consumed by a pending receive. A
- *     boxed `false` is returned if the send was performed on a channel that was
- *     already closed by the time the send took place. `null` is returned if the
- *     send was queued pending a corresponding receive.
+ * @returns {(module:csp/channel.Box&lt;boolean>|null)} One of three values. A
+ *     boxed `true` is returned if the send was immediately consumed by a
+ *     pending receive. A boxed `false` is returned if the send was performed on
+ *     a channel that was already closed by the time the send took place. `null`
+ *     is returned if the send was queued pending a corresponding receive.
  * @private
  */
 function handleSend(channel, value, handler) {
@@ -368,7 +367,7 @@ function handleSend(channel, value, handler) {
   if (channel.buffer &amp;&amp; !isFull(channel.buffer)) {
     handler.commit();
     const done = isCompleted(
-      channel.transducerFn[p.step](channel.buffer, value)
+      channel.transducerFn[p.step](channel.buffer, value),
     );
 
     for (;;) {
@@ -420,7 +419,7 @@ function handleSend(channel, value, handler) {
   // to become available. Sends whose handlers have gone inactive (which happens
   // if they were processed as part of a `select` call) are periodically purged.
   if (channel.dirtySends > channel.maxDirty) {
-    filter(channel.sends, sender => sender.handler.active);
+    filter(channel.sends, (sender) => sender.handler.active);
     channel.dirtySends = 0;
   } else {
     channel.dirtySends++;
@@ -428,7 +427,7 @@ function handleSend(channel, value, handler) {
 
   if (qCount(channel.sends) >= channel.maxQueued) {
     throw Error(
-      `No more than ${channel.maxQueued} pending sends are allowed on a single channel`
+      `No more than ${channel.maxQueued} pending sends are allowed on a single channel`,
     );
   }
   enqueue(channel.sends, sendBox(value, handler));
@@ -458,7 +457,7 @@ function handleSend(channel, value, handler) {
  * @param {function} handler.commit Deactivates the receive (so it can't be
  *     serviced a second time) and returns the callback to be fired when the
  *     receive completes.
- * @return {module:csp/channel.Box|null} Either the boxed value received from
+ * @returns {(module:csp/channel.Box|null)} Either the boxed value received from
  *     the channel, or `null` if the receive must be queued to await a
  *     corresponding send.
  * @private
@@ -491,7 +490,7 @@ function handleRecv(channel, handler) {
         }
         if (
           isCompleted(
-            channel.transducerFn[p.step](channel.buffer, sender.value)
+            channel.transducerFn[p.step](channel.buffer, sender.value),
           )
         ) {
           close(channel);
@@ -537,7 +536,7 @@ function handleRecv(channel, handler) {
   // be processed when a send is available. Receives whose handlers have gone
   // inactive as the result of `select` processing are periodically purged.
   if (channel.dirtyRecvs > channel.maxDirty) {
-    filter(channel.recvs, receiver => receiver.active);
+    filter(channel.recvs, (receiver) => receiver.active);
     channel.dirtyRecvs = 0;
   } else {
     channel.dirtyRecvs++;
@@ -546,7 +545,7 @@ function handleRecv(channel, handler) {
   if (qCount(channel.recvs) >= channel.maxQueued) {
     const max = channel.maxQueued;
     throw Error(
-      `No more than ${max} pending receives are allowed on a single channel`
+      `No more than ${max} pending receives are allowed on a single channel`,
     );
   }
   enqueue(channel.recvs, handler);
@@ -640,7 +639,7 @@ export {
   handleRecv,
   close,
   box,
-  isBox
+  isBox,
 };
 </code></pre>
         </article>
@@ -656,7 +655,7 @@ export {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Apr 07 2020 14:24:58 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Apr 08 2020 12:15:40 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

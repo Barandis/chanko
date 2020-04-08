@@ -6,11 +6,25 @@
  */
 
 /**
+ * The protocols defined for use with transducers.
+ *
+ * This is **exactly the same** as the protocols available in
+ * {@link module:xdcore|xdcore}. It exists here because otherwise this module
+ * would have to have {@link module:xdcore|xdcore} as a dependency for only this
+ * protocol map. Since both modules are maintained as separate projects within
+ * the same repository, I can just maintain this duplication of the protocol map
+ * and not have to have that dependency leak to CSP users.
+ *
+ * @module csp/protocol
+ * @private
+ */
+
+/**
  * The mapping of protocol names to their respective property key names. The
  * values of this map will depend on whether symbols are available.
  *
  * @typedef {object} ProtocolMap
- * @memberof module:core
+ * @memberof module:csp
  * @private
  * @property {Symbol} init The `reducer/init` protocol. This is used to mark
  *     functions that initialize a target collection before adding items to it.
@@ -38,6 +52,7 @@
  *
  * @type {module:csp.ProtocolMap}
  * @memberof module:csp
+ * @private
  */
 const protocols = Object.create(null, {
   init: {

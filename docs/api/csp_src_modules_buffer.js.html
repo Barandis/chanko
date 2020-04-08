@@ -114,7 +114,7 @@ const SLIDING = Symbol("SLIDING");
  * Predicate indicating whether the supplied object is a buffer.
  *
  * @param {*} obj The value to test to see if it's a buffer.
- * @return {boolean} Either `true` if the value is a buffer, or `false` if it is
+ * @returns {boolean} Either `true` if the value is a buffer, or `false` if it is
  *     not.
  * @private
  */
@@ -127,7 +127,9 @@ function isBuffer(obj) {
  * added.
  *
  * This buffer has a concept of *full*, but it's a soft limit. If the size of
- * the buffer is exceeded, added items are still stored.
+ * the buffer is exceeded, added items are still stored. The only behavior
+ * change when a buffer of this type is full is that
+ * `{@link module:csp/buffer.isFull|isFull}` will return `true`.
  *
  * A buffer of this type exists only as an object that can be passed to a
  * channel creation function (such as {@link module:csp.chan|chan}) to make that
@@ -141,10 +143,11 @@ function isBuffer(obj) {
 /**
  * Creates a fixed buffer of the specified capacity.
  *
- * A fixed buffer is a 'normal' buffer, one that stores and returns items on
- * demand. While it is capable of being over-filled, that ability is not used in
- * Chanko. A buffer that is full will cause the next put to its channel to block
- * until at least one item is removed from the buffer.
+ * A fixed buffer is a "normal" buffer, one that stores and returns items on
+ * demand. It is capable of being over-filled, of still having elements added to
+ * it when its capacity has been reached (the only difference is that it will be
+ * regarded as "full" internally). A buffer that is full will cause the next put
+ * to its channel to block until at least one item is removed from the buffer.
  *
  * This buffer is passed to `{@link module:csp.chan|chan}`, etc. to create a
  * buffered channel. It is not meant to be used directly.
@@ -152,7 +155,7 @@ function isBuffer(obj) {
  * @memberof module:csp
  * @param {number} size The number of items that the new buffer can hold before
  *     it's full.
- * @return {module:csp.FixedBuffer} A new fixed buffer of the specified
+ * @returns {module:csp.FixedBuffer} A new fixed buffer of the specified
  *     capacity.
  */
 function fixed(size) {
@@ -196,14 +199,14 @@ function fixed(size) {
  * A buffer implementation that drops newly added items when the buffer is full.
  *
  * This dropping behavior is silent: the new item is simply not added to the
- * queue. Note that this buffer is never `full` because it can always be added
- * to without exceeding the size, even if that 'adding' doesn't result in a new
+ * queue. Note that this buffer is never "full" because it can always be added
+ * to without exceeding the size, even if that "adding" doesn't result in a new
  * item actually appearing in the buffer.
  *
  * A buffer of this type exists only as an object that can be passed to a
- * channel creation function (such as {@link module:csp.chan|chan}) to make that
- * channel a buffered channel. It doesn't have any properties that are intended
- * for external use.
+ * channel creation function (such as `{@link module:csp.chan|chan}`) to make
+ * that channel a buffered channel. It doesn't have any properties that are
+ * intended for external use.
  *
  * @typedef DroppingBuffer
  * @memberof module:csp
@@ -213,7 +216,7 @@ function fixed(size) {
  * Creates a dropping buffer of the specified capacity.
  *
  * A dropping buffer silently drops the item being added if the buffer is
- * already at capacity. Since adding a new item will always 'succeed' (even if
+ * already at capacity. Since adding a new item will always "succeed" (even if
  * it succeeds by just ignoring the add), it is never considered full and
  * therefore a put to a channel buffered by a dropping buffer never blocks.
  *
@@ -223,7 +226,7 @@ function fixed(size) {
  * @memberof module:csp
  * @param {number} size The number of items that the new buffer can hold before
  *     newest items are dropped on add.
- * @return {module:csp.DroppingBuffer} A new dropping buffer of the specified
+ * @returns {module:csp.DroppingBuffer} A new dropping buffer of the specified
  *     capacity.
  */
 function dropping(size) {
@@ -267,16 +270,16 @@ function dropping(size) {
  * A buffer implementation that drops the oldest item when an item is added to a
  * full buffer.
  *
- * This is very similar to {@link module:csp.DroppingBuffer|DroppingBuffer}; the
- * only difference is in what happens when an item is added. In this buffer, the
- * new item is indeed added to the buffer, but in order to keep the count of the
- * buffer at or below its size, the oldest item in the buffer is silently
+ * This is very similar to `{@link module:csp.DroppingBuffer|DroppingBuffer}`;
+ * the only difference is in what happens when an item is added. In this buffer,
+ * the new item is indeed added to the buffer, but in order to keep the count of
+ * the buffer at or below its size, the oldest item in the buffer is silently
  * dropped.
  *
  * A buffer of this type exists only as an object that can be passed to a
- * channel creation function (such as {@link module:csp.chan|chan}) to make that
- * channel a buffered channel. It doesn't have any properties that are intended
- * for external use.
+ * channel creation function (such as `{@link module:csp.chan|chan}`) to make
+ * that channel a buffered channel. It doesn't have any properties that are
+ * intended for external use.
  *
  * @typedef SlidingBuffer
  * @memberof module:csp
@@ -296,7 +299,7 @@ function dropping(size) {
  * @memberof module:csp
  * @param {number} size The number of items that the new buffer can hold before
  *     oldest items are dropped on add.
- * @return {module:csp.SlidingBuffer} A new sliding buffer of the specified
+ * @returns {module:csp.SlidingBuffer} A new sliding buffer of the specified
  *     capacity.
  */
 function sliding(size) {
@@ -341,7 +344,7 @@ function sliding(size) {
  *
  * @param {module:csp.Buffer} buffer The buffer whose queue is returned by this
  *     function.
- * @return {module:csp/queue~Queue} The queue that backs the supplied buffer.
+ * @returns {module:csp/queue~Queue} The queue that backs the supplied buffer.
  * @private
  */
 function queue(buffer) {
@@ -353,7 +356,7 @@ function queue(buffer) {
  *
  * @param {module:csp.Buffer} buffer The buffer whose size is returned by this
  *     function.
- * @return {number} The size of the supplied buffer.
+ * @returns {number} The size of the supplied buffer.
  * @private
  */
 function size(buffer) {
@@ -365,7 +368,7 @@ function size(buffer) {
  *
  * @param {module:csp.Buffer} buffer The buffer whose current count is returned
  *     by this function.
- * @return {number} The number of items that the supplied buffer is holding.
+ * @returns {number} The number of items that the supplied buffer is holding.
  * @private
  */
 function count(buffer) {
@@ -377,7 +380,7 @@ function count(buffer) {
  *
  * @param {module:csp.Buffer} buffer The buffer who's being checked to see if
  *     it's at capacity.
- * @return {number} Either `true` if the supplied buffer is full or `false` if
+ * @returns {number} Either `true` if the supplied buffer is full or `false` if
  *     it isn't.
  * @private
  */
@@ -428,7 +431,7 @@ function add(buffer, ...items) {
  *
  * @param {module:csp.Buffer} buffer The buffer from which an item is being
  *     removed.
- * @return {*} The item that was removed from the supplied buffer.
+ * @returns {*} The item that was removed from the supplied buffer.
  * @private
  */
 function remove(buffer) {
@@ -461,7 +464,7 @@ export {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Apr 07 2020 14:24:58 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Apr 08 2020 12:15:40 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

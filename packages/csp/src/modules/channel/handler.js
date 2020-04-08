@@ -36,7 +36,7 @@ const MAX_DIRTY = 64;
 const MAX_QUEUED = 1024;
 
 /**
- * *he value returned from a receive on a channel when that channel is closed
+ * The value returned from a receive on a channel when that channel is closed
  * and has no more values available.
  *
  * This is a special value that is returned under a certain circumstance, namely
@@ -63,7 +63,7 @@ const BOX = Symbol("BOX");
  * Determines whether an object is a box.
  *
  * @param {*} obj A value to check for boxiness.
- * @return Either `true` if the value is a box or `false` if it isn't.
+ * @returns Either `true` if the value is a box or `false` if it isn't.
  * @private
  */
 function isBox(obj) {
@@ -71,14 +71,14 @@ function isBox(obj) {
 }
 
 /**
- * Determines whether an object is reduced. This is done using the transducer
- * protocol; an object with the protocol-specified `reduced` property is assumed
- * to be reduced. If a result of a transformation is reduced, it means that the
- * transformation is complete and the channel should be closed.
+ * Determines whether an object is completed. This is done using the reducer
+ * protocol; an object with the protocol-specified `completed` property is
+ * assumed to be completed. If a result of a transformation is completed, it
+ * means that the transformation is finshed and the channel should be closed.
  *
  * @param {*} value The value being checked for reduction.
- * @return {boolean} Either `true` if the value has been reduced, or `false` if
- *     it has not been.
+ * @returns {boolean} Either `true` if the value has been completed, or `false`
+ *     if it has not been.
  * @private
  */
 function isCompleted(value) {
@@ -106,7 +106,7 @@ function isCompleted(value) {
  *
  * @memberof module:csp/channel
  * @param {*} value The value to box.
- * @return {module:csp/channel.Box} The boxed value.
+ * @returns {module:csp/channel.Box} The boxed value.
  * @private
  */
 function box(value) {
@@ -208,7 +208,7 @@ function sendBox(value, handler) {
  * @param {null | module:csp.Buffer} buffer An optional buffer that, if present,
  *     is used to create a buffered channel. If this is `null`, an unbuffered
  *     channel is created.
- * @param {module:core.TransducerFunction} transducerFn The transducer used to
+ * @param {module:xdcore.TransducerFunction} transducerFn The transducer used to
  *     transform values sent to the channel. If no transformations are
  *     necessary, a passthrough transducer should be provided.
  * @param {boolean} isTimed Indicates whether the channel is a timed channel.
@@ -282,7 +282,6 @@ function channel(
  * handlers. It is not meant for general use. Use those other operations
  * functions instead.
  *
- *
  * @memberof module:csp/channel
  * @param {module:csp.Channel} channel The channel that the value is being sent
  *     to.
@@ -292,11 +291,11 @@ function channel(
  * @param {function} handler.commit Deactivates the send (so it can't be
  *     serviced a second time) and returns the callback to be fired when the
  *     send completes.
- * @return {module:csp/channel.Box|null} One of three values. A boxed `true` is
- *     returned if the send was immediately consumed by a pending receive. A
- *     boxed `false` is returned if the send was performed on a channel that was
- *     already closed by the time the send took place. `null` is returned if the
- *     send was queued pending a corresponding receive.
+ * @returns {(module:csp/channel.Box<boolean>|null)} One of three values. A
+ *     boxed `true` is returned if the send was immediately consumed by a
+ *     pending receive. A boxed `false` is returned if the send was performed on
+ *     a channel that was already closed by the time the send took place. `null`
+ *     is returned if the send was queued pending a corresponding receive.
  * @private
  */
 function handleSend(channel, value, handler) {
@@ -412,7 +411,7 @@ function handleSend(channel, value, handler) {
  * @param {function} handler.commit Deactivates the receive (so it can't be
  *     serviced a second time) and returns the callback to be fired when the
  *     receive completes.
- * @return {module:csp/channel.Box|null} Either the boxed value received from
+ * @returns {(module:csp/channel.Box|null)} Either the boxed value received from
  *     the channel, or `null` if the receive must be queued to await a
  *     corresponding send.
  * @private

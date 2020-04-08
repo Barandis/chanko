@@ -58,12 +58,12 @@ import { protocols as p } from "modules/protocol";
  * A handler function for exceptions that are thrown by a transducer while
  * transforming values on a channel.
  *
+ * @callback HandlerCallback
  * @param {object} err The error object that was thrown by the transducer.
- * @return {*} A value that should be put into the channel's buffer when the
+ * @returns {*} A value that should be put into the channel's buffer when the
  *     transducer throws the error. If this value is
  *     {@link module:csp.CLOSED|CLOSED}, then no value at all will be added to
  *     the buffer.
- * @callback
  * @memberof module:csp/channel
  * @private
  */
@@ -88,7 +88,7 @@ const DEFAULT_HANDLER = () => CLOSED;
  * @memberof module:csp/channel
  * @param {module:csp/channel.HandlerCallback} fn The callback to be run when
  *     (and if) the operation completes.
- * @return {module:csp/channel.Handler} The new handler.
+ * @returns {module:csp/channel.Handler} The new handler.
  * @private
  */
 function opHandler(fn) {
@@ -113,8 +113,8 @@ function opHandler(fn) {
  * @param {module:csp.ExceptionHandler} handler The exception handling function
  *     that is run when an error occurs in a transducer.
  * @param  {Object} ex The error object thrown by the transducer.
- * @return {module:csp.Buffer} The buffer itself. This is done to make it easier
- *     to integrate this function into a transducer's step function.
+ * @returns {module:csp.Buffer} The buffer itself. This is done to make it
+ *     easier to integrate this function into a transducer's step function.
  * @private
  */
 function handleException(buffer, handler, ex) {
@@ -130,11 +130,13 @@ function handleException(buffer, handler, ex) {
  * error that occurs within the transducer, either in the step function or the
  * result function, will cause the error handler to be run.
  *
- * @param {Object} transducer The transducer to add an error handler to.
+ * @param {module:xdcore.ReducerObject} transducer The transducer object to add
+ *     an error handler to.
  * @param {module:csp.ExceptionHandler} [handler=DEFAULT_HANDLER] The exception
  *     handling function that is run when an error occurs in the transducer.
- * @return {Object} A new transducer that is the result of wrapping the provided
- *     transducer's step and final functions with the exception handler.
+ * @returns {module:xdcore.ReducerObject} A new transducer object that is the
+ *     result of wrapping the provided transducer's step and final functions
+ *     with the exception handler.
  * @private
  */
 function handlerTransducer(transducer, handler = DEFAULT_HANDLER) {
@@ -167,7 +169,7 @@ function handlerTransducer(transducer, handler = DEFAULT_HANDLER) {
  * always takes the transformed values and renders them into whatever collection
  * is desired. This is that final reducer for channels.
  *
- * @type {Object}
+ * @type {module:xdcore.ReducerObject}
  * @private
  */
 const bufferReducer = {
@@ -195,7 +197,7 @@ const bufferReducer = {
  *     `{@link module:csp.chan|chan}`.
  * @param {object} defaultOptions Default values for options that might not have
  *     been sent to `{@link module:csp.chan|chan}`.
- * @return {object} An object containing the processed values of all of the
+ * @returns {object} An object containing the processed values of all of the
  *     arguments sent to `{@link module:csp.chan|chan}`.
  * @private
  */
@@ -243,18 +245,20 @@ function parseArgs(buffer, options, defaultOptions) {
  * If a buffer value is provided, it defines what buffer should back the
  * channel. If this is `null` or `0`, the channel will be unbuffered. If it's a
  * positive number, the channel will be buffered by a
- * `{@link module:csp.FixedBuffer|FixedBuffer} `of that size. If it's a
+ * `{@link module:csp.FixedBuffer|FixedBuffer}` of that size. If it's a
  * `{@link module:csp.Buffer|Buffer}` object, that object will be used as the
  * channel's buffer. If it's missing altogether, the channel will be unbuffered
  * unless a `transducer` option is provided (see below), in which case it will
  * be a `{@link module:csp.FixedBuffer|FixedBuffer}` of size 1.
  *
- * `chan` supports transducers by allowing a transducer function to be
- * associated with it. This is passed as the `transducer` option and can only be
- * used if the channel is buffered (otherwise an error is thrown). This
- * transducer function must take another transducer as a parameter (allowing
- * transformers to be chained), and it must return an object conforming to the
- * transducer protocol.
+ * `chan` supports transducers by allowing a
+ * {@link module:xdcore.TransducerFunction|transducer function} to be associated
+ * with it. This is passed as the `transducer` option and can only be used if
+ * the channel is buffered (otherwise an error is thrown). This transducer
+ * function must take a {@link module:xdcore.ReducerObject|transducer object} as
+ * a parameter (allowing transducers to be chained), and it must return another
+ * transducer object (presumably the one that was passed in, with the new
+ * transducer chained to it).
  *
  * Errors in the transformation process can be handled by passing an error
  * handler. This is a function that expects to receive an error object as a
@@ -272,11 +276,12 @@ function parseArgs(buffer, options, defaultOptions) {
  *     `{@link module:csp.FixedBuffer|FixedBuffer}`.
  * @param {Object} [options] A set of options for configuring the channel's
  *     queue.
- * @param {module:core.TransducerFunction} [options.transducer] A transducer to
- *     run each value through before putting it onto the channel. This function
- *     should expect one parameter (another transducer that it's chained to) and
- *     return an object that conforms to the transducer protocol. If a
- *     transducer is provided on an unbuffered channel, an error will be thrown.
+ * @param {module:xdcore.TransducerFunction} [options.transducer] A transducer
+ *     to run each value through before putting it onto the channel. This
+ *     function should expect one parameter (another transducer that it's
+ *     chained to) and return an object that conforms to the transducer
+ *     protocol. If a transducer is provided on an unbuffered channel, an error
+ *     will be thrown.
  * @param {module:csp.ExceptionHandler} [options.handler] An error handler that
  *     is run whenever an error occurs inside a transducer function. If that
  *     happens, this function is called with one parameter, which is the error
@@ -362,7 +367,7 @@ function timedChan(delay = 0) {
  * size 1. This is the equivalent of `chan(1, { transducer, handler })`.
  *
  * @memberof module:csp
- * @param {module:core.TransducerFunction} transducer The transducer used to
+ * @param {module:xdcore.TransducerFunction} transducer The transducer used to
  *     transform values on the new channel.
  * @param {module:csp.ExceptionHandler} [handler] An exception handler called
  *     with the error object as its only argument when an error happens inside a
@@ -462,11 +467,11 @@ function sendAsync(channel, value, callback = () => {}) {
 /**
  * Receives a value from this channel without blocking.
  *
- * This means that a call to `receiveAsync` does not go into an `await`
- * expression, and it is not necessary to use it inside a async function. Rather
- * than blocking until a value becomes available on the channel to be received,
- * this one returns immediately and then invokes the callback (if provided) when
- * a value becomes available. It can be regarded as a non-blocking version of
+ * This means that a call to `recvAsync` does not go into an `await` expression,
+ * and it is not necessary to use it inside a async function. Rather than
+ * blocking until a value becomes available on the channel to be received, this
+ * one returns immediately and then invokes the callback (if provided) when a
+ * value becomes available. It can be regarded as a non-blocking version of
  * {@link module:csp.recv|recv}`.
  *
  * While the primary use of this function is to receive values from channels in
@@ -514,7 +519,7 @@ function recvAsync(channel, callback = () => {}) {
  *
  * @memberof module:csp
  * @param {*} [value] The value being put onto the channel.
- * @return {Promise<boolean>} A promise that will resolve to `true` or `false`
+ * @returns {Promise<boolean>} A promise that will resolve to `true` or `false`
  *     depending on whether the put value is actually taken.
  */
 function send(channel, value) {
@@ -531,14 +536,14 @@ function send(channel, value) {
  * This function *must* be called from within an async function and as part of
  * an `await` expression.
  *
- * When `receive` is completed and its function unblocks, its `await` expression
+ * When `recv` is completed and its function unblocks, its `await` expression
  * evaluates to the actual value that was received. If the target channel
  * closed, then all of the values already placed onto it are resolved by
  * `receive` as normal, and once no more values are available, the special value
  * `{@link module:csp.CLOSED|CLOSED}` is returned.
  *
  * @memberof module:csp
- * @return {Promise} A promise that will resolve to the value received from the
+ * @returns {Promise} A promise that will resolve to the value received from the
  *     channel once that receive is completed. If the channel closes without a
  *     value being made available, this will resolve to
  *     `{@link module:csp.CLOSED|CLOSED}`.
@@ -565,7 +570,7 @@ function recv(channel) {
  * promise to be rejected with the error. It can then be handled up the promise
  * chain like any other rejected promise.
  *
- * `takeOrThrow` is roughly equivalent to:
+ * `recvOrThrow` is roughly equivalent to:
  *
  * ```
  * const value = await recv(ch);
@@ -575,7 +580,7 @@ function recv(channel) {
  * ```
  *
  * @memberof module:csp
- * @return {Promise} A promise that will resolve to the value taken from the
+ * @returns {Promise} A promise that will resolve to the value taken from the
  *     channel once that take is completed. If the channel closes without a
  *     value being made available, this will resolve to
  *     `{@link module:csp.CLOSED|CLOSED}`. If the taken value is an error, the
@@ -594,7 +599,7 @@ function recvOrThrow(channel) {
 }
 
 /**
- * Closes the channel, if it isn't already closed. This immediately returns any
+ * Closes the channel if it isn't already closed. This immediately returns any
  * buffered values to pending receives. If there are no buffered values (or if
  * they've already been taken by other receives), then all of the rest of the
  * receives are completed with the value of `{@link module:csp.CLOSED|CLOSED}`.
